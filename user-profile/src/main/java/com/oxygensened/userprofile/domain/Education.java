@@ -1,0 +1,137 @@
+package com.oxygensened.userprofile.domain;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+public class Education {
+
+    @Id
+    private UUID id;
+    @ManyToOne
+    private University university;
+    @ManyToOne
+    private User individual;
+    @Column(nullable = false)
+    private String fieldOfStudy;
+    private String title;
+    @Column(length = 1000)
+    private String description;
+    private Double grade;
+    @Column(nullable = false)
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public Education() {
+    }
+
+    public Education(UUID id, University university, User individual, String fieldOfStudy, String title, String description, Double grade, LocalDate startDate, LocalDate endDate, LocalDateTime updatedAt, LocalDateTime createdAt) {
+        this.id = id;
+        this.university = university;
+        this.individual = individual;
+        this.fieldOfStudy = fieldOfStudy;
+        this.title = title;
+        this.description = description;
+        this.grade = grade;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+    }
+
+    public UUID id() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public University university() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
+
+    public User individual() {
+        return individual;
+    }
+
+    public void setIndividual(User individual) {
+        this.individual = individual;
+    }
+
+    public String fieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public void setFieldOfStudy(String fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public String title() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double grade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
+    }
+
+    public LocalDate startDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate endDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDateTime updatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+}

@@ -1,0 +1,8 @@
+url: jdbc:mysql://localhost:3308/user_profile
+username: root
+password: 12345
+driver: com.mysql.cj.jdbc.Driver
+changeLogFile: classpath:db/changelog/db.changelog-master.xml
+referenceUrl: "hibernate:spring:com.oxygensend?dialect=org.hibernate.dialect.MySQL5Dialect"
+referenceDriver: liquibase.ext.hibernate.database.connection.HibernateDriver
+

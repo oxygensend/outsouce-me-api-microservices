@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  mysql:
+    container_name: 'outsource-me-mysql'
+    image: 'mysql:latest'
+    ports:
+      - '3308:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '12345'
+    networks:
+      - outsource_me
+  mongo:
+    container_name: 'outsource-me-mongo'
+    image: 'mongo:latest'
+    ports:
+      - '27018:27017'
+    volumes:
+      - './data/mongo:/data/db'
+    networks:
+      - outsource_me
+
+
+networks:
+  outsource_me:
+
+
+
+
+
+
+
+
+
+
+
