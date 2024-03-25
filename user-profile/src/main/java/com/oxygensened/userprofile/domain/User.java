@@ -4,6 +4,8 @@ import com.oxygensened.userprofile.infrastructure.jpa.StringSetConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,15 +13,18 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class User {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String externalId;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
@@ -33,7 +38,7 @@ public class User {
     private String linkedinUrl;
     private LocalDate dateOfBirth;
     @Column(nullable = false)
-    private Integer redirectCount;
+    private Integer redirectCount = 0;
     private AccountType accountType;
     @Column(nullable = false)
     private String slug;
@@ -46,13 +51,12 @@ public class User {
     private double popularityOrder;
     private String imageName;
     private String imageNameSmall;
-
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
     @Convert(converter = StringSetConverter.class)
-    private Set<String> technologies;
+    private Set<String> technologies = new HashSet<>();
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private Address address;
     @OneToMany(mappedBy = "createdBy", targetEntity = Attachment.class)
     private List<Attachment> attachments = new ArrayList<>();
@@ -72,12 +76,13 @@ public class User {
     public User() {
     }
 
-    public User(UUID id, String email, String name, String surname, String phoneNumber, String description, String githubUrl, String linkedinUrl,
+    public User(Long id, String externalId, String email, String name, String surname, String phoneNumber, String description, String githubUrl, String linkedinUrl,
                 LocalDate dateOfBirth, Integer redirectCount, AccountType accountType, String slug, boolean lookingForJob, String activeJobPosition,
                 double opinionsRate, Experience experience, double popularityOrder, String imageName, String imageNameSmall, LocalDateTime createdAt,
                 LocalDateTime updatedAt, Set<String> technologies, Address address, List<Attachment> attachments, List<Opinion> opinions,
                 List<Education> educations, List<JobPosition> jobPositions, List<Language> languages) {
         this.id = id;
+        this.externalId = externalId;
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -107,12 +112,12 @@ public class User {
         this.languages = languages;
     }
 
-    public UUID id() {
-        return id;
+    public static UserBuilder builder() {
+        return new UserBuilder();
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public Long id() {
+        return id;
     }
 
     public String email() {
@@ -329,5 +334,13 @@ public class User {
 
     public void setLanguages(List<Language> languages) {
         this.languages = languages;
+    }
+
+    public String externalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 }

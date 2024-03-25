@@ -2,6 +2,8 @@ package com.oxygensened.userprofile.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,7 +13,8 @@ import java.util.UUID;
 public class Opinion {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(length = 1000)
     private String description;
     @Column(nullable = false)
@@ -26,7 +29,7 @@ public class Opinion {
     public Opinion() {
     }
 
-    public Opinion(UUID id, String description, int scale, User fromWho, User toWho) {
+    public Opinion(Long id, String description, int scale, User fromWho, User toWho) {
         this.id = id;
         this.description = description;
         this.scale = scale;
@@ -34,12 +37,8 @@ public class Opinion {
         this.toWho = toWho;
     }
 
-    public UUID id() {
+    public Long id() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String description() {

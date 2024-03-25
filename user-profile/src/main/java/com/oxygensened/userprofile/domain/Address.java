@@ -1,13 +1,15 @@
 package com.oxygensened.userprofile.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.UUID;
 
 @Entity
 public class Address {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String city;
     private String postCode;
     private String lon;
@@ -16,7 +18,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(UUID id, String city, String postCode, String lon, String lat) {
+    public Address(Long id, String city, String postCode, String lon, String lat) {
         this.id = id;
         this.city = city;
         this.postCode = postCode;
@@ -24,12 +26,8 @@ public class Address {
         this.lat = lat;
     }
 
-    public UUID id() {
+    public Long id() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String city() {

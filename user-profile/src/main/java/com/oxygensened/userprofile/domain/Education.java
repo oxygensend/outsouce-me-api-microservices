@@ -2,6 +2,8 @@ package com.oxygensened.userprofile.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
@@ -12,7 +14,8 @@ import java.util.UUID;
 public class Education {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne
     private University university;
     @ManyToOne
@@ -33,7 +36,7 @@ public class Education {
     public Education() {
     }
 
-    public Education(UUID id, University university, User individual, String fieldOfStudy, String title, String description, Double grade, LocalDate startDate, LocalDate endDate, LocalDateTime updatedAt, LocalDateTime createdAt) {
+    public Education(Long id, University university, User individual, String fieldOfStudy, String title, String description, Double grade, LocalDate startDate, LocalDate endDate, LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
         this.university = university;
         this.individual = individual;
@@ -47,12 +50,8 @@ public class Education {
         this.createdAt = createdAt;
     }
 
-    public UUID id() {
+    public Long id() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public University university() {

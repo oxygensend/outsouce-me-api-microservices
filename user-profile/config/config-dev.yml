@@ -7,3 +7,28 @@ spring:
 eureka:
   client:
     enabled: false
+
+
+services:
+  auth:
+    url: http://localhost:9002
+  notifications:
+    login: 123214
+    externalTopic: outsource-me-api-notifications
+
+
+feign:
+  connection:
+    type: URI
+
+
+kafka:
+  producer:
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+  consumer:
+    application-id: notification-service
+    bootstrap-servers: localhost:9092
+    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+    user-registered-topic: outsource-me-api-user-registered
+

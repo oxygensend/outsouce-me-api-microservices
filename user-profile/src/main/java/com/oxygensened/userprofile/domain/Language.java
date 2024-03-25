@@ -2,6 +2,8 @@ package com.oxygensened.userprofile.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
@@ -11,7 +13,8 @@ import java.util.UUID;
 public class Language {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne
     private User user;
     @Column(length = 30, nullable = false)
@@ -24,7 +27,7 @@ public class Language {
     public Language() {
     }
 
-    public Language(UUID id, User user, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Language(Long id, User user, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -33,12 +36,8 @@ public class Language {
         this.updatedAt = updatedAt;
     }
 
-    public UUID id() {
+    public Long id() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public User user() {
