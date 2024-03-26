@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "services")
 public record ServiceProperties(@Valid Auth auth, @Valid Notifications notifications) {
-    public record Auth(@NotEmpty String url) {
+    public record Auth(@NotEmpty String url, @NotEmpty String userRegisteredTopic) {
     }
 
     public record Notifications(@NotEmpty String externalTopic, @NotEmpty String login) {

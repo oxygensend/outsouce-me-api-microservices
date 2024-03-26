@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.services.auth;
 
 import com.oxygensened.userprofile.context.auth.AuthRepository;
-import com.oxygensened.userprofile.context.auth.RegisterUserCommand;
+import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
 import com.oxygensened.userprofile.context.auth.dto.Tokens;
 import com.oxygensened.userprofile.infrastructure.services.auth.dto.AuthRegisterRequest;
 import com.oxygensened.userprofile.infrastructure.services.auth.dto.UserIdRequest;

@@ -12,6 +12,7 @@ eureka:
 services:
   auth:
     url: http://localhost:9002
+    userRegisteredTopic: outsource-me-api-user-registered
   notifications:
     login: 123214
     externalTopic: outsource-me-api-notifications
@@ -27,8 +28,8 @@ kafka:
     bootstrap-servers: localhost:29092
     security-protocol: PLAINTEXT
   consumer:
-    application-id: notification-service
-    bootstrap-servers: localhost:9092
-    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
-    user-registered-topic: outsource-me-api-user-registered
+    application-id: auth-service
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+    #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
 

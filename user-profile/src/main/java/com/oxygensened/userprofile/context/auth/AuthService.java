@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.context.auth;
 
 import com.oxygensened.userprofile.context.auth.dto.RegisterRequest;
+import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
 import com.oxygensened.userprofile.context.auth.dto.RegisterView;
 import com.oxygensened.userprofile.context.auth.dto.Tokens;
 import com.oxygensened.userprofile.context.notifications.NotificationsService;
@@ -58,13 +59,13 @@ public class AuthService {
         var user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.withEmail(email));
         String token = authRepository.generateEmailVerificationToken(user.externalId());
 
-        notificationsService.sendEmailVerificationLink(user, token);
+        notificationsService.sendEmailVerificationLink(email, user.externalId(), token);
     }
 
     public void resendPasswordResetLink(String email) {
         var user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.withEmail(email));
         String token = authRepository.generatePasswordResetToken(user.externalId());
 
-        notificationsService.sendPasswordResetLink(user, token);
+        notificationsService.sendPasswordResetLink(email, user.externalId(), token);
     }
 }

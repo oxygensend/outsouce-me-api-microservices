@@ -27,4 +27,9 @@ class UserFacadeRepository implements UserRepository {
     public Optional<User> findByEmail(String email) {
         return userJpaRepository.findByEmail(email);
     }
+
+    @Override
+    public Optional<User> findByExternalId(String externalId) {
+        return userJpaRepository.findByExternalId(externalId);
+    }
 }

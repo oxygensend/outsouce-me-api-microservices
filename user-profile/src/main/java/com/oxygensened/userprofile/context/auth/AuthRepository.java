@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.context.auth;
 
+import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
 import com.oxygensened.userprofile.context.auth.dto.Tokens;
 
 public interface AuthRepository {

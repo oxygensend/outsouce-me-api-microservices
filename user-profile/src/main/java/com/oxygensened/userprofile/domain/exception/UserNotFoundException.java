@@ -19,4 +19,8 @@ public class UserNotFoundException extends ApiException {
     public static UserNotFoundException withEmail(String email) {
         return new UserNotFoundException("User with email " + email + " not found");
     }
+
+    public static UserNotFoundException withExternalId(String externalId) {
+        return new UserNotFoundException("User with external id " + externalId + " not found");
+    }
 }

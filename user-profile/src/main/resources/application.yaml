@@ -70,6 +70,7 @@ kafka:
       max-retries: 5
       back-off-period: 500
       backoff-period-service-unavailable: 5000
+    retry-backoff-ms: 1000
 
 user-profile:
   service-id: user-profile-service

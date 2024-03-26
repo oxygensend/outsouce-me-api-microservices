@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Auth")
 @RestController
 @RequestMapping("/api/v1/users")
-public class AuthController {
+class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
+    AuthController(AuthService authService) {
         this.authService = authService;
     }
 
