@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/1711303971-changelog.sql
