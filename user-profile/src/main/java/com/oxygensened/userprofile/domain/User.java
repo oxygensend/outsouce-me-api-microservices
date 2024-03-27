@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.domain;
 
 import com.oxygensened.userprofile.infrastructure.jpa.StringSetConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -55,7 +56,7 @@ public class User {
     private LocalDateTime updatedAt;
     @Convert(converter = StringSetConverter.class)
     private Set<String> technologies = new HashSet<>();
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private Address address;
     @OneToMany(mappedBy = "createdBy", targetEntity = Attachment.class)
@@ -342,5 +343,9 @@ public class User {
 
     public void setExternalId(String externalId) {
         this.externalId = externalId;
+    }
+
+    public String fullName() {
+        return name + " " + surname;
     }
 }

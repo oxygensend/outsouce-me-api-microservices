@@ -12,7 +12,7 @@ public class UserNotFoundException extends ApiException {
         super(message);
     }
 
-    public static UserNotFoundException withId(UUID id) {
+    public static UserNotFoundException withId(Long id) {
         return new UserNotFoundException("User with id " + id + " not found");
     }
 

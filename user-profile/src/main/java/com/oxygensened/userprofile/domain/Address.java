@@ -18,6 +18,13 @@ public class Address {
     public Address() {
     }
 
+    public Address(String city, String postCode, String lon, String lat) {
+        this.city = city;
+        this.postCode = postCode;
+        this.lon = lon;
+        this.lat = lat;
+    }
+
     public Address(Long id, String city, String postCode, String lon, String lat) {
         this.id = id;
         this.city = city;

@@ -1,16 +1,22 @@
 package com.oxygensened.userprofile.infrastructure.jpa;
 
+import com.oxygensened.userprofile.context.profile.UserFilters;
 import com.oxygensened.userprofile.domain.User;
 import com.oxygensened.userprofile.domain.UserRepository;
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-class UserFacadeRepository implements UserRepository {
+class UserJpaFacadeRepository implements UserRepository {
     private final UserJpaRepository userJpaRepository;
+    private final EntityManager entityManager;
 
-    UserFacadeRepository(UserJpaRepository userJpaRepository) {
+    UserJpaFacadeRepository(UserJpaRepository userJpaRepository, EntityManager entityManager) {
         this.userJpaRepository = userJpaRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -32,4 +38,12 @@ class UserFacadeRepository implements UserRepository {
     public Optional<User> findByExternalId(String externalId) {
         return userJpaRepository.findByExternalId(externalId);
     }
+
+    @Override
+    public Page<User> findAll(Pageable pageable, UserFilters filters) {
+        var specification = UserSpecification.read(filters);
+        return JpaUtils.findPageable(entityManager, pageable, User.class, specification);
+    }
+
+
 }
