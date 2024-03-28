@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 public class Education {
@@ -16,7 +16,7 @@ public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private University university;
     @ManyToOne
     private User individual;
@@ -36,7 +36,8 @@ public class Education {
     public Education() {
     }
 
-    public Education(Long id, University university, User individual, String fieldOfStudy, String title, String description, Double grade, LocalDate startDate, LocalDate endDate, LocalDateTime updatedAt, LocalDateTime createdAt) {
+    public Education(Long id, University university, User individual, String fieldOfStudy, String title, String description, Double grade,
+                     LocalDate startDate, LocalDate endDate, LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
         this.university = university;
         this.individual = individual;
@@ -48,6 +49,10 @@ public class Education {
         this.endDate = endDate;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
+    }
+
+    public static EducationBuilder builder() {
+        return new EducationBuilder();
     }
 
     public Long id() {

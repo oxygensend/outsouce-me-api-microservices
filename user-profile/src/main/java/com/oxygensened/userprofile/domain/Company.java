@@ -21,10 +21,8 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String name, LocalDateTime createdAt) {
-        this.id = id;
+    public Company(String name) {
         this.name = name;
-        this.createdAt = createdAt;
     }
 
     public Long id() {
