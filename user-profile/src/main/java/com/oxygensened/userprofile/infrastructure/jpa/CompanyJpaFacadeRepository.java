@@ -2,6 +2,7 @@ package com.oxygensened.userprofile.infrastructure.jpa;
 
 import com.oxygensened.userprofile.domain.Company;
 import com.oxygensened.userprofile.domain.CompanyRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +23,10 @@ class CompanyJpaFacadeRepository implements CompanyRepository {
     @Override
     public Optional<Company> findByName(String name) {
         return companyJpaRepository.findByName(name);
+    }
+
+    @Override
+    public List<Company> findAll() {
+        return companyJpaRepository.findAll();
     }
 }

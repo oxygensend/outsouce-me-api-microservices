@@ -1,10 +1,9 @@
 package com.oxygensened.userprofile.context.jobposition;
 
+import com.oxygensened.userprofile.context.company.CompanyService;
 import com.oxygensened.userprofile.context.jobposition.dto.CreateJobPositionRequest;
 import com.oxygensened.userprofile.context.jobposition.dto.JobPositionView;
 import com.oxygensened.userprofile.context.jobposition.dto.UpdateJobPositionRequest;
-import com.oxygensened.userprofile.domain.Company;
-import com.oxygensened.userprofile.domain.CompanyRepository;
 import com.oxygensened.userprofile.domain.JobPosition;
 import com.oxygensened.userprofile.domain.JobPositionRepository;
 import com.oxygensened.userprofile.domain.UserRepository;
@@ -21,17 +20,17 @@ public class JobPositionService {
 
     private final UserRepository userRepository;
     private final JobPositionRepository jobPositionRepository;
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
-    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyRepository companyRepository) {
+    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService) {
         this.userRepository = userRepository;
         this.jobPositionRepository = jobPositionRepository;
-        this.companyRepository = companyRepository;
+        this.companyService = companyService;
     }
 
     public JobPositionView createJobPosition(Long userId, CreateJobPositionRequest request) {
         var user = userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.withId(userId));
-        var company = companyRepository.findByName(request.companyName()).orElse(new Company(request.companyName()));
+        var company = companyService.getCompany(request.companyName());
         var active = request.endDate() == null;
 
         var jobPosition = JobPosition.builder()
@@ -84,7 +83,7 @@ public class JobPositionService {
         }
 
         var companyName = companyNameNullable.get();
-        var company = companyRepository.findByName(companyName).orElse(new Company(companyName));
+        var company = companyService.getCompany(companyName);
         jobPosition.setCompany(company);
     }
 }

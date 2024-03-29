@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 public class Language {
@@ -21,10 +20,16 @@ public class Language {
     private String name;
     @Column(length = 1000)
     private String description;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
     public Language() {
+    }
+
+    public Language(User user, String name, String description) {
+        this.user = user;
+        this.name = name;
+        this.description = description;
     }
 
     public Language(Long id, User user, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {

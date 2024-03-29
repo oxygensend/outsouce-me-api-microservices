@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.jobposition.dto;
 
-import com.oxygensened.userprofile.context.company.CompanyView;
+import com.oxygensened.userprofile.context.company.dto.CompanyView;
 import com.oxygensened.userprofile.domain.FormOfEmployment;
 import com.oxygensened.userprofile.domain.JobPosition;
 import java.time.LocalDate;

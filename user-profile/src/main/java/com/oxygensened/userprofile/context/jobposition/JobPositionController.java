@@ -3,6 +3,7 @@ package com.oxygensened.userprofile.context.jobposition;
 import com.oxygensened.userprofile.context.jobposition.dto.CreateJobPositionRequest;
 import com.oxygensened.userprofile.context.jobposition.dto.JobPositionView;
 import com.oxygensened.userprofile.context.jobposition.dto.UpdateJobPositionRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Job Position")
 @RestController
 @RequestMapping("/api/v1/users")
 class JobPositionController {

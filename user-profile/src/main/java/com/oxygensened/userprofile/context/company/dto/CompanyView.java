@@ -1,4 +1,4 @@
-package com.oxygensened.userprofile.context.company;
+package com.oxygensened.userprofile.context.company.dto;
 
 import com.oxygensened.userprofile.domain.Company;
 
