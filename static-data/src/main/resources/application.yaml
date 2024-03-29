@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: static-data-service
+server:
+  port: 8888
+
+
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
