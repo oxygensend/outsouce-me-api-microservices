@@ -9,11 +9,14 @@ import com.oxygensened.userprofile.domain.User;
 import com.oxygensened.userprofile.domain.UserRepository;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.infrastructure.jackson.JsonNullableWrapper;
+import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
 
 @Service
 public class UserService {
@@ -51,19 +54,8 @@ public class UserService {
         updateAddress(request.addressDto(), user::setAddress);
         updateIfPresent(request.lookingForJob(), user::setLookingForJob);
         updateIfPresent(request.experience(), user::setExperience);
+        user.setUpdatedAt(LocalDateTime.now());
         return user;
-    }
-
-    private <T> void updateIfPresent(T object, Consumer<T> setter) {
-        if (object != null) {
-            setter.accept(object);
-        }
-    }
-
-    private <T> void updateIfPresent(JsonNullable<T> nullable, Consumer<T> setter) {
-        if (JsonNullableWrapper.isPresent(nullable)) {
-            setter.accept(JsonNullableWrapper.unwrap(nullable));
-        }
     }
 
     private void updateAddress(JsonNullable<AddressDto> addressDto, Consumer<Address> addressSetter) {

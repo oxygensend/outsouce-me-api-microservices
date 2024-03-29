@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 public class JobPosition {
@@ -17,7 +17,7 @@ public class JobPosition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String formOfEmployment;
+    private FormOfEmployment formOfEmployment;
     @ManyToOne
     private User individual;
     @Column(nullable = false)
@@ -26,7 +26,7 @@ public class JobPosition {
     private String description;
     @Column(nullable = false)
     private boolean active;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Company company;
     @Column(nullable = false)
     private LocalDate startDate;
@@ -38,7 +38,8 @@ public class JobPosition {
     public JobPosition() {
     }
 
-    public JobPosition(Long id, String formOfEmployment, User individual, String name, String description, boolean active, Company company, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public JobPosition(Long id, FormOfEmployment formOfEmployment, User individual, String name, String description, boolean active, Company company,
+                       LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.formOfEmployment = formOfEmployment;
         this.individual = individual;
@@ -52,16 +53,19 @@ public class JobPosition {
         this.updatedAt = updatedAt;
     }
 
+    public static JobPositionBuilder builder() {
+        return new JobPositionBuilder();
+    }
 
     public Long id() {
         return id;
     }
 
-    public String formOfEmployment() {
+    public FormOfEmployment formOfEmployment() {
         return formOfEmployment;
     }
 
-    public void setFormOfEmployment(String formOfEmployment) {
+    public void setFormOfEmployment(FormOfEmployment formOfEmployment) {
         this.formOfEmployment = formOfEmployment;
     }
 

@@ -348,4 +348,12 @@ public class User {
     public String fullName() {
         return name + " " + surname;
     }
+
+    public void addTechnology(String name) {
+        technologies.add(name);
+    }
+
+    public void removeTechnology(String technology) {
+        technologies.remove(technology);
+    }
 }
