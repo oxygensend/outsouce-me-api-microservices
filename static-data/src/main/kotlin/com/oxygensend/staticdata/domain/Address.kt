@@ -7,11 +7,11 @@ import java.util.*
 
 @Document("addresses")
 data class Address(
-    @Id val id: UUID,
+    @Id val id: String,
     val city: String,
     val postCodes: List<String>,
     val lon: Double,
     val lat: Double,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime?,
     val updatedAt: LocalDateTime
 )

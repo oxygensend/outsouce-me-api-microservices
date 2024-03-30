@@ -6,4 +6,4 @@ eureka:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/static-data
+      uri: mongodb://localhost:27018/static-data
