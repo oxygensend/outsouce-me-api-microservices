@@ -3,15 +3,18 @@ package com.oxygensend.staticdata.domain
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-import java.util.*
 
 @Document("addresses")
-data class Address(
-    @Id val id: String,
-    val city: String,
-    val postCodes: List<String>,
-    val lon: Double,
-    val lat: Double,
-    val createdAt: LocalDateTime?,
-    val updatedAt: LocalDateTime
-)
+
+class Address(
+    @Id
+    val id: String
+) {
+    lateinit var city: String
+    var postalCodes: Set<String> = emptySet()
+    var lon: Double? = null
+    var lat: Double? = null
+    var createdAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now()
+
+}
