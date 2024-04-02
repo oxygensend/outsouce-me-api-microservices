@@ -9,6 +9,5 @@ class TechnologyService(private val technologyRepository: TechnologyRepository) 
 
     fun getAllTechnologies(): List<TechnologyView> = technologyRepository.findAll()
         .map { technology -> TechnologyView.from(technology) }
-        .toList()
 
 }

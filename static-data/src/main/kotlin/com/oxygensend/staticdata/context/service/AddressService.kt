@@ -9,5 +9,8 @@ class AddressService(private val addressRepository: AddressRepository) {
 
     fun findAllAddresses(search: String?): List<AddressView> = addressRepository.findAll(search)
         .map { address -> AddressView.from(address) }
-        .toList()
+
+    fun loadAddresses() {
+        TODO("Not yet implemented")
+    }
 }

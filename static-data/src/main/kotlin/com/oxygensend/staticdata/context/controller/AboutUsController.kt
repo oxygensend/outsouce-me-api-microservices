@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "About Us")
 @RestController
 @RequestMapping("/api/v1/static-data")
-class AboutUsRepository {
+class AboutUsController {
 }

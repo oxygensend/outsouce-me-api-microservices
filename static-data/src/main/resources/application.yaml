@@ -1,6 +1,9 @@
 spring:
   application:
     name: static-data-service
+  threads:
+    virtual:
+      enabled: true
 server:
   port: 8888
 
@@ -13,3 +16,5 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+static-data:
+  technology-csv-file: classpath:technologies.csv
