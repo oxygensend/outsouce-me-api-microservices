@@ -16,9 +16,16 @@ class AddressController(private val addressService: AddressService) {
 
 
     @PostMapping("/load")
-    fun loadAddresses(): DefaultView {
+    suspend fun loadAddresses(): DefaultView {
         addressService.loadAddresses()
         return DefaultView.of("Loading started")
+    }
+
+    @PostMapping("/load/forceStop")
+    fun loadForceStop(): DefaultView {
+
+        addressService.forceStop()
+        return DefaultView.of("Loading successfully stoped")
     }
 
 }

@@ -16,7 +16,7 @@ internal class AddressMongoFacadeRepository(
         val query = Query()
             .apply {
                 search?.let {
-                    addCriteria(Criteria.where(Address::postCodes.name).regex(search, "i"))
+                    addCriteria(Criteria.where(Address::postalCodes.name).regex(search, "i"))
                 }
             };
 
@@ -24,4 +24,8 @@ internal class AddressMongoFacadeRepository(
     }
 
     override fun save(address: Address): Address = addressMongoRepository.save(address)
+    override fun findByCity(city: String): Address? = addressMongoRepository.findByCity(city)
+    override fun saveBatch(addresses: List<Address>) {
+        addressMongoRepository.saveAll(addresses)
+    }
 }
