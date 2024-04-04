@@ -6,6 +6,7 @@ import com.oxygensend.staticdata.context.dto.AddressView
 import com.oxygensend.staticdata.context.dto.ParsedAddressDto
 import com.oxygensend.staticdata.domain.Address
 import com.oxygensend.staticdata.domain.AddressRepository
+import com.oxygensend.staticdata.domain.exception.AlreadyLoadingException
 import kotlinx.coroutines.*
 import org.bson.types.ObjectId
 import org.slf4j.Logger
@@ -21,20 +22,18 @@ class AddressService(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(AddressService::class.java)
-    private var isLoading: Boolean = false
     private var job: Job? = null
 
     fun findAllAddresses(search: String?): List<AddressView> = addressRepository.findAll(search)
         .map { address -> AddressView.from(address) }
 
     fun forceStop() {
-        isLoading = false
         job?.cancel("DD");
     }
 
     suspend fun loadAddresses() {
-        if (isLoading) {
-            throw RuntimeException("Is already loading")
+        if (job?.isActive == true) {
+            throw AlreadyLoadingException("Loading is already in progress")
         }
 
         job = CoroutineScope(Dispatchers.IO).launch {
@@ -46,20 +45,28 @@ class AddressService(
             val addressesCount = addresses.size
             var batchCount = 0
 
-            addresses.forEach { dto ->
-                val address = updateAddress(dto)
-                batch.add(address)
-                batchCount++
-                if (batchCount % 10 == 0) {
-                    addressRepository.saveBatch(batch)
-                    logger.info("$batchCount/$addressesCount elements saved into database")
-                    batch.clear()
+            run batchProcessing@{
+                addresses.forEach { dto ->
+                    if (job?.isCancelled == true) {
+                        logger.info("Loading stopped")
+                        return@batchProcessing
+                    }
+
+                    val address = updateAddress(dto)
+                    batch.add(address)
+                    batchCount++
+                    if (batchCount % 10 == 0) {
+                        addressRepository.saveBatch(batch)
+                        logger.info("$batchCount/$addressesCount elements saved into database")
+                        batch.clear()
+                    }
                 }
+
             }
 
             addressRepository.saveBatch(batch)
             val endTimestamp = Instant.now().toEpochMilli()
-            logger.info("Finished loading addresses in time {}", endTimestamp - startTimestamp)
+            logger.info("Finished loading addresses in time {} ms", endTimestamp - startTimestamp)
         }
     }
 
