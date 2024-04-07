@@ -15,6 +15,7 @@
 
     <properties>
         <commons-jdk.version>1.0.0-SNAPSHOT</commons-jdk.version>
+        <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
@@ -64,6 +71,14 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito.kotlin</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>${mockito-kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -84,7 +99,7 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <configuration>
                     <args>
-                        <arg>-Xjsr305=strict</arg>
+                        <arg>-Xjsr305=strict --release 21</arg>
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>

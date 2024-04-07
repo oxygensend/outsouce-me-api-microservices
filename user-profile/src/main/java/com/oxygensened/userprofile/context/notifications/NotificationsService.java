@@ -1,6 +1,5 @@
 package com.oxygensened.userprofile.context.notifications;
 
-import com.oxygensened.userprofile.domain.User;
 import org.springframework.stereotype.Service;
 
 @Service
