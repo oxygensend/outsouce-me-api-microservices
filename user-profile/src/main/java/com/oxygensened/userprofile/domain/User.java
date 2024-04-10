@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -355,5 +356,15 @@ public class User {
 
     public void removeTechnology(String technology) {
         technologies.remove(technology);
+    }
+
+
+    public Map<String, Object> toMap() {
+        return Map.of("externalId", externalId,
+                      "email", email,
+                      "name", name,
+                      "surname", surname,
+                      "accountType", accountType,
+                      "slug", slug);
     }
 }

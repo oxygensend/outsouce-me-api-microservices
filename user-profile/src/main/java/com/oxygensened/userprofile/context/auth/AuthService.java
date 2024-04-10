@@ -5,7 +5,9 @@ import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
 import com.oxygensened.userprofile.context.auth.dto.RegisterView;
 import com.oxygensened.userprofile.context.auth.dto.Tokens;
 import com.oxygensened.userprofile.context.notifications.NotificationsService;
+import com.oxygensened.userprofile.domain.DomainEventPublisher;
 import com.oxygensened.userprofile.domain.User;
+import com.oxygensened.userprofile.domain.UserDetailsDataEvent;
 import com.oxygensened.userprofile.domain.UserRepository;
 import com.oxygensened.userprofile.domain.exception.UserAlreadyExistsException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
@@ -17,13 +19,14 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private final NotificationsService notificationsService;
+    private final DomainEventPublisher domainEventPublisher;
 
-    public AuthService(AuthRepository authRepository, UserRepository userRepository, NotificationsService notificationsService) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, NotificationsService notificationsService, DomainEventPublisher domainEventPublisher) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
         this.notificationsService = notificationsService;
+        this.domainEventPublisher = domainEventPublisher;
     }
-
 
     public RegisterView register(RegisterRequest request) {
         checkIfUserExists(request.email());
@@ -52,7 +55,10 @@ public class AuthService {
                        .externalId(externalId)
                        .build();
 
-        userRepository.save(user);
+
+        user = userRepository.save(user);
+
+        domainEventPublisher.publish(new UserDetailsDataEvent(user.id(), user.toMap()));
     }
 
     public void resendEmailVerificationLink(String email) {
@@ -68,4 +74,6 @@ public class AuthService {
 
         notificationsService.sendPasswordResetLink(email, user.externalId(), token);
     }
+
+
 }
