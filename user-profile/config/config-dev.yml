@@ -33,3 +33,6 @@ kafka:
     security-protocol: PLAINTEXT
     #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
 
+user-profile:
+  topics:
+    USER_DATA: outsource-me-api-user-data

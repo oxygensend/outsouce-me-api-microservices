@@ -1,0 +1,17 @@
+eureka:
+  client:
+    enabled: false
+
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27018/opinions
+
+kafka:
+  consumer:
+    application-id: auth-service
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+    user-details-data-topic: outsource-me-api-user-data
+

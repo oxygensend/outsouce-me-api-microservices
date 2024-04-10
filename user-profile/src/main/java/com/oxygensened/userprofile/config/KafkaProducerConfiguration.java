@@ -2,8 +2,11 @@ package com.oxygensened.userprofile.config;
 
 import com.oxygensened.userprofile.config.properties.KafkaProducerProperties;
 import com.oxygensened.userprofile.config.properties.ServiceProperties;
+import com.oxygensened.userprofile.config.properties.UserProfileProperties;
 import com.oxygensened.userprofile.context.notifications.NotificationEvent;
+import com.oxygensened.userprofile.domain.DomainEvent;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +22,6 @@ import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,11 +35,21 @@ public class KafkaProducerConfiguration {
     private final static Logger LOGGER = LoggerFactory.getLogger(KafkaProducerConfiguration.class);
     private final KafkaProducerProperties kafkaProperties;
     private final ServiceProperties serviceProperties;
+    private final UserProfileProperties userProfileProperties;
 
-    KafkaProducerConfiguration(KafkaProducerProperties kafkaProperties, ServiceProperties serviceProperties) {
+    KafkaProducerConfiguration(KafkaProducerProperties kafkaProperties, ServiceProperties serviceProperties, UserProfileProperties userProfileProperties) {
         this.kafkaProperties = kafkaProperties;
         this.serviceProperties = serviceProperties;
+        this.userProfileProperties = userProfileProperties;
         verifyTopicsExistence();
+    }
+
+    @Bean
+    public KafkaTemplate<String, DomainEvent> userDataKafkaTemplate() {
+        var producerFactory = new DefaultKafkaProducerFactory<String, DomainEvent>(configProperties());
+        var kafkaTemplate = new KafkaTemplate<>(producerFactory);
+        kafkaTemplate.setProducerListener(new KafkaProducerListener<>());
+        return kafkaTemplate;
     }
 
     @Bean
@@ -105,7 +117,9 @@ public class KafkaProducerConfiguration {
     }
 
     private Set<String> getAllTopics() {
-        return Set.of(serviceProperties.notifications().externalTopic());
+        Set<String> topics = new HashSet<>(userProfileProperties.topics().values());
+        topics.add(serviceProperties.notifications().externalTopic());
+        return topics;
     }
 
 }
