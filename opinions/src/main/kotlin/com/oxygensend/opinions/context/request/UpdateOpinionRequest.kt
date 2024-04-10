@@ -1,9 +1,9 @@
 package com.oxygensend.opinions.context.request
 
 import com.oxygensend.opinions.context.command.UpdateOpinionCommand
-import com.oxygensend.opinions.utils.PathChanges
-import com.oxygensend.opinions.utils.PathRequest
-import com.oxygensend.opinions.utils.Undefined
+import com.oxygensend.opinions.config.utils.PathChanges
+import com.oxygensend.opinions.config.utils.PathRequest
+import com.oxygensend.opinions.config.utils.Undefined
 import jakarta.validation.constraints.Positive
 import kotlin.reflect.KProperty
 

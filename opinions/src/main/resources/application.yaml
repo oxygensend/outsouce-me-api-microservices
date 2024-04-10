@@ -15,3 +15,24 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+
+
+
+kafka:
+  consumer:
+    consumer-number: 1
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    max-poll-records: 10000
+    request-timeout-ms: 11000
+    connections-max-idle-ms: 240000
+    poll-timeout-ms: 1000
+    auto-offset-reset: earliest
+    ssl:
+      enabled: false
+    retry:
+      max-retries: 5
+      back-off-period: 500
+      backoff-period-service-unavailable: 5000
+    retry-backoff-ms: 1000
+    max-poll-interval-ms: 30000

@@ -12,7 +12,7 @@ import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.OpinionRepository
 import com.oxygensend.opinions.domain.UserRepository
 import com.oxygensend.opinions.domain.exception.*
-import com.oxygensend.opinions.utils.updateIfDefined
+import com.oxygensend.opinions.config.utils.updateIfDefined
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 
