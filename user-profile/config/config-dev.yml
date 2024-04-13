@@ -36,3 +36,6 @@ kafka:
 user-profile:
   topics:
     USER_DATA: outsource-me-api-user-data
+  storage:
+    rootLocation: user-profile/storage
+    thumbnailDir: thumbnails

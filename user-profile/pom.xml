@@ -56,7 +56,6 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -71,13 +70,20 @@
             <artifactId>commons-jdk</artifactId>
             <version>${commons-jdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.gotson</groupId>
+            <artifactId>webp-imageio</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.2.6</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -89,9 +95,9 @@
                 <configuration>
                     <changeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.yaml</outputChangeLogFile>
-                                        <diffChangeLogFile>
-                                            ${project.basedir}/src/main/resources/db/changelog/${maven.build.timestamp}_changelog.xml
-                                        </diffChangeLogFile>
+                    <diffChangeLogFile>
+                        ${project.basedir}/src/main/resources/db/changelog/${maven.build.timestamp}_changelog.xml
+                    </diffChangeLogFile>
                     <propertyFile>src/main/resources/liquibase.yaml</propertyFile>
                 </configuration>
                 <dependencies>
