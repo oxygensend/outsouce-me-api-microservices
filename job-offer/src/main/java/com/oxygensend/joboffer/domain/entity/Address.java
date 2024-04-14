@@ -14,7 +14,6 @@ public class Address {
     private String postCode;
     private String lon;
     private String lat;
-
     public Address() {
     }
 

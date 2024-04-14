@@ -17,6 +17,7 @@
     <properties>
         <commons-jdk.version>1.0.0-SNAPSHOT</commons-jdk.version>
         <validation-api.version>3.0.2</validation-api.version>
+        <slugify.version>3.0.6</slugify.version>
     </properties>
 
 
@@ -71,7 +72,11 @@
             <artifactId>commons-jdk</artifactId>
             <version>${commons-jdk.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.slugify</groupId>
+            <artifactId>slugify</artifactId>
+            <version>${slugify.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>

@@ -29,3 +29,7 @@ kafka:
     bootstrap-servers: localhost:29092
     security-protocol: PLAINTEXT
     #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+
+job-offers:
+  service-id: job-offers-service
+  user-thumbnail-server-url: http://localhost:8080/api/v1/users/thumbnail

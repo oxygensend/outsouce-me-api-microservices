@@ -1,12 +1,12 @@
 package com.oxygensend.joboffer.domain.entity;
 
 import com.oxygensend.joboffer.domain.SalaryType;
+import com.oxygensend.joboffer.domain.SupportedCurrency;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Currency;
 
 @Entity
 public class SalaryRange {
@@ -17,13 +17,13 @@ public class SalaryRange {
     private Double downRange;
     private Double upRange;
     @Column(nullable = false)
-    private Currency currency;
+    private SupportedCurrency currency;
     private SalaryType type;
 
     public SalaryRange() {
     }
 
-    public SalaryRange(Double downRange, Double upRange, Currency currency, SalaryType type) {
+    public SalaryRange(Double downRange, Double upRange, SupportedCurrency currency, SalaryType type) {
         this.downRange = downRange;
         this.upRange = upRange;
         this.currency = currency;
@@ -54,11 +54,11 @@ public class SalaryRange {
         this.upRange = upRange;
     }
 
-    public Currency currency() {
+    public SupportedCurrency currency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(SupportedCurrency currency) {
         this.currency = currency;
     }
 

@@ -14,15 +14,19 @@ public class User {
     private String surname;
     @Column(nullable = false)
     private String email;
+    private String thumbnail;
+    private String activeJobPosition;
 
     public User() {
     }
 
-    public User(String id, String name, String surname, String email) {
+    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.thumbnail = thumbnail;
+        this.activeJobPosition = activeJobPosition;
     }
 
     public String id() {
@@ -49,11 +53,35 @@ public class User {
         this.surname = surname;
     }
 
+    public String fullName() {
+        return name + " " + surname;
+    }
+
     public String email() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String thumbnail() {
+        return thumbnail;
+    }
+
+    public String thumbnailPath(String serverUrl) {
+        return thumbnail != null ? serverUrl + "/" + thumbnail : null;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String activeJobPosition() {
+        return activeJobPosition;
+    }
+
+    public void setActiveJobPosition(String activeJobPosition) {
+        this.activeJobPosition = activeJobPosition;
     }
 }

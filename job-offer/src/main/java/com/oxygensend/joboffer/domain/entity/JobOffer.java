@@ -5,6 +5,7 @@ import com.oxygensend.joboffer.domain.FormOfEmployment;
 import com.oxygensend.joboffer.domain.Slug;
 import com.oxygensend.joboffer.domain.WorkType;
 import com.oxygensend.joboffer.infrastructure.jpa.StringSetConverter;
+import com.oxygensend.joboffer.infrastructure.jpa.WorkTypesConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -27,11 +28,11 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Slug
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false, length = 1028)
     private String description;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
     @ManyToOne
     private User user;
@@ -54,7 +55,8 @@ public class JobOffer {
     private Set<String> technologies = new HashSet<>();
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<Application> applications = new ArrayList<>();
-    private List<WorkType> workTypes = new ArrayList<>();
+    @Convert(converter = WorkTypesConverter.class)
+    private Set<WorkType> workTypes = new HashSet<>();
     private LocalDateTime validTo;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -65,7 +67,7 @@ public class JobOffer {
 
     JobOffer(Long id, String name, String description, Address address, User user, FormOfEmployment formOfEmployment, SalaryRange salaryRange,
              Experience experience, String slug, int numberOfApplications, int redirectCount, Integer popularityOrder, Integer displayOrder,
-             boolean archived, Set<String> technologies, List<Application> applications, List<WorkType> workTypes, LocalDateTime validTo,
+             boolean archived, Set<String> technologies, List<Application> applications, Set<WorkType> workTypes, LocalDateTime validTo,
              LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
@@ -81,12 +83,16 @@ public class JobOffer {
         this.popularityOrder = popularityOrder;
         this.displayOrder = displayOrder;
         this.archived = archived;
-        this.technologies = technologies;
+        this.technologies = technologies = technologies == null ? new HashSet<>() : technologies;
         this.applications = applications;
-        this.workTypes = workTypes;
+        this.workTypes = workTypes == null ? new HashSet<>() : workTypes;
         this.validTo = validTo;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
+    }
+
+    public static JobOfferBuilder builder() {
+        return new JobOfferBuilder();
     }
 
     public Long id() {
@@ -104,6 +110,10 @@ public class JobOffer {
 
     public String description() {
         return description;
+    }
+
+    public String shortDescription() {
+        return description.substring(0, 100);
     }
 
     public void setDescription(String description) {
@@ -214,11 +224,11 @@ public class JobOffer {
         this.applications = applications;
     }
 
-    public List<WorkType> workTypes() {
+    public Set<WorkType> workTypes() {
         return workTypes;
     }
 
-    public void setWorkTypes(List<WorkType> workTypes) {
+    public void setWorkTypes(Set<WorkType> workTypes) {
         this.workTypes = workTypes;
     }
 
@@ -244,5 +254,9 @@ public class JobOffer {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void addRedirect() {
+        this.redirectCount++;
     }
 }

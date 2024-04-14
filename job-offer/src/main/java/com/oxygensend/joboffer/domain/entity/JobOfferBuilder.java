@@ -27,7 +27,7 @@ public class JobOfferBuilder {
     private boolean archived = false;
     private Set<String> technologies = new HashSet<>();
     private List<Application> applications = new ArrayList<>();
-    private List<WorkType> workTypes = new ArrayList<>();
+    private Set workTypes = new HashSet();
     private LocalDateTime validTo;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -116,7 +116,7 @@ public class JobOfferBuilder {
         return this;
     }
 
-    public JobOfferBuilder workTypes(List<WorkType> workTypes) {
+    public JobOfferBuilder workTypes(Set<WorkType> workTypes) {
         this.workTypes = workTypes;
         return this;
     }
