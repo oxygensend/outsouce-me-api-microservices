@@ -9,6 +9,7 @@ import com.oxygensened.userprofile.domain.JobPositionRepository;
 import com.oxygensened.userprofile.domain.UserRepository;
 import com.oxygensened.userprofile.domain.exception.JobPositionNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
+import com.oxygensened.userprofile.domain.service.DomainUserService;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,22 @@ import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
 @Service
 public class JobPositionService {
 
+    // TODO Develop the process of changing active job
     private final UserRepository userRepository;
     private final JobPositionRepository jobPositionRepository;
     private final CompanyService companyService;
+    private final DomainUserService domainUserService;
 
-    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService) {
+    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService, DomainUserService domainUserService) {
         this.userRepository = userRepository;
         this.jobPositionRepository = jobPositionRepository;
         this.companyService = companyService;
+        this.domainUserService = domainUserService;
     }
 
     public JobPositionView createJobPosition(Long userId, CreateJobPositionRequest request) {
         var user = userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.withId(userId));
         var company = companyService.getCompany(request.companyName());
-        var active = request.endDate() == null;
 
         var jobPosition = JobPosition.builder()
                                      .name(request.name())
@@ -41,9 +44,9 @@ public class JobPositionService {
                                      .startDate(request.startDate())
                                      .endDate(request.endDate())
                                      .individual(user)
-                                     .active(active)
                                      .build();
 
+        domainUserService.changeActiveJobPosition(user, jobPosition);
         jobPosition = jobPositionRepository.save(jobPosition);
         return JobPositionView.from(jobPosition);
     }
@@ -59,6 +62,7 @@ public class JobPositionService {
         updateIfPresent(request.endDate(), jobPosition::setEndDate);
         updateCompany(request.companyName(), jobPosition);
 
+        domainUserService.changeActiveJobPosition(jobPosition.individual(), jobPosition);
         jobPosition = jobPositionRepository.save(jobPosition);
         return JobPositionView.from(jobPosition);
     }
@@ -67,6 +71,7 @@ public class JobPositionService {
         var jobPosition = jobPositionRepository.findByIdAndIndividualId(jobPositionId, userId)
                                                .orElseThrow(() -> JobPositionNotFoundException.withId(jobPositionId));
 
+        jobPosition.individual().setActiveJobPosition(null);
         jobPositionRepository.delete(jobPosition);
     }
 

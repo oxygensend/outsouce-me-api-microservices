@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.domain.service;
 
+import com.oxygensened.userprofile.domain.JobPosition;
 import com.oxygensened.userprofile.domain.User;
 import com.oxygensened.userprofile.domain.exception.TechnologyIsObtainedByUserException;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,14 @@ public class DomainUserService {
         }
 
         user.removeTechnology(technology);
+    }
+
+    public void changeActiveJobPosition(User user, JobPosition jobPosition) {
+        if (jobPosition.endDate() != null) { // If end date is defined Job should not be marked as active
+            return;
+        }
+
+        jobPosition.setActive(true);
+        user.setActiveJobPosition(jobPosition.name());
     }
 }

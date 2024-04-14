@@ -18,7 +18,7 @@ public class JobPosition {
     private Long id;
     @Column(nullable = false)
     private FormOfEmployment formOfEmployment;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User individual;
     @Column(nullable = false)
     private String name;
