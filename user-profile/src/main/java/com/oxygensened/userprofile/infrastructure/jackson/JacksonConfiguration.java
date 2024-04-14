@@ -1,4 +1,4 @@
-package com.oxygensened.userprofile.config;
+package com.oxygensened.userprofile.infrastructure.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openapitools.jackson.nullable.JsonNullableModule;

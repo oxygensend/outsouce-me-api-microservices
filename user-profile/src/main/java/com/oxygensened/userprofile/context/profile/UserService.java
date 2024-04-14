@@ -53,12 +53,12 @@ public class UserService {
         return userRepository.findAll(pageable, filters).map(UserView::from);
     }
 
-    public void uploadThumnail(Long id, MultipartFile file) {
+    public void uploadThumbnail(Long id, MultipartFile file) {
         var user = userRepository.findById(id)
                                  .orElseThrow(() -> UserNotFoundException.withId(id));
 
-        var mainThumbnailOptions = buildThumnailOptions(120, 120, 0.6f);
-        var smallThumbnailOptions = buildThumnailOptions(100, 100, 0.7f);
+        var mainThumbnailOptions = buildThumbnailOptions(120, 120, 0.6f);
+        var smallThumbnailOptions = buildThumbnailOptions(100, 100, 0.7f);
 
         var mainThumbnail = thumbnailService.create(file, mainThumbnailOptions);
         var smallThumbnail = thumbnailService.create(file, smallThumbnailOptions);
@@ -98,7 +98,7 @@ public class UserService {
         }
     }
 
-    private ThumbnailOptions buildThumnailOptions(int height, int weight, float quality) {
+    private ThumbnailOptions buildThumbnailOptions(int height, int weight, float quality) {
         return ThumbnailOptions.builder()
                                .height(height)
                                .weight(weight)

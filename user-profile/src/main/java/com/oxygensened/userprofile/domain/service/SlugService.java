@@ -1,4 +1,4 @@
-package com.oxygensened.userprofile.context.profile.slug;
+package com.oxygensened.userprofile.domain.service;
 
 public interface SlugService {
 

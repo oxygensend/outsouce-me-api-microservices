@@ -58,7 +58,7 @@ class UserController {
 
     @PostMapping(value = "/{id}/upload-thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     void uploadPhoto(@PathVariable Long id, @RequestBody MultipartFile file) {
-        userService.uploadThumnail(id, file);
+        userService.uploadThumbnail(id, file);
     }
 
     @GetMapping(value = "/thumbnails/{filename:.+}", produces = "image/webp")
