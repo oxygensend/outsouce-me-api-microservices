@@ -45,5 +45,10 @@ class UserJpaFacadeRepository implements UserRepository {
         return JpaUtils.findPageable(entityManager, pageable, User.class, specification);
     }
 
+    @Override
+    public long findTheNewestSlugVersion(String slug) {
+        return userJpaRepository.findTheNewestSlugVersion(slug);
+    }
+
 
 }

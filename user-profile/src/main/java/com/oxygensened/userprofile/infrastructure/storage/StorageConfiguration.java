@@ -18,6 +18,6 @@ public class StorageConfiguration {
 
     @Bean
     ThumbnailService thumbnailCreator(StorageService storageService, StorageProperties storageProperties) {
-        return new ThumbnailsThumbnailCreator(storageService, storageProperties.thumbnailDir());
+        return new ScalrThumbnailService(storageService, storageProperties.thumbnailDir());
     }
 }

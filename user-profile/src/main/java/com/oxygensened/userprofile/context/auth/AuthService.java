@@ -51,7 +51,6 @@ public class AuthService {
                        .surname(request.surname())
                        .email(request.email())
                        .accountType(request.accountType())
-                       .slug(request.name().toLowerCase() + "-" + request.surname().toLowerCase())
                        .externalId(externalId)
                        .build();
 

@@ -18,15 +18,11 @@ spring:
         format_sql: true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-    enabled: false
-#  liquibase:
-
-#    url: jdbc:mysql://localhost:3308/user_profile
-#    user: root
-#    password: 12345
+    url: jdbc:mysql://localhost:3308/user_profile
+    user: root
+    password: 12345
 #    driver-class-name: com.mysql.cj.jdbc.DriveR
-#    enabled: true
-#    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
 #
 eureka:
   client:

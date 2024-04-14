@@ -30,7 +30,6 @@ public class UserBuilder {
     private LocalDateTime updatedAt;
     private Set<String> technologies = Set.of();
     private Address address;
-    private List<Attachment> attachments = List.of();
     private List<Opinion> opinions = List.of();
     private List<Education> educations = List.of();
     private List<JobPosition> jobPositions = List.of();
@@ -156,10 +155,6 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder attachments(List<Attachment> attachments) {
-        this.attachments = attachments;
-        return this;
-    }
 
     public UserBuilder opinions(List<Opinion> opinions) {
         this.opinions = opinions;
@@ -182,7 +177,7 @@ public class UserBuilder {
     }
 
     public User build() {
-        return new User(id,externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, attachments, opinions, educations, jobPositions, languages);
+        return new User(id, externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, opinions, educations, jobPositions, languages);
     }
 
 }

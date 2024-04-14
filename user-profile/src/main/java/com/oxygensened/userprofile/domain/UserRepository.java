@@ -15,4 +15,7 @@ public interface UserRepository {
     Optional<User> findByExternalId(String externalId);
 
     Page<User> findAll(Pageable pageable, UserFilters filters);
+
+    long findTheNewestSlugVersion(String slug);
+
 }

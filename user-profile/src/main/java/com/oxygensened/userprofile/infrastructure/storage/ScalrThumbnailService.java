@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-final class ThumbnailsThumbnailCreator implements ThumbnailService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ThumbnailsThumbnailCreator.class);
+final class ScalrThumbnailService implements ThumbnailService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScalrThumbnailService.class);
     private static final String OUTPUT_FORMAT = "webp";
     private static final String COMPRESSION_TYPE = "Lossy";
     private final StorageService storageService;
     private final String thumbnailDir;
 
-    ThumbnailsThumbnailCreator(StorageService storageService, String thumbnailDir) {
+    ScalrThumbnailService(StorageService storageService, String thumbnailDir) {
         this.storageService = storageService;
         this.thumbnailDir = thumbnailDir;
     }
