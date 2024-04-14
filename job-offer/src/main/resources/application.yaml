@@ -1,0 +1,73 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: job-offer-service
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    url: jdbc:mysql://localhost:3308/job_offer
+    user: root
+    password: 12345
+#    driver-class-name: com.mysql.cj.jdbc.DriveR
+    enabled: true
+#
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+
+feign:
+  connection:
+    type: SERVICE_DISCOVERY
+
+
+kafka:
+  producer:
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    retry-backoff-in-ms: 100
+    retries: 5
+    ssl:
+      #    keyStore: ${server.ssl.keystore}
+      #    keyStoreType: ${server.ssl.keystoretype}
+      #    keyStorePassword: ${server.ssl.keystorepassword}
+      #    keyPassword: ${server.ssl.keypassword}
+      #    trustStore: ${server.ssl.truststore}
+      #    trustStorePassword: ${server.ssl.truststorepassword}
+      #    trustStoreType: ${server.ssl.truststoretype}
+      enabled: false
+  consumer:
+    consumer-number: 1
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    max-poll-records: 10000
+    max-poll-interval-ms: 30000
+    request-timeout-ms: 11000
+    connections-max-idle-ms: 240000
+    pool-timeout-ms: 1000
+    auto-offset-reset: earliest
+    ssl:
+      enabled: false
+    retry:
+      max-retries: 5
+      back-off-period: 500
+      backoff-period-service-unavailable: 5000
+    retry-backoff-ms: 1000
+
