@@ -1,4 +1,4 @@
-package com.oxygensened.userprofile.infrastructure.jpa;
+package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
 import com.oxygensened.userprofile.domain.Education;
 import com.oxygensened.userprofile.domain.EducationRepository;
