@@ -4,12 +4,16 @@ import com.oxygensend.joboffer.domain.Experience;
 import com.oxygensend.joboffer.domain.FormOfEmployment;
 import com.oxygensend.joboffer.domain.Slug;
 import com.oxygensend.joboffer.domain.WorkType;
+import com.oxygensend.joboffer.infrastructure.jpa.ExperienceConverter;
 import com.oxygensend.joboffer.infrastructure.jpa.StringSetConverter;
 import com.oxygensend.joboffer.infrastructure.jpa.WorkTypesConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,20 +32,23 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Slug
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false, length = 1028)
     private String description;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Address address;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private FormOfEmployment formOfEmployment;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private SalaryRange salaryRange;
+    @Convert(converter = ExperienceConverter.class)
+    @Column(length = 1)
     private Experience experience;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
     @Column(nullable = false)
     private int numberOfApplications = 0;
@@ -113,7 +120,8 @@ public class JobOffer {
     }
 
     public String shortDescription() {
-        return description.substring(0, 100);
+        var endIndex = Math.min(description.length(), 100);
+        return description.substring(0, endIndex);
     }
 
     public void setDescription(String description) {

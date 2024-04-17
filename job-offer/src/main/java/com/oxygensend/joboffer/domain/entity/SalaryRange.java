@@ -2,7 +2,9 @@ package com.oxygensend.joboffer.domain.entity;
 
 import com.oxygensend.joboffer.domain.SalaryType;
 import com.oxygensend.joboffer.domain.SupportedCurrency;
+import com.oxygensend.joboffer.infrastructure.jpa.SupportedCurrencyConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,8 @@ public class SalaryRange {
     @Column(nullable = false)
     private Double downRange;
     private Double upRange;
-    @Column(nullable = false)
+    @Convert(converter = SupportedCurrencyConverter.class)
+    @Column(nullable = false, length = 3)
     private SupportedCurrency currency;
     private SalaryType type;
 

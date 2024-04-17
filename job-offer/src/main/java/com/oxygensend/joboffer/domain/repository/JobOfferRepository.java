@@ -1,7 +1,11 @@
 package com.oxygensend.joboffer.domain.repository;
 
+import com.oxygensend.joboffer.domain.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface JobOfferRepository {
     Optional<JobOffer> findById(Long id);
@@ -13,4 +17,6 @@ public interface JobOfferRepository {
     Optional<JobOffer> findBySlug(String slug);
 
     long findTheNewestSlugVersion(String slug);
+
+    Page<JobOffer> findAll(JobOfferFilter filter, Pageable pageable);
 }

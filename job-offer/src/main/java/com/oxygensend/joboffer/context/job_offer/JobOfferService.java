@@ -1,9 +1,12 @@
 package com.oxygensend.joboffer.context.job_offer;
 
+import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.context.job_offer.dto.CreateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.JobOfferView;
+import com.oxygensend.joboffer.context.job_offer.dto.JobOfferDetailsView;
 import com.oxygensend.joboffer.context.job_offer.dto.UpdateJobOfferRequest;
+import com.oxygensend.joboffer.domain.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.Address;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
@@ -15,6 +18,7 @@ import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.infrastructure.jackson.JsonNullableWrapper;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import static com.oxygensend.joboffer.context.utils.Patch.updateIfPresent;
@@ -34,7 +38,7 @@ public class JobOfferService {
         this.addressRepository = addressRepository;
     }
 
-    public JobOfferView createJobOffer(CreateJobOfferRequest request) {
+    public JobOfferDetailsView createJobOffer(CreateJobOfferRequest request) {
         var principal = userRepository.findById(request.principalId())
                                       .orElseThrow(() -> new NoSuchUserException("Principal wih %s not found".formatted(request.principalId())));
 
@@ -59,7 +63,7 @@ public class JobOfferService {
         return jobOfferViewFactory.create(jobOffer);
     }
 
-    public JobOfferView getJobOffer(String slug) {
+    public JobOfferDetailsView getJobOffer(String slug) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
                                          .orElseThrow(JobOfferNotFound::new);
 
@@ -82,7 +86,7 @@ public class JobOfferService {
         jobOfferRepository.delete(jobOffer);
     }
 
-    public JobOfferView updateJobOffer(String slug, UpdateJobOfferRequest request) {
+    public JobOfferDetailsView updateJobOffer(String slug, UpdateJobOfferRequest request) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
                                          .orElseThrow(JobOfferNotFound::new);
 
@@ -98,6 +102,13 @@ public class JobOfferService {
 
         jobOffer = jobOfferRepository.save(jobOffer);
         return jobOfferViewFactory.create(jobOffer);
+    }
+
+    public PagedListView<JobOfferView> getPaginatedJobOffers(JobOfferFilter filter, Pageable pageable) {
+        var page = jobOfferRepository.findAll(filter, pageable)
+                                     .map(jobOfferViewFactory::createInfo);
+
+        return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());
     }
 
     private void updateAddress(JsonNullable<AddressDto> addressDto, Consumer<Address> addressSetter) {
