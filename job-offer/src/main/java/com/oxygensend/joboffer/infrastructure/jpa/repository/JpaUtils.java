@@ -1,4 +1,4 @@
-package com.oxygensend.joboffer.infrastructure.jpa;
+package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
