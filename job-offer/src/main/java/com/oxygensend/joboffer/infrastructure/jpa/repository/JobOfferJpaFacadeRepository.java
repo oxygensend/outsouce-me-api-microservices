@@ -1,9 +1,10 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import jakarta.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +49,11 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
     public Page<JobOffer> findAll(JobOfferFilter filter, Pageable pageable) {
         var specification = JobOfferSpecifications.getPredicateForJobOfferQuery(filter);
         return JpaUtils.findPageable(entityManager, pageable, JobOffer.class, specification);
+    }
+
+    @Override
+    public List<JobOffer> findExpiredJobOffers() {
+        var specification = JobOfferSpecifications.getPredicateForExpiredJobOffers();
+        return jobOfferJpaRepository.findAll(specification);
     }
 }

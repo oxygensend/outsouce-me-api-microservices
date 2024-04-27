@@ -1,7 +1,7 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
@@ -21,6 +21,10 @@ final class JobOfferSpecifications {
 
     public static Specification<JobOffer> getPredicateForJobOfferQuery(JobOfferFilter filter) {
         return (root, query, cb) -> getPredicateForJobOfferQuery(root, query, cb, filter);
+    }
+
+    public static Specification<JobOffer> getPredicateForExpiredJobOffers() {
+        return (root, query, cb) -> cb.lessThanOrEqualTo(root.get("validTo"), cb.currentTimestamp());
     }
 
     private static Predicate getPredicateForJobOfferQuery(Root<JobOffer> root, CriteriaQuery<?> query, CriteriaBuilder cb, JobOfferFilter filter) {
