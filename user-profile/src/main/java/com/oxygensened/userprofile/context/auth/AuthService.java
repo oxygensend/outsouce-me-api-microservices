@@ -1,14 +1,14 @@
 package com.oxygensened.userprofile.context.auth;
 
-import com.oxygensened.userprofile.context.auth.dto.RegisterRequest;
+import com.oxygensened.userprofile.context.auth.dto.request.RegisterRequest;
 import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
-import com.oxygensened.userprofile.context.auth.dto.RegisterView;
+import com.oxygensened.userprofile.context.auth.dto.view.RegisterView;
 import com.oxygensened.userprofile.context.auth.dto.Tokens;
 import com.oxygensened.userprofile.context.notifications.NotificationsService;
-import com.oxygensened.userprofile.domain.DomainEventPublisher;
-import com.oxygensened.userprofile.domain.User;
-import com.oxygensened.userprofile.domain.UserDetailsDataEvent;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
+import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensened.userprofile.domain.event.UserDetailsDataEvent;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.UserAlreadyExistsException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.context.application.dto;
 
+import com.oxygensend.joboffer.context.application.dto.request.CreateApplicationRequest;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.domain.repository;
 
-import com.oxygensend.joboffer.domain.JobOfferFilter;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +19,6 @@ public interface JobOfferRepository {
     long findTheNewestSlugVersion(String slug);
 
     Page<JobOffer> findAll(JobOfferFilter filter, Pageable pageable);
+
+    List<JobOffer> findExpiredJobOffers();
 }

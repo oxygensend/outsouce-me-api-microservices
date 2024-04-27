@@ -1,17 +1,17 @@
 package com.oxygensened.userprofile.context.education;
 
-import com.oxygensened.userprofile.context.education.dto.CreateEducationRequest;
-import com.oxygensened.userprofile.context.education.dto.EducationView;
-import com.oxygensened.userprofile.context.education.dto.UpdateEducationRequest;
-import com.oxygensened.userprofile.domain.Education;
-import com.oxygensened.userprofile.domain.EducationRepository;
-import com.oxygensened.userprofile.domain.University;
-import com.oxygensened.userprofile.domain.UniversityRepository;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.context.education.dto.request.CreateEducationRequest;
+import com.oxygensened.userprofile.context.education.dto.view.EducationView;
+import com.oxygensened.userprofile.context.education.dto.request.UpdateEducationRequest;
+import com.oxygensened.userprofile.domain.entity.Education;
+import com.oxygensened.userprofile.domain.repository.EducationRepository;
+import com.oxygensened.userprofile.domain.entity.University;
+import com.oxygensened.userprofile.domain.repository.UniversityRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.EducationNotFoundException;
 import com.oxygensened.userprofile.domain.exception.NoSuchUniversityException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
-import com.oxygensened.userprofile.infrastructure.jackson.JsonNullableWrapper;
+import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;

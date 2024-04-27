@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.context.application.dto.ApplicationFilter;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.domain.entity.Application;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
@@ -27,7 +27,6 @@ final class ApplicationSpecifications {
                 case ASC -> query.orderBy(cb.asc(root.get(filter.sort().dbField())));
                 case DESC -> query.orderBy(cb.desc(root.get(filter.sort().dbField())));
             }
-            ;
 
             return cb.and(predicates.toArray(new Predicate[0]));
         });

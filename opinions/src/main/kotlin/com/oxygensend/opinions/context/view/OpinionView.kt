@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.context.view
 
-import com.oxygensend.opinions.context.dto.AggregatedOpinionDto
+import com.oxygensend.opinions.domain.aggregate.AggregatedOpinionDto
 import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.User
 

@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.context.education;
 
-import com.oxygensened.userprofile.context.education.dto.CreateEducationRequest;
-import com.oxygensened.userprofile.context.education.dto.EducationView;
-import com.oxygensened.userprofile.context.education.dto.UpdateEducationRequest;
+import com.oxygensened.userprofile.context.education.dto.request.CreateEducationRequest;
+import com.oxygensened.userprofile.context.education.dto.view.EducationView;
+import com.oxygensened.userprofile.context.education.dto.request.UpdateEducationRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Education")
 @RequestMapping("/api/v1/users")
 @RestController
-class EducationController {
+final class EducationController {
     private final EducationService educationService;
 
     EducationController(EducationService educationService) {

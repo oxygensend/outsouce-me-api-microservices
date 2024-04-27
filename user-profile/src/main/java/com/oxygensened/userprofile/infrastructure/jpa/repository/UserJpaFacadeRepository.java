@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.context.profile.UserFilters;
-import com.oxygensened.userprofile.domain.User;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

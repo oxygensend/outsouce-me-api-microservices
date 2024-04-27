@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "University")
 @RestController
 @RequestMapping("/api/v1/users")
-public class UniversityController {
+final class UniversityController {
     private final UniversityService universityService;
 
     public UniversityController(UniversityService universityService) {

@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.domain.entity;
 
-import com.oxygensend.joboffer.domain.AccountType;
+import com.oxygensend.joboffer.domain.entity.part.AccountType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

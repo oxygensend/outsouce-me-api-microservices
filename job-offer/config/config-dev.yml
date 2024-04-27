@@ -37,3 +37,4 @@ job-offers:
   storage:
     root-location: job-offer/storage
     attachments-location: attachments
+  check-job-offer-expiration-cron: 0 0 1 * * *

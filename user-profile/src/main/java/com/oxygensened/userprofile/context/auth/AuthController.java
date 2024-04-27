@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.context.auth;
 
-import com.oxygensened.userprofile.context.auth.dto.EmailRequest;
-import com.oxygensened.userprofile.context.auth.dto.RegisterRequest;
-import com.oxygensened.userprofile.context.auth.dto.RegisterView;
+import com.oxygensened.userprofile.context.auth.dto.request.EmailRequest;
+import com.oxygensened.userprofile.context.auth.dto.request.RegisterRequest;
+import com.oxygensened.userprofile.context.auth.dto.view.RegisterView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

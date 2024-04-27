@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.domain.entity;
 
-import com.oxygensend.joboffer.domain.Experience;
-import com.oxygensend.joboffer.domain.FormOfEmployment;
-import com.oxygensend.joboffer.domain.WorkType;
+import com.oxygensend.joboffer.domain.entity.part.Experience;
+import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
+import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,7 +1,7 @@
 package com.oxygensend.joboffer.domain.entity;
 
-import com.oxygensend.joboffer.domain.ApplicationStatus;
-import com.oxygensend.joboffer.infrastructure.jpa.ApplicationStatusConverter;
+import com.oxygensend.joboffer.domain.entity.part.ApplicationStatus;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.ApplicationStatusConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.User;
+import com.oxygensened.userprofile.domain.entity.User;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.Language;
-import com.oxygensened.userprofile.domain.LanguageRepository;
+import com.oxygensened.userprofile.domain.entity.Language;
+import com.oxygensened.userprofile.domain.repository.LanguageRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;

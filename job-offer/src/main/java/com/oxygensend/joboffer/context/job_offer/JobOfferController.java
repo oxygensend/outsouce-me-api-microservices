@@ -1,14 +1,14 @@
 package com.oxygensend.joboffer.context.job_offer;
 
 import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.joboffer.context.JobOfferSort;
-import com.oxygensend.joboffer.context.job_offer.dto.CreateJobOfferRequest;
-import com.oxygensend.joboffer.context.job_offer.view.JobOfferView;
-import com.oxygensend.joboffer.context.job_offer.view.JobOfferDetailsView;
-import com.oxygensend.joboffer.context.job_offer.dto.UpdateJobOfferRequest;
-import com.oxygensend.joboffer.domain.FormOfEmployment;
-import com.oxygensend.joboffer.domain.JobOfferFilter;
-import com.oxygensend.joboffer.domain.WorkType;
+import com.oxygensend.joboffer.context.job_offer.dto.request.CreateJobOfferRequest;
+import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
+import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
+import com.oxygensend.joboffer.domain.entity.part.WorkType;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/job-offers")
-class JobOfferController {
+final class JobOfferController {
 
     private final JobOfferService jobOfferService;
 
@@ -36,11 +36,10 @@ class JobOfferController {
         this.jobOfferService = jobOfferService;
     }
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     JobOfferDetailsView create(@Validated @RequestBody CreateJobOfferRequest request) {
-        return jobOfferService.createJobOffer(request);
+        return jobOfferService.createJobOffer(request.toCommand());
     }
 
     @ResponseStatus(HttpStatus.OK)

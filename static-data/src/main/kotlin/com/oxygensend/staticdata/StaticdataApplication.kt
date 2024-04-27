@@ -1,7 +1,7 @@
 package com.oxygensend.staticdata
 
 import com.oxygensend.commons_jdk.exception.ExceptionConfiguration
-import com.oxygensend.staticdata.config.StaticDataProperties
+import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication

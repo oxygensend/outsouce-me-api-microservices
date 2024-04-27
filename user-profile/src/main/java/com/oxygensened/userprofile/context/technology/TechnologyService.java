@@ -3,7 +3,7 @@ package com.oxygensened.userprofile.context.technology;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyRequest;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyView;
 import com.oxygensened.userprofile.domain.service.DomainUserService;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
