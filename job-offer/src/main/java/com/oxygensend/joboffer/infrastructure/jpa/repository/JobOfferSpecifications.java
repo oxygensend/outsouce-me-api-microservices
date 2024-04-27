@@ -5,14 +5,14 @@ import com.oxygensend.joboffer.domain.entity.JobOffer;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import org.springframework.data.jpa.domain.Specification;
+
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addFindInSetPredicate;
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addInPredicate;
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.predicateOfNullable;
 
 final class JobOfferSpecifications {
 
@@ -57,22 +57,5 @@ final class JobOfferSpecifications {
         return cb.and(predicates.toArray(new Predicate[0]));
     }
 
-
-    private static void predicateOfNullable(List<Predicate> predicates, Object value, Function<Object, Predicate> predicate) {
-        Optional.ofNullable(value).map(predicate).ifPresent(predicates::add);
-    }
-
-    private static void addInPredicate(List<Predicate> predicates, Path<Object> path, List<?> values) {
-        if (!values.isEmpty()) {
-            predicates.add(path.in(values));
-        }
-    }
-
-    private static void addFindInSetPredicate(List<Predicate> predicates, CriteriaBuilder cb, Path<Object> path, Object objToFind) {
-        var replaceExpression = cb.function("REPLACE", String.class, path, cb.literal(';'), cb.literal(","));
-        var findInSetExpression = cb.function("FIND_IN_SET", Integer.class, cb.literal(objToFind), replaceExpression);
-        predicates.add(cb.isNotNull(path));
-        predicates.add(cb.greaterThan(findInSetExpression, 0));
-    }
 
 }

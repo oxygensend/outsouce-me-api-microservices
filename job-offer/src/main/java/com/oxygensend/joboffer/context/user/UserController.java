@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.context.user;
 
+import com.oxygensend.joboffer.context.user.view.UserDetailsView;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ public class UserController {
     }
 
     @PostMapping
-    UserView createUser(CreateUserRequest createUserRequest) {
+    UserDetailsView createUser(CreateUserRequest createUserRequest) {
         return userService.createUser(createUserRequest);
     }
 }

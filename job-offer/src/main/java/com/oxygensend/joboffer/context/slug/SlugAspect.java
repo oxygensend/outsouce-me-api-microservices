@@ -2,6 +2,7 @@ package com.oxygensend.joboffer.context.slug;
 
 import com.oxygensend.joboffer.domain.Slug;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import com.oxygensend.joboffer.domain.service.SlugService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;

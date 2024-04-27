@@ -1,6 +1,8 @@
 package com.oxygensened.userprofile.domain;
 
+import com.oxygensened.userprofile.infrastructure.jpa.ExperienceConverter;
 import com.oxygensened.userprofile.infrastructure.jpa.StringSetConverter;
+import com.oxygensened.userprofile.infrastructure.jpa.AccountTypeConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -41,6 +43,7 @@ public class User {
     private LocalDate dateOfBirth;
     @Column(nullable = false)
     private Integer redirectCount = 0;
+    @Convert(converter = AccountTypeConverter.class)
     private AccountType accountType;
     @Slug(source = {"name", "surname"})
     @Column(nullable = false, unique = true)
@@ -50,6 +53,7 @@ public class User {
     private String activeJobPosition;
     @Column(nullable = false)
     private double opinionsRate = 0;
+    @Convert(converter = ExperienceConverter.class)
     private Experience experience;
     private double popularityOrder;
     private String imageName;

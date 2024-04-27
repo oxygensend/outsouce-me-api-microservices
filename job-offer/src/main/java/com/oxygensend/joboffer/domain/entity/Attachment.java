@@ -18,20 +18,29 @@ public class Attachment {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String size;
+    private Long size;
     @ManyToOne
     @JoinColumn(nullable = false)
     private User createdBy;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Application application;
+
     public Attachment() {
     }
-
-    public Attachment(Long id, String originalName, String name, String size, User createdBy) {
-        this.id = id;
+    public Attachment(String originalName, String name, Long size, User createdBy) {
         this.originalName = originalName;
         this.name = name;
         this.size = size;
         this.createdBy = createdBy;
+    }
+    public Attachment(String originalName, String name, Long size, User createdBy, Application application) {
+        this.originalName = originalName;
+        this.name = name;
+        this.size = size;
+        this.createdBy = createdBy;
+        this.application = application;
     }
 
     public Long id() {
@@ -54,11 +63,11 @@ public class Attachment {
         this.name = name;
     }
 
-    public String size() {
+    public Long size() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -69,4 +78,14 @@ public class Attachment {
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
+
+    public Application application() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
 }
+

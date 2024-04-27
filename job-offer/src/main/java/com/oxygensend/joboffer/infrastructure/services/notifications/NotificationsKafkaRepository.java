@@ -3,6 +3,7 @@ package com.oxygensend.joboffer.infrastructure.services.notifications;
 
 import com.oxygensend.joboffer.config.properties.JobOffersProperties;
 import com.oxygensend.joboffer.config.properties.ServiceProperties;
+import com.oxygensend.joboffer.context.notifications.InternalMessage;
 import com.oxygensend.joboffer.context.notifications.Mail;
 import com.oxygensend.joboffer.context.notifications.NotificationEvent;
 import com.oxygensend.joboffer.context.notifications.NotificationsRepository;
@@ -23,9 +24,19 @@ final class NotificationsKafkaRepository implements NotificationsRepository {
         this.login = serviceProperties.notifications().login();
     }
 
+
     @Override
-    public void send(Mail mail) {
-        var event = new NotificationEvent<>(mail, login, serviceId);
+    public void sendMail(Mail mail) {
+        send(mail);
+    }
+
+    @Override
+    public void sendInternalMessage(InternalMessage message) {
+        send(message);
+    }
+
+    private <T> void send(T message) {
+        var event = new NotificationEvent<>(message, login, serviceId);
         notificationsKafkaTemplate.sendDefault(UUID.randomUUID().toString(), event);
     }
 }

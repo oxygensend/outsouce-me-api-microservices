@@ -1,5 +1,7 @@
 package com.oxygensend.joboffer.context.notifications;
 
 public interface NotificationsRepository {
-    void send(Mail mail);
+    void sendMail(Mail mail);
+
+    void sendInternalMessage(InternalMessage message);
 }

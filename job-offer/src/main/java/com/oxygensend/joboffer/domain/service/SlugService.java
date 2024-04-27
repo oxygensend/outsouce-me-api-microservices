@@ -1,4 +1,4 @@
-package com.oxygensend.joboffer.context.slug;
+package com.oxygensend.joboffer.domain.service;
 
 public interface SlugService {
 

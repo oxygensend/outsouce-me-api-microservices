@@ -3,6 +3,8 @@ package com.oxygensend.opinions.context.event
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Component
 internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) {
 
     companion object {
-        private val SUPPORTED_FIELDS: List<String> = listOf("name", "surname", "thumbnailPath")
+        private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java);
+        private val SUPPORTED_FIELDS: List<String> = listOf("name", "surname", "imageNameSmall")
     }
 
     @KafkaListener(
@@ -20,6 +23,7 @@ internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) 
         containerFactory = "userDetailsDataEventConcurrentKafkaListenerContainerFactory"
     )
     fun consume(record: ConsumerRecord<String, UserDetailsDataEvent>) {
+        LOGGER.info("AAA")
         val event = record.value()
         if (event.fields.keys.none { it in SUPPORTED_FIELDS }) {
             return
@@ -38,7 +42,7 @@ internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) 
     private fun createUserFromEvent(event: UserDetailsDataEvent): User {
         val name = event.fields.getOrDefault("name", "")
         val surname = event.fields.getOrDefault("surname", "")
-        val thumbnailPath = event.fields["thumbnailPath"] as? String
+        val thumbnailPath = event.fields["imageNameSmall"] as? String
         val fullName = "$name $surname"
         return User(id = event.id, internal = false, fullName = fullName, thumbnailPath = thumbnailPath)
     }
@@ -50,8 +54,8 @@ internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) 
             user.fullName = "$name $surname"
         }
 
-        if (event.fields.containsKey("thumbnailPath")) {
-            user.thumbnailPath = event.fields["thumbnailPath"] as String
+        if (event.fields.containsKey("imageNameSmall")) {
+            user.thumbnailPath = event.fields["imageNameSmall"] as String
         }
     }
 

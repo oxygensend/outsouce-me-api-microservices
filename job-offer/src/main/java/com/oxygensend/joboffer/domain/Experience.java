@@ -11,8 +11,8 @@ public enum Experience {
     EXPERT(2, "Expert"),
     TRAINEE(1, "Stażysta");
 
-    public final Integer numericMapping;
-    public final String polishName;
+    private final Integer numericMapping;
+    private final String polishName;
 
     Experience(Integer numericMapping, String polishName) {
         this.numericMapping = numericMapping;
@@ -23,7 +23,11 @@ public enum Experience {
         return Arrays.stream(values()).filter(experience -> Objects.equals(experience.numericMapping, numericMapping)).findFirst();
     }
 
-    public Integer dbValue() {
+    public Integer numericMapping() {
         return numericMapping;
+    }
+
+    public String polishName() {
+        return polishName;
     }
 }

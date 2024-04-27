@@ -17,7 +17,7 @@ public class NotificationsService {
                                "Please click the link below to verify your email address: http://localhost:8080/verify-email?token=" + token,
                                recipient);
 
-        notificationsRepository.send(message);
+        notificationsRepository.sendMail(message);
     }
 
     public void sendPasswordResetLink(String email, String extUserId, String token) {
@@ -26,6 +26,6 @@ public class NotificationsService {
                                "Please click the link below to reset your password: http://localhost:8080/reset-password?token=" + token,
                                recipient);
 
-        notificationsRepository.send(message);
+        notificationsRepository.sendMail(message);
     }
 }

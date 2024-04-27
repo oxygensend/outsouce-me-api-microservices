@@ -9,4 +9,8 @@ public class NoSuchUserException extends ApiException {
     public NoSuchUserException(String message) {
         super(message);
     }
+
+    public static NoSuchUserException withId(String id) {
+        return new NoSuchUserException("No such user %s.".formatted(id));
+    }
 }

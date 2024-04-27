@@ -3,15 +3,17 @@ package com.oxygensend.joboffer.context.job_offer;
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.context.job_offer.dto.CreateJobOfferRequest;
-import com.oxygensend.joboffer.context.job_offer.dto.JobOfferView;
-import com.oxygensend.joboffer.context.job_offer.dto.JobOfferDetailsView;
 import com.oxygensend.joboffer.context.job_offer.dto.UpdateJobOfferRequest;
+import com.oxygensend.joboffer.context.job_offer.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.view.JobOfferView;
+import com.oxygensend.joboffer.context.job_offer.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.domain.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.Address;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
-import com.oxygensend.joboffer.domain.exception.JobOfferNotFound;
+import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;
 import com.oxygensend.joboffer.domain.exception.NoSuchUserException;
+import com.oxygensend.joboffer.domain.exception.OnlyPrincipleCanPublishJobOfferException;
 import com.oxygensend.joboffer.domain.repository.AddressRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
@@ -40,7 +42,10 @@ public class JobOfferService {
 
     public JobOfferDetailsView createJobOffer(CreateJobOfferRequest request) {
         var principal = userRepository.findById(request.principalId())
-                                      .orElseThrow(() -> new NoSuchUserException("Principal wih %s not found".formatted(request.principalId())));
+                                      .orElseThrow(() -> NoSuchUserException.withId(request.principalId()));
+        if (!principal.canPublishJobOffers()) {
+            throw new OnlyPrincipleCanPublishJobOfferException();
+        }
 
         var salaryRange = request.salaryRange().toSalaryRange();
         var address = addressRepository.findByPostCodeAndCity(request.address().postCode(), request.address().city())
@@ -65,7 +70,7 @@ public class JobOfferService {
 
     public JobOfferDetailsView getJobOffer(String slug) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
-                                         .orElseThrow(JobOfferNotFound::new);
+                                         .orElseThrow(JobOfferNotFoundException::new);
 
         return jobOfferViewFactory.create(jobOffer);
     }
@@ -73,7 +78,7 @@ public class JobOfferService {
 
     public void addRedirect(String slug) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
-                                         .orElseThrow(JobOfferNotFound::new);
+                                         .orElseThrow(JobOfferNotFoundException::new);
 
         jobOffer.addRedirect();
         jobOfferRepository.save(jobOffer);
@@ -81,14 +86,15 @@ public class JobOfferService {
 
     public void deleteJobOffer(String slug) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
-                                         .orElseThrow(JobOfferNotFound::new);
+                                         .orElseThrow(JobOfferNotFoundException::new);
 
-        jobOfferRepository.delete(jobOffer);
+        jobOffer.setArchived(true);
+        jobOfferRepository.save(jobOffer);
     }
 
     public JobOfferDetailsView updateJobOffer(String slug, UpdateJobOfferRequest request) {
         var jobOffer = jobOfferRepository.findBySlug(slug)
-                                         .orElseThrow(JobOfferNotFound::new);
+                                         .orElseThrow(JobOfferNotFoundException::new);
 
         updateIfPresent(request.name(), jobOffer::setName);
         updateIfPresent(request.description(), jobOffer::setDescription);

@@ -1,4 +1,4 @@
-package com.oxygensend.joboffer.context.job_offer.dto;
+package com.oxygensend.joboffer.context.job_offer.view;
 
 
 import com.oxygensend.joboffer.domain.entity.Address;

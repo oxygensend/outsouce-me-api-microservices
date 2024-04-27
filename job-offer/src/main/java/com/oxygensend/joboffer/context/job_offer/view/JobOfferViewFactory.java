@@ -1,32 +1,27 @@
-package com.oxygensend.joboffer.context.job_offer;
+package com.oxygensend.joboffer.context.job_offer.view;
 
-import com.oxygensend.joboffer.config.properties.JobOffersProperties;
-import com.oxygensend.joboffer.context.job_offer.dto.AddressView;
-import com.oxygensend.joboffer.context.job_offer.dto.JobOfferView;
-import com.oxygensend.joboffer.context.job_offer.dto.JobOfferDetailsView;
-import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeView;
-import com.oxygensend.joboffer.context.job_offer.dto.UserView;
+import com.oxygensend.joboffer.context.user.view.UserViewFactory;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
-import com.oxygensend.joboffer.domain.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JobOfferViewFactory {
-    private final String userThumbnailServerUrl;
 
-    public JobOfferViewFactory(JobOffersProperties properties) {
-        this.userThumbnailServerUrl = properties.userThumbnailServerUrl();
+    private final UserViewFactory userViewFactory;
+
+    public JobOfferViewFactory(UserViewFactory userViewFactory) {
+        this.userViewFactory = userViewFactory;
     }
 
-
     public JobOfferDetailsView create(JobOffer jobOffer) {
-        var userView = createUserView(jobOffer.user());
+        var userView = userViewFactory.createUserView(jobOffer.user());
         var salaryRangeView = SalaryRangeView.from(jobOffer.salaryRange());
         var addressView = AddressView.from(jobOffer.address());
 
         return new JobOfferDetailsView(jobOffer.id(),
                                        jobOffer.slug(),
                                        jobOffer.name(),
+                                       userView,
                                        jobOffer.description(),
                                        jobOffer.workTypes(),
                                        jobOffer.experience(),
@@ -35,12 +30,11 @@ public class JobOfferViewFactory {
                                        jobOffer.numberOfApplications(),
                                        salaryRangeView,
                                        addressView,
-                                       userView,
                                        jobOffer.createdAt());
     }
 
     public JobOfferView createInfo(JobOffer jobOffer) {
-        var userView = createUserView(jobOffer.user());
+        var userView = userViewFactory.createUserView(jobOffer.user());
         return new JobOfferView(jobOffer.id(),
                                 jobOffer.slug(),
                                 jobOffer.name(),
@@ -49,10 +43,18 @@ public class JobOfferViewFactory {
                                 userView);
     }
 
-    private UserView createUserView(User user) {
-        return new UserView(user.id(),
-                            user.fullName(),
-                            user.thumbnailPath(userThumbnailServerUrl),
-                            user.activeJobPosition());
+    public JobOfferWithUserView createJobOfferWithUserView(JobOffer jobOffer) {
+        var userView = userViewFactory.createBaseUserView(jobOffer.user());
+        return new JobOfferWithUserView(jobOffer.id(),
+                                        jobOffer.slug(),
+                                        jobOffer.name(),
+                                        userView);
     }
+
+    public BaseJobOfferView createBaseJobOfferView(JobOffer jobOffer) {
+        return new BaseJobOfferView(jobOffer.id(),
+                                    jobOffer.slug(),
+                                    jobOffer.name());
+    }
+
 }

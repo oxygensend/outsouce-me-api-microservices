@@ -24,8 +24,13 @@ class NotificationsKafkaRepository implements NotificationsRepository {
     }
 
     @Override
-    public void send(Mail mail) {
-        var event = new NotificationEvent<>(mail, login, serviceId);
+    public void sendMail(Mail mail) {
+        send(mail);
+    }
+
+
+    private <T> void send(T message) {
+        var event = new NotificationEvent<>(message, login, serviceId);
         notificationsKafkaTemplate.sendDefault(UUID.randomUUID().toString(), event);
     }
 }

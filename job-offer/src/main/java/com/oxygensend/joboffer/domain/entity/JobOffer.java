@@ -184,6 +184,10 @@ public class JobOffer {
         this.numberOfApplications = numberOfApplications;
     }
 
+    public void increaseNumberOfApplications() {
+        numberOfApplications++;
+    }
+
     public int redirectCount() {
         return redirectCount;
     }

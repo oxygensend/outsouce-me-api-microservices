@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.domain.entity;
 
+import com.oxygensend.joboffer.domain.AccountType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,17 +17,19 @@ public class User {
     private String email;
     private String thumbnail;
     private String activeJobPosition;
+    private AccountType accountType;
 
     public User() {
     }
 
-    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition) {
+    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition, AccountType accountType) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.thumbnail = thumbnail;
         this.activeJobPosition = activeJobPosition;
+        this.accountType = accountType;
     }
 
     public String id() {
@@ -83,5 +86,21 @@ public class User {
 
     public void setActiveJobPosition(String activeJobPosition) {
         this.activeJobPosition = activeJobPosition;
+    }
+
+    public AccountType accountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public boolean canApplyForJobOffers() {
+        return accountType == AccountType.DEVELOPER;
+    }
+
+    public boolean canPublishJobOffers() {
+        return accountType == AccountType.PRINCIPLE;
     }
 }
