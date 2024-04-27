@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.domain.repository;
 
-import com.oxygensened.userprofile.context.profile.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import com.oxygensened.userprofile.domain.entity.User;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

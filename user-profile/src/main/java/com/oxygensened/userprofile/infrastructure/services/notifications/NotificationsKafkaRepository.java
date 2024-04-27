@@ -1,10 +1,10 @@
 package com.oxygensened.userprofile.infrastructure.services.notifications;
 
-import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
-import com.oxygensened.userprofile.infrastructure.UserProfileProperties;
+import com.oxygensened.userprofile.context.UserProfileProperties;
 import com.oxygensened.userprofile.context.notifications.Mail;
 import com.oxygensened.userprofile.context.notifications.NotificationEvent;
 import com.oxygensened.userprofile.context.notifications.NotificationsRepository;
+import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
 import java.util.UUID;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Repository;

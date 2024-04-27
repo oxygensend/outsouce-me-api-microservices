@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.context.profile.UserFilters;
-import com.oxygensened.userprofile.context.profile.dto.UserOrder;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.entity.User;
 import jakarta.persistence.criteria.CriteriaBuilder;

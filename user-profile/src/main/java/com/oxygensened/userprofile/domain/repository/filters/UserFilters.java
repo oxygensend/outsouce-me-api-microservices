@@ -1,6 +1,5 @@
-package com.oxygensened.userprofile.context.profile;
+package com.oxygensened.userprofile.domain.repository.filters;
 
-import com.oxygensened.userprofile.context.profile.dto.UserOrder;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 
 public record UserFilters(AccountType accountType, Boolean lookingForJob, UserOrder order) {

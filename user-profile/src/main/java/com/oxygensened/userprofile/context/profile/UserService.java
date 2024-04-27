@@ -11,6 +11,7 @@ import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;

@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.infrastructure.jpa;
 
-import com.oxygensened.userprofile.domain.DomainEventPublisher;
+import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
 import com.oxygensened.userprofile.domain.entity.User;
-import com.oxygensened.userprofile.domain.UserDetailsDataEvent;
+import com.oxygensened.userprofile.domain.event.UserDetailsDataEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

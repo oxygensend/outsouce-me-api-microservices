@@ -5,6 +5,7 @@ import com.oxygensened.userprofile.infrastructure.validation.IsPasswordConfirmed
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -18,6 +19,7 @@ public record RegisterRequest(@NotEmpty
                               @Size(min = 2, message = "Surname have to be at least 2 characters")
                               @Size(max = 50, message = "Surname have to be no longer than 50 characters")
                               String surname,
+                              @NotNull
                               AccountType accountType,
                               @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
                                       message = "Password must contain at least 8 characters, including at least one letter and one number")
