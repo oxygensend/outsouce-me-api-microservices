@@ -1,4 +1,4 @@
-package com.oxygensend.staticdata.context.dto
+package com.oxygensend.staticdata.context.address.parser
 
 data class ParsedAddressDto(
     val city: String,

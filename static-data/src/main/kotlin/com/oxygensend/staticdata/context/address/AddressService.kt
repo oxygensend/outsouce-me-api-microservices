@@ -1,9 +1,8 @@
-package com.oxygensend.staticdata.context.service
+package com.oxygensend.staticdata.context.address
 
-import com.oxygensend.staticdata.context.AddressDetailsRepository
-import com.oxygensend.staticdata.context.AddressParser
-import com.oxygensend.staticdata.context.dto.AddressView
-import com.oxygensend.staticdata.context.dto.ParsedAddressDto
+import com.oxygensend.staticdata.domain.AddressDetailsRepository
+import com.oxygensend.staticdata.context.address.parser.AddressParser
+import com.oxygensend.staticdata.context.address.parser.ParsedAddressDto
 import com.oxygensend.staticdata.domain.Address
 import com.oxygensend.staticdata.domain.AddressRepository
 import com.oxygensend.staticdata.domain.exception.AlreadyLoadingException

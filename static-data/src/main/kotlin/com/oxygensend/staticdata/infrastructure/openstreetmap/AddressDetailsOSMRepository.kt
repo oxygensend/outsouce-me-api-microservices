@@ -1,8 +1,8 @@
 package com.oxygensend.staticdata.infrastructure.openstreetmap
 
 import com.oxygensend.staticdata.config.StaticDataProperties
-import com.oxygensend.staticdata.context.AddressDetailsRepository
-import com.oxygensend.staticdata.context.dto.CoordinatesDto
+import com.oxygensend.staticdata.domain.AddressDetailsRepository
+import com.oxygensend.staticdata.domain.CoordinatesDto
 import com.oxygensend.staticdata.domain.Address
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.MediaType
@@ -16,7 +16,6 @@ internal final class AddressDetailsOSMRepository(staticDataProperties: StaticDat
     init {
         this.osmUri = staticDataProperties.openStreetMapUrl!!
     }
-
     private inline fun <reified T> typeReference() = object : ParameterizedTypeReference<T>() {}
 
     override fun getCoordinates(address: Address): CoordinatesDto? {

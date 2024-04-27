@@ -1,4 +1,4 @@
-package com.oxygensend.staticdata.context.dto
+package com.oxygensend.staticdata.context.technology
 
 import com.oxygensend.staticdata.domain.Technology
 

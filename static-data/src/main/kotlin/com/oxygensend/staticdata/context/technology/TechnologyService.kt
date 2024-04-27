@@ -1,6 +1,5 @@
-package com.oxygensend.staticdata.context.service
+package com.oxygensend.staticdata.context.technology
 
-import com.oxygensend.staticdata.context.dto.TechnologyView
 import com.oxygensend.staticdata.domain.TechnologyRepository
 import org.springframework.stereotype.Service
 

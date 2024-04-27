@@ -1,4 +1,4 @@
-package com.oxygensend.staticdata.context.dto
+package com.oxygensend.staticdata.context.address
 
 import com.oxygensend.staticdata.domain.Address
 

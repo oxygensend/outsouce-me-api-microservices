@@ -1,4 +1,4 @@
-package com.oxygensend.staticdata.context.dto
+package com.oxygensend.staticdata.domain
 
 data class CoordinatesDto(
     val lon: Double,
