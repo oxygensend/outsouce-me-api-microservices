@@ -1,13 +1,7 @@
-package com.oxygensend.opinions.context
+package com.oxygensend.opinions.context.service
 
 import com.oxygensend.opinions.context.command.AddCommentCommand
 import com.oxygensend.opinions.context.command.CreateOpinionCommand
-import com.oxygensend.opinions.context.dto.AggregatedOpinionDto
-import com.oxygensend.opinions.context.dto.AuthorDto
-import com.oxygensend.opinions.context.dto.CommentDto
-import com.oxygensend.opinions.context.dto.CommentSort
-import com.oxygensend.opinions.context.query.GetCommentsQuery
-import com.oxygensend.opinions.context.query.GetOpinionsQuery
 import com.oxygensend.opinions.context.view.CommentView
 import com.oxygensend.opinions.context.view.OpinionView
 import com.oxygensend.opinions.context.view.UserView
@@ -15,6 +9,13 @@ import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.OpinionRepository
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository
+import com.oxygensend.opinions.domain.aggregate.AggregatedOpinionDto
+import com.oxygensend.opinions.domain.aggregate.AuthorDto
+import com.oxygensend.opinions.domain.aggregate.CommentDto
+import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository
+import com.oxygensend.opinions.domain.aggregate.filter.CommentSort
+import com.oxygensend.opinions.domain.aggregate.filter.CommentsFilter
+import com.oxygensend.opinions.domain.aggregate.filter.OpinionsFilter
 import com.oxygensend.opinions.domain.exception.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.bson.types.ObjectId
@@ -361,11 +362,11 @@ internal class OpinionServiceTest {
     @Test
     fun `get comments should return comments`() {
         val opinion = mock(Opinion::class.java)
-        val query = GetCommentsQuery(
+        val filter = CommentsFilter(
             opinionId = ObjectId(),
-            pageable = Pageable.ofSize(10),
             sort = CommentSort.NEWEST
         )
+        val pageable = Pageable.ofSize(10);
         val comment = CommentDto(
             id = ObjectId(),
             author = AuthorDto(
@@ -386,10 +387,10 @@ internal class OpinionServiceTest {
             createdAt = LocalDateTime.ofInstant(Instant.ofEpochSecond(comment.id.timestamp.toLong()), ZoneId.systemDefault())
 
         )
-        Mockito.`when`(opinionRepository.findById(query.opinionId)).thenReturn(opinion)
-        Mockito.`when`(opinionAggregateRepository.getOpinionComments(query)).thenReturn(listOf(comment))
+        Mockito.`when`(opinionRepository.findById(filter.opinionId)).thenReturn(opinion)
+        Mockito.`when`(opinionAggregateRepository.getOpinionComments(filter, pageable)).thenReturn(listOf(comment))
 
-        val result = opinionService.getComments(query)
+        val result = opinionService.getComments(filter, pageable)
 
         assertThat(result).isNotNull
         assertThat(result.data.size).isEqualTo(1)
@@ -398,22 +399,23 @@ internal class OpinionServiceTest {
 
     @Test
     fun `get comments should throw exception when opinion not found`() {
-        val query = GetCommentsQuery(
+        val filter = CommentsFilter(
             opinionId = ObjectId(),
-            pageable = Pageable.ofSize(10),
             sort = CommentSort.NEWEST
         )
+        val pageable = Pageable.ofSize(10)
 
-        Mockito.`when`(opinionRepository.findById(query.opinionId)).thenReturn(null)
+        Mockito.`when`(opinionRepository.findById(filter.opinionId)).thenReturn(null)
 
         assertThrows<OpinionNotFoundException> {
-            opinionService.getComments(query)
+            opinionService.getComments(filter, pageable)
         }
     }
 
     @Test
     fun `get opinions should return opinions`() {
-        val query = mock(GetOpinionsQuery::class.java)
+        val filter = mock(OpinionsFilter::class.java)
+        val pageable = Pageable.ofSize(10)
         val opinion = AggregatedOpinionDto(
             id = ObjectId(),
             author = AuthorDto(
@@ -441,9 +443,9 @@ internal class OpinionServiceTest {
             liked = false,
             numberOfComments = 0
         )
-        Mockito.`when`(opinionAggregateRepository.findAggregatedOpinions(query)).thenReturn(PageImpl(listOf(opinion)))
+        Mockito.`when`(opinionAggregateRepository.findAggregatedOpinions(filter, pageable)).thenReturn(PageImpl(listOf(opinion)))
 
-        val result = opinionService.getOpinions(query)
+        val result = opinionService.getOpinions(filter, pageable)
 
         assertThat(result).isNotNull
         assertThat(result.data.size).isEqualTo(1)

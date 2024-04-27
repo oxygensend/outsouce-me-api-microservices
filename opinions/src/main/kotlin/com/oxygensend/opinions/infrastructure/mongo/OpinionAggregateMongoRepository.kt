@@ -1,12 +1,17 @@
 package com.oxygensend.opinions.infrastructure.mongo
 
-import com.oxygensend.opinions.context.OpinionAggregateRepository
-import com.oxygensend.opinions.context.dto.*
-import com.oxygensend.opinions.context.query.GetCommentsQuery
-import com.oxygensend.opinions.context.query.GetOpinionsQuery
 import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.User
+import com.oxygensend.opinions.domain.aggregate.AggregatedOpinionDto
+import com.oxygensend.opinions.domain.aggregate.CommentDto
+import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository
+import com.oxygensend.opinions.domain.aggregate.UserOpinionsDetailsDto
+import com.oxygensend.opinions.domain.aggregate.filter.CommentSort
+import com.oxygensend.opinions.domain.aggregate.filter.CommentsFilter
+import com.oxygensend.opinions.domain.aggregate.filter.OpinionSortField
+import com.oxygensend.opinions.domain.aggregate.filter.OpinionsFilter
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.aggregation.Aggregation
@@ -18,26 +23,26 @@ import org.springframework.stereotype.Component
 
 @Component
 internal class OpinionAggregateMongoRepository(private val mongoTemplate: MongoTemplate) : OpinionAggregateRepository {
-    override fun findAggregatedOpinions(query: GetOpinionsQuery): Page<AggregatedOpinionDto> {
-        getOpinions(query).let {
-            return PageableExecutionUtils.getPage(it, query.pageable) {
-                countOpinions(query)
+    override fun findAggregatedOpinions(filter: OpinionsFilter, pageable: Pageable): Page<AggregatedOpinionDto> {
+        getOpinions(filter, pageable).let {
+            return PageableExecutionUtils.getPage(it, pageable) {
+                countOpinions(filter)
             }
         }
     }
 
-    private fun getOpinions(query: GetOpinionsQuery): List<AggregatedOpinionDto> {
-        val sort = getOpinionsSortMethod(query)
+    private fun getOpinions(filter: OpinionsFilter, pageable: Pageable): List<AggregatedOpinionDto> {
+        val sort = getOpinionsSortMethod(filter)
         val aggregation = Aggregation.newAggregation(
-            Aggregation.match(Criteria.where(Opinion::receiver.name).`is`(query.receiver)),
+            Aggregation.match(Criteria.where(Opinion::receiver.name).`is`(filter.receiver)),
             Aggregation.addFields()
                 .addFieldWithValue("likesCount", ArrayOperators.Size.lengthOfArray("\$likes"))
                 .addFieldWithValue("numberOfComments", ArrayOperators.Size.lengthOfArray("\$comments"))
                 .addFieldWithValue("liked", ArrayOperators.In.arrayOf("\$likes").containsValue("\$author"))
                 .build(),
             Aggregation.sort(sort),
-            Aggregation.skip(query.pageable.offset),
-            Aggregation.limit(query.pageable.pageSize.toLong()),
+            Aggregation.skip(pageable.offset),
+            Aggregation.limit(pageable.pageSize.toLong()),
             Aggregation.lookup("user", "author", "_id", "authorDetails"),
             Aggregation.unwind("authorDetails"),
             Aggregation.project()
@@ -66,16 +71,16 @@ internal class OpinionAggregateMongoRepository(private val mongoTemplate: MongoT
         return results ?: UserOpinionsDetailsDto(0, 0.0)
     }
 
-    override fun getOpinionComments(query: GetCommentsQuery): List<CommentDto> {
-        val sortDirection = getCommentsSortDirection(query.sort)
+    override fun getOpinionComments(filter: CommentsFilter,pageable: Pageable): List<CommentDto> {
+        val sortDirection = getCommentsSortDirection(filter.sort)
         val aggregation = Aggregation.newAggregation(
-            Aggregation.match(Criteria.where(Opinion::id.name).`is`(query.opinionId)),
+            Aggregation.match(Criteria.where(Opinion::id.name).`is`(filter.opinionId)),
             Aggregation.unwind(Opinion::comments.name, true),
             Aggregation.lookup("user", "comments.author", "_id", "authorDetails"),
             Aggregation.unwind("authorDetails", true),
             Aggregation.sort(Sort.by(sortDirection, "comments._id")),
-            Aggregation.skip(query.pageable.offset),
-            Aggregation.limit(query.pageable.pageSize.toLong()),
+            Aggregation.skip(pageable.offset),
+            Aggregation.limit(pageable.pageSize.toLong()),
             Aggregation.project()
                 .and("comments._id").`as`("_id")
                 .and("authorDetails").`as`(CommentDto::author.name)
@@ -90,15 +95,15 @@ internal class OpinionAggregateMongoRepository(private val mongoTemplate: MongoT
         CommentSort.NEWEST -> Sort.Direction.DESC
     }
 
-    private fun countOpinions(query: GetOpinionsQuery): Long {
+    private fun countOpinions(filter: OpinionsFilter): Long {
         val mongoQuery = Query()
-            .addCriteria(Criteria.where(Opinion::receiver.name).`is`(query.receiver))
+            .addCriteria(Criteria.where(Opinion::receiver.name).`is`(filter.receiver))
         return mongoTemplate.count(mongoQuery, Opinion::class.java)
     }
 
-    private fun getOpinionsSortMethod(query: GetOpinionsQuery): Sort = when (query.sortField) {
-        OpinionSortField.POPULARITY -> Sort.by(query.direction, "likesCount")
-        OpinionSortField.CREATED_AT -> Sort.by(query.direction, Opinion::id.name)
-        OpinionSortField.UPDATED_AT -> Sort.by(query.direction, Opinion::updatedAt.name)
+    private fun getOpinionsSortMethod(filter: OpinionsFilter): Sort = when (filter.sortField) {
+        OpinionSortField.POPULARITY -> Sort.by(filter.direction.name, "likesCount")
+        OpinionSortField.CREATED_AT -> Sort.by(filter.direction.name, Opinion::id.name)
+        OpinionSortField.UPDATED_AT -> Sort.by(filter.direction.name, Opinion::updatedAt.name)
     }
 }

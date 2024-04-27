@@ -1,9 +1,11 @@
-package com.oxygensend.opinions.context
+package com.oxygensend.opinions.context.service
 
 import com.oxygensend.opinions.context.command.CreateUserCommand
-import com.oxygensend.opinions.context.dto.UserOpinionsDetailsDto
+import com.oxygensend.opinions.context.service.OpinionUserService
+import com.oxygensend.opinions.domain.aggregate.UserOpinionsDetailsDto
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository
+import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository
 import com.oxygensend.opinions.domain.exception.UserNotFoundException
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test

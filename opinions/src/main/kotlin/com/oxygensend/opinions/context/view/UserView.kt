@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.context.view
 
-import com.oxygensend.opinions.context.dto.AuthorDto
+import com.oxygensend.opinions.domain.aggregate.AuthorDto
 import com.oxygensend.opinions.domain.User
 
 data class UserView(

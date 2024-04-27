@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.context.view
 
-import com.oxygensend.opinions.context.dto.CommentDto
+import com.oxygensend.opinions.domain.aggregate.CommentDto
 import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.User
 import java.time.Instant

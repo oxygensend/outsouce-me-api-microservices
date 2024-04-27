@@ -1,4 +1,4 @@
-package com.oxygensend.opinions.config
+package com.oxygensend.opinions.infrastructure.kafka
 
 import com.oxygensend.commons_jdk.exception.ApiException
 import com.oxygensend.opinions.context.event.UserDetailsDataEvent
@@ -28,7 +28,7 @@ import java.util.*
 
 @EnableConfigurationProperties(KafkaConsumerProperties::class)
 @Configuration
-class KafkaConsumerConfiguration(private val kafkaProperties: KafkaConsumerProperties) {
+class KafkaConsumerConfiguration internal constructor(private val kafkaProperties: KafkaConsumerProperties) {
     @Bean
     fun userDetailsDataEventConsumerFactory(): ConsumerFactory<String, UserDetailsDataEvent> {
         return DefaultKafkaConsumerFactory(

@@ -1,4 +1,4 @@
-package com.oxygensend.opinions.context.dto
+package com.oxygensend.opinions.domain.aggregate
 
 import org.bson.types.ObjectId
 

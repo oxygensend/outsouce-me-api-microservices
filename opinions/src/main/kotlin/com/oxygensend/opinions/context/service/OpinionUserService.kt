@@ -1,10 +1,11 @@
-package com.oxygensend.opinions.context
+package com.oxygensend.opinions.context.service
 
 import com.oxygensend.opinions.context.command.CreateUserCommand
 import com.oxygensend.opinions.context.view.UserOpinionsDetailsView
 import com.oxygensend.opinions.context.view.UserView
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository
+import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository
 import com.oxygensend.opinions.domain.exception.UserNotFoundException
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service

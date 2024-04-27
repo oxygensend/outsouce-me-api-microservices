@@ -1,8 +1,7 @@
-package com.oxygensend.opinions.config
+package com.oxygensend.opinions.infrastructure.kafka
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Positive
 import org.apache.kafka.common.security.auth.SecurityProtocol
@@ -11,7 +10,7 @@ import org.springframework.validation.annotation.Validated
 
 @Validated
 @ConfigurationProperties(prefix = "kafka.consumer")
-data class KafkaConsumerProperties(
+internal data class KafkaConsumerProperties(
     @field:NotEmpty val applicationId: String?,
     @field:NotEmpty val bootstrapServers: String?,
     @field:Positive val retryBackoffMs: Int,

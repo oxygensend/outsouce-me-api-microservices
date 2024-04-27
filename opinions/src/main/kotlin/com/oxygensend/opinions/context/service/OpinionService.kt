@@ -1,19 +1,21 @@
-package com.oxygensend.opinions.context
+package com.oxygensend.opinions.context.service
 
 import com.oxygensend.commons_jdk.PagedListView
 import com.oxygensend.opinions.context.command.AddCommentCommand
 import com.oxygensend.opinions.context.command.CreateOpinionCommand
 import com.oxygensend.opinions.context.command.UpdateOpinionCommand
-import com.oxygensend.opinions.context.query.GetCommentsQuery
-import com.oxygensend.opinions.context.query.GetOpinionsQuery
+import com.oxygensend.opinions.context.utils.updateIfDefined
 import com.oxygensend.opinions.context.view.CommentView
 import com.oxygensend.opinions.context.view.OpinionView
 import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.OpinionRepository
 import com.oxygensend.opinions.domain.UserRepository
+import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository
+import com.oxygensend.opinions.domain.aggregate.filter.CommentsFilter
+import com.oxygensend.opinions.domain.aggregate.filter.OpinionsFilter
 import com.oxygensend.opinions.domain.exception.*
-import com.oxygensend.opinions.config.utils.updateIfDefined
 import org.bson.types.ObjectId
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,8 +24,8 @@ class OpinionService(
     private val opinionAggregateRepository: OpinionAggregateRepository,
     private val userRepository: UserRepository
 ) {
-    fun getOpinions(query: GetOpinionsQuery): PagedListView<OpinionView> {
-        val paginator = opinionAggregateRepository.findAggregatedOpinions(query)
+    fun getOpinions(filter: OpinionsFilter, pageable: Pageable): PagedListView<OpinionView> {
+        val paginator = opinionAggregateRepository.findAggregatedOpinions(filter, pageable)
         val data = paginator.map { OpinionView.from(it) }.toList()
         return PagedListView(data, paginator.numberOfElements, paginator.number, paginator.totalPages)
     }
@@ -100,12 +102,12 @@ class OpinionService(
         opinionRepository.save(opinion)
     }
 
-    fun getComments(query: GetCommentsQuery): PagedListView<CommentView> {
-        val opinion = opinionRepository.findById(query.opinionId) ?: throw OpinionNotFoundException()
-        val comments = opinionAggregateRepository.getOpinionComments(query)
+    fun getComments(filter: CommentsFilter, pageable: Pageable): PagedListView<CommentView> {
+        val opinion = opinionRepository.findById(filter.opinionId) ?: throw OpinionNotFoundException()
+        val comments = opinionAggregateRepository.getOpinionComments(filter, pageable)
             .map { CommentView.from(it) }
 
-        return PagedListView(comments, comments.size, query.pageable.pageNumber, opinion.comments.size)
+        return PagedListView(comments, comments.size, pageable.pageNumber, opinion.comments.size)
     }
 
     private fun validateIfCreationIsPossible(authorId: String, receiverId: String) {

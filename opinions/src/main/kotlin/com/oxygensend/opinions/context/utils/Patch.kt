@@ -1,4 +1,4 @@
-package com.oxygensend.opinions.config.utils
+package com.oxygensend.opinions.context.utils
 
 import kotlin.reflect.KProperty
 

@@ -1,6 +1,7 @@
-package com.oxygensend.opinions.context
+package com.oxygensend.opinions.context.controller
 
 import com.oxygensend.opinions.context.request.CreateUserRequest
+import com.oxygensend.opinions.context.service.OpinionUserService
 import com.oxygensend.opinions.context.view.UserOpinionsDetailsView
 import com.oxygensend.opinions.context.view.UserView
 import org.springframework.web.bind.annotation.*
