@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.context.profile.dto.request;
 
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
-import com.oxygensened.userprofile.domain.Experience;
+import com.oxygensened.userprofile.domain.entity.part.Experience;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;

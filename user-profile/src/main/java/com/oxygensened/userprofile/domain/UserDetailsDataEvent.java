@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.domain;
 
-import com.oxygensened.userprofile.config.properties.Topics;
+import com.oxygensened.userprofile.infrastructure.kafka.Topics;
 import java.util.Map;
 
 public record UserDetailsDataEvent(String id, Map<String, Object> fields) implements DomainEvent {

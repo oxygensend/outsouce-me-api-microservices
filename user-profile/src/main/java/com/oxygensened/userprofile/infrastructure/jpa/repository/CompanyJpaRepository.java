@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.Company;
+import com.oxygensened.userprofile.domain.entity.Company;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

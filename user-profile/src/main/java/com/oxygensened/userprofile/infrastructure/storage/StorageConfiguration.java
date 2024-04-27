@@ -1,6 +1,5 @@
 package com.oxygensened.userprofile.infrastructure.storage;
 
-import com.oxygensened.userprofile.config.properties.StorageProperties;
 import com.oxygensened.userprofile.context.storage.StorageService;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

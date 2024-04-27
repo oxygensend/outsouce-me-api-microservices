@@ -1,6 +1,6 @@
 package com.oxygensend.staticdata.context.technology.loader
 
-import com.oxygensend.staticdata.config.StaticDataProperties
+import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import com.oxygensend.staticdata.domain.Technology
 import com.oxygensend.staticdata.domain.TechnologyRepository
 import org.bson.types.ObjectId

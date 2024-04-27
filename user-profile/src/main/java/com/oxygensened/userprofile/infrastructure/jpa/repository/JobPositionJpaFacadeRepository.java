@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.JobPosition;
-import com.oxygensened.userprofile.domain.JobPositionRepository;
+import com.oxygensened.userprofile.domain.entity.JobPosition;
+import com.oxygensened.userprofile.domain.repository.JobPositionRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;

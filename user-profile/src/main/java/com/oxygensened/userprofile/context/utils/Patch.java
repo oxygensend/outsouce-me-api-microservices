@@ -1,6 +1,5 @@
 package com.oxygensened.userprofile.context.utils;
 
-import com.oxygensened.userprofile.infrastructure.jackson.JsonNullableWrapper;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 

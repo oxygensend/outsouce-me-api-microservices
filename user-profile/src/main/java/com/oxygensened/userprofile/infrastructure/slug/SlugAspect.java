@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.slug;
 
 import com.oxygensened.userprofile.domain.Slug;
-import com.oxygensened.userprofile.domain.User;
+import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.service.SlugService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

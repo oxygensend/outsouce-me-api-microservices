@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.domain.service;
 
-import com.oxygensened.userprofile.domain.JobPosition;
-import com.oxygensened.userprofile.domain.User;
+import com.oxygensened.userprofile.domain.entity.JobPosition;
+import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.exception.TechnologyIsObtainedByUserException;
 import org.springframework.stereotype.Service;
 

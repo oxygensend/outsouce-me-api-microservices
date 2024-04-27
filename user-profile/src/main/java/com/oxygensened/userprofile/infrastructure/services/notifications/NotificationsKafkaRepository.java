@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.services.notifications;
 
-import com.oxygensened.userprofile.config.properties.ServiceProperties;
-import com.oxygensened.userprofile.config.properties.UserProfileProperties;
+import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
+import com.oxygensened.userprofile.infrastructure.UserProfileProperties;
 import com.oxygensened.userprofile.context.notifications.Mail;
 import com.oxygensened.userprofile.context.notifications.NotificationEvent;
 import com.oxygensened.userprofile.context.notifications.NotificationsRepository;

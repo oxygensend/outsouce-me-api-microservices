@@ -2,7 +2,7 @@ package com.oxygensened.userprofile;
 
 import com.oxygensend.commons_jdk.exception.ExceptionConfiguration;
 import com.oxygensend.commons_jdk.feign.CommonFeignConfiguration;
-import com.oxygensened.userprofile.config.properties.UserProfileProperties;
+import com.oxygensened.userprofile.infrastructure.UserProfileProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

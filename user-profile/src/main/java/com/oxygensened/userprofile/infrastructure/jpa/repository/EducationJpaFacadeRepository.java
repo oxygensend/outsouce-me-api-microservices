@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.Education;
-import com.oxygensened.userprofile.domain.EducationRepository;
+import com.oxygensened.userprofile.domain.entity.Education;
+import com.oxygensened.userprofile.domain.repository.EducationRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;

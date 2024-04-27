@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.validation;
 
-import com.oxygensened.userprofile.context.auth.dto.RegisterRequest;
+import com.oxygensened.userprofile.context.auth.dto.request.RegisterRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

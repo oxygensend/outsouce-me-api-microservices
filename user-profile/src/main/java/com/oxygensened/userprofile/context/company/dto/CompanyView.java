@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.company.dto;
 
-import com.oxygensened.userprofile.domain.Company;
+import com.oxygensened.userprofile.domain.entity.Company;
 
 public record CompanyView(String name) {
 

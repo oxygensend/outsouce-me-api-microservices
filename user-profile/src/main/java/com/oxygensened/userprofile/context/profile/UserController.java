@@ -4,7 +4,7 @@ import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensened.userprofile.context.profile.dto.UserOrder;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
-import com.oxygensened.userprofile.domain.AccountType;
+import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.context.profile.dto.view;
 
-import com.oxygensened.userprofile.domain.AccountType;
-import com.oxygensened.userprofile.domain.User;
+import com.oxygensened.userprofile.domain.entity.part.AccountType;
+import com.oxygensened.userprofile.domain.entity.User;
 import java.time.LocalDate;
 
 public record UserView(String email,

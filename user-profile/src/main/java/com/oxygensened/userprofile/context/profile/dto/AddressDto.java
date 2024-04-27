@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.profile.dto;
 
-import com.oxygensened.userprofile.domain.Address;
+import com.oxygensened.userprofile.domain.entity.Address;
 import jakarta.validation.constraints.NotBlank;
 
 public record AddressDto(@NotBlank String postCode,

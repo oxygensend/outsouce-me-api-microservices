@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.profile.dto.view;
 
-import com.oxygensened.userprofile.domain.Address;
+import com.oxygensened.userprofile.domain.entity.Address;
 
 public record AddressView(String postCode, String city) {
 

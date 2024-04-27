@@ -1,6 +1,6 @@
 package com.oxygensend.staticdata.infrastructure.openstreetmap
 
-import com.oxygensend.staticdata.config.StaticDataProperties
+import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import com.oxygensend.staticdata.domain.AddressDetailsRepository
 import com.oxygensend.staticdata.domain.CoordinatesDto
 import com.oxygensend.staticdata.domain.Address

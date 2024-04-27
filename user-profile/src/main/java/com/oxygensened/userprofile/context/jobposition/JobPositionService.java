@@ -1,12 +1,12 @@
 package com.oxygensened.userprofile.context.jobposition;
 
 import com.oxygensened.userprofile.context.company.CompanyService;
-import com.oxygensened.userprofile.context.jobposition.dto.CreateJobPositionRequest;
-import com.oxygensened.userprofile.context.jobposition.dto.JobPositionView;
-import com.oxygensened.userprofile.context.jobposition.dto.UpdateJobPositionRequest;
-import com.oxygensened.userprofile.domain.JobPosition;
-import com.oxygensened.userprofile.domain.JobPositionRepository;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.context.jobposition.dto.request.CreateJobPositionRequest;
+import com.oxygensened.userprofile.context.jobposition.dto.view.JobPositionView;
+import com.oxygensened.userprofile.context.jobposition.dto.request.UpdateJobPositionRequest;
+import com.oxygensened.userprofile.domain.entity.JobPosition;
+import com.oxygensened.userprofile.domain.repository.JobPositionRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.JobPositionNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.service.DomainUserService;

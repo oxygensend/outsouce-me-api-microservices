@@ -1,11 +1,11 @@
 package com.oxygensened.userprofile.context.language;
 
-import com.oxygensened.userprofile.context.language.dto.CreateLanguageRequest;
-import com.oxygensened.userprofile.context.language.dto.LanguageView;
-import com.oxygensened.userprofile.context.language.dto.UpdateLanguageRequest;
-import com.oxygensened.userprofile.domain.Language;
-import com.oxygensened.userprofile.domain.LanguageRepository;
-import com.oxygensened.userprofile.domain.UserRepository;
+import com.oxygensened.userprofile.context.language.dto.request.CreateLanguageRequest;
+import com.oxygensened.userprofile.context.language.dto.view.LanguageView;
+import com.oxygensened.userprofile.context.language.dto.request.UpdateLanguageRequest;
+import com.oxygensened.userprofile.domain.entity.Language;
+import com.oxygensened.userprofile.domain.repository.LanguageRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.exception.LanguageNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.context.language;
 
-import com.oxygensened.userprofile.context.language.dto.CreateLanguageRequest;
-import com.oxygensened.userprofile.context.language.dto.LanguageView;
-import com.oxygensened.userprofile.context.language.dto.UpdateLanguageRequest;
+import com.oxygensened.userprofile.context.language.dto.request.CreateLanguageRequest;
+import com.oxygensened.userprofile.context.language.dto.view.LanguageView;
+import com.oxygensened.userprofile.context.language.dto.request.UpdateLanguageRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;

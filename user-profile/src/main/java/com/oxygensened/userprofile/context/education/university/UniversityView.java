@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.education.university;
 
-import com.oxygensened.userprofile.domain.University;
+import com.oxygensened.userprofile.domain.entity.University;
 
 public record UniversityView(Long id, String name) {
 

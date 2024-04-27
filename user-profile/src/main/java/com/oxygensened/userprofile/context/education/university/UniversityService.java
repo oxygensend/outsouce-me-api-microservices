@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.education.university;
 
-import com.oxygensened.userprofile.domain.UniversityRepository;
+import com.oxygensened.userprofile.domain.repository.UniversityRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

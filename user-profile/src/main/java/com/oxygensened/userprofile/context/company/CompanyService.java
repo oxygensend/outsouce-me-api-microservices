@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.context.company;
 
 import com.oxygensened.userprofile.context.company.dto.CompanyView;
-import com.oxygensened.userprofile.domain.Company;
-import com.oxygensened.userprofile.domain.CompanyRepository;
+import com.oxygensened.userprofile.domain.entity.Company;
+import com.oxygensened.userprofile.domain.repository.CompanyRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
