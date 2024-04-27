@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3308/job_offer
+    username: root
+    password: 12345
+
+eureka:
+  client:
+    enabled: false
+
+
+services:
+  notifications:
+    login: 123214
+    externalTopic: outsource-me-api-notifications
+
+
+feign:
+  connection:
+    type: URI
+
+
+kafka:
+  producer:
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+  consumer:
+    application-id: job-offer-service
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+    user-details-data-topic: outsource-me-api-user-data
+    #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+
+job-offers:
+  service-id: job-offers-service
+  user-thumbnail-server-url: http://localhost:8080/api/v1/users/thumbnail
+  storage:
+    root-location: job-offer/storage
+    attachments-location: attachments

@@ -10,7 +10,7 @@ spring:
 
 kafka:
   consumer:
-    application-id: auth-service
+    application-id: opinion-service
     bootstrap-servers: localhost:29092
     security-protocol: PLAINTEXT
     user-details-data-topic: outsource-me-api-user-data
