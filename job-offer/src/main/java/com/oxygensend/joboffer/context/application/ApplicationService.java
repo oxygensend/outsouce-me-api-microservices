@@ -1,15 +1,15 @@
 package com.oxygensend.joboffer.context.application;
 
 import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.joboffer.context.application.dto.ApplicationFilter;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.context.application.dto.CreateApplicationCommand;
-import com.oxygensend.joboffer.context.application.view.ApplicationListView;
-import com.oxygensend.joboffer.context.application.view.ApplicationView;
-import com.oxygensend.joboffer.context.application.view.ApplicationViewFactory;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationListView;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationView;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationViewFactory;
 import com.oxygensend.joboffer.context.attachment.AttachmentService;
 import com.oxygensend.joboffer.context.attachment.CreateAttachmentCommand;
 import com.oxygensend.joboffer.context.notifications.NotificationsService;
-import com.oxygensend.joboffer.domain.ApplicationStatus;
+import com.oxygensend.joboffer.domain.entity.part.ApplicationStatus;
 import com.oxygensend.joboffer.domain.entity.Application;
 import com.oxygensend.joboffer.domain.exception.ApplicationAlreadyExistsException;
 import com.oxygensend.joboffer.domain.exception.ApplicationNotFoundException;

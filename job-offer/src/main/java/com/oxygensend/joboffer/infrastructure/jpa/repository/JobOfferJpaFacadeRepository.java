@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.domain.JobOfferFilter;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import jakarta.persistence.EntityManager;

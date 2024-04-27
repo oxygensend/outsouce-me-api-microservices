@@ -1,14 +1,13 @@
 package com.oxygensend.joboffer;
 
 import com.oxygensend.commons_jdk.exception.ExceptionConfiguration;
-import com.oxygensend.joboffer.config.properties.JobOffersProperties;
-import com.oxygensend.joboffer.config.properties.ServiceProperties;
+import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
-@EnableConfigurationProperties( {JobOffersProperties.class, ServiceProperties.class})
+@EnableConfigurationProperties( {ServiceProperties.class})
 @Import( {ExceptionConfiguration.class})
 @SpringBootApplication
 public class JobOfferApplication {

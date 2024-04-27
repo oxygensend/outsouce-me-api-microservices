@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class SlugAspect {
+final class SlugAspect {
     private final SlugService slugService;
 
-    public SlugAspect(SlugService slugService) {
+    SlugAspect(SlugService slugService) {
         this.slugService = slugService;
     }
 

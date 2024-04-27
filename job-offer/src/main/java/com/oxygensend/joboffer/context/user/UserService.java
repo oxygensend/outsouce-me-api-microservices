@@ -1,7 +1,8 @@
 package com.oxygensend.joboffer.context.user;
 
-import com.oxygensend.joboffer.context.user.view.UserDetailsView;
-import com.oxygensend.joboffer.context.user.view.UserViewFactory;
+import com.oxygensend.joboffer.context.user.dto.CreateUserRequest;
+import com.oxygensend.joboffer.context.user.dto.view.UserDetailsView;
+import com.oxygensend.joboffer.context.user.dto.view.UserViewFactory;
 import com.oxygensend.joboffer.domain.entity.User;
 import com.oxygensend.joboffer.domain.exception.UserAlreadyExistsException;
 import com.oxygensend.joboffer.domain.repository.UserRepository;

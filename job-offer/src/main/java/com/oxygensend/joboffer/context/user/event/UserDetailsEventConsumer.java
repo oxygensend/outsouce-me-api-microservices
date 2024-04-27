@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.context.user.event;
 
-import com.oxygensend.joboffer.domain.AccountType;
+import com.oxygensend.joboffer.domain.entity.part.AccountType;
 import com.oxygensend.joboffer.domain.entity.User;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
 import java.util.List;

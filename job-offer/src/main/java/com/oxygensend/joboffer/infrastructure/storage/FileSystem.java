@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 
 @Component
-public class FileSystem {
+final class FileSystem {
 
     public void save(InputStream stream, Path destination) throws IOException {
         Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);

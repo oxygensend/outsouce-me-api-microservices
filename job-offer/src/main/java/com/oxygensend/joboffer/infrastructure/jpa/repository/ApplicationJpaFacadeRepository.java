@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.context.application.dto.ApplicationFilter;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.domain.entity.Application;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.User;

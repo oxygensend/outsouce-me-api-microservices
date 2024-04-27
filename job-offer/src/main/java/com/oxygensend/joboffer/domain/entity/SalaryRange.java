@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.domain.entity;
 
-import com.oxygensend.joboffer.domain.SalaryType;
-import com.oxygensend.joboffer.domain.SupportedCurrency;
-import com.oxygensend.joboffer.infrastructure.jpa.SupportedCurrencyConverter;
+import com.oxygensend.joboffer.domain.entity.part.SalaryType;
+import com.oxygensend.joboffer.domain.entity.part.SupportedCurrency;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.SupportedCurrencyConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

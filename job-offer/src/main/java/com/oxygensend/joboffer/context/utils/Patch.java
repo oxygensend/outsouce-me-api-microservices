@@ -1,6 +1,5 @@
 package com.oxygensend.joboffer.context.utils;
 
-import com.oxygensend.joboffer.infrastructure.jackson.JsonNullableWrapper;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 

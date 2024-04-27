@@ -2,12 +2,13 @@ package com.oxygensend.joboffer.context.job_offer;
 
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
-import com.oxygensend.joboffer.context.job_offer.dto.CreateJobOfferRequest;
-import com.oxygensend.joboffer.context.job_offer.dto.UpdateJobOfferRequest;
-import com.oxygensend.joboffer.context.job_offer.view.JobOfferDetailsView;
-import com.oxygensend.joboffer.context.job_offer.view.JobOfferView;
-import com.oxygensend.joboffer.context.job_offer.view.JobOfferViewFactory;
-import com.oxygensend.joboffer.domain.JobOfferFilter;
+import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
+import com.oxygensend.joboffer.context.job_offer.dto.request.CreateJobOfferRequest;
+import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.entity.Address;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
@@ -17,7 +18,7 @@ import com.oxygensend.joboffer.domain.exception.OnlyPrincipleCanPublishJobOfferE
 import com.oxygensend.joboffer.domain.repository.AddressRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
-import com.oxygensend.joboffer.infrastructure.jackson.JsonNullableWrapper;
+import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Pageable;
@@ -40,28 +41,28 @@ public class JobOfferService {
         this.addressRepository = addressRepository;
     }
 
-    public JobOfferDetailsView createJobOffer(CreateJobOfferRequest request) {
-        var principal = userRepository.findById(request.principalId())
-                                      .orElseThrow(() -> NoSuchUserException.withId(request.principalId()));
+    public JobOfferDetailsView createJobOffer(CreateJobOfferCommand command) {
+        var principal = userRepository.findById(command.principalId())
+                                      .orElseThrow(() -> NoSuchUserException.withId(command.principalId()));
         if (!principal.canPublishJobOffers()) {
             throw new OnlyPrincipleCanPublishJobOfferException();
         }
 
-        var salaryRange = request.salaryRange().toSalaryRange();
-        var address = addressRepository.findByPostCodeAndCity(request.address().postCode(), request.address().city())
-                                       .orElse(request.address().toAddress());
+        var salaryRange = command.salaryRange().toSalaryRange();
+        var address = addressRepository.findByPostCodeAndCity(command.address().postCode(), command.address().city())
+                                       .orElse(command.address().toAddress());
 
         var jobOffer = JobOffer.builder()
                                .user(principal)
-                               .name(request.name())
-                               .description(request.description())
-                               .formOfEmployment(request.formOfEmployment())
-                               .experience(request.experience())
+                               .name(command.name())
+                               .description(command.description())
+                               .formOfEmployment(command.formOfEmployment())
+                               .experience(command.experience())
                                .salaryRange(salaryRange)
                                .address(address)
-                               .technologies(request.technologies())
-                               .workTypes(request.workTypes())
-                               .validTo(request.validTo())
+                               .technologies(command.technologies())
+                               .workTypes(command.workTypes())
+                               .validTo(command.validTo())
                                .build();
 
         jobOffer = jobOfferRepository.save(jobOffer);

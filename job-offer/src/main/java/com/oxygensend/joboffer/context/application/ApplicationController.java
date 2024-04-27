@@ -2,18 +2,18 @@ package com.oxygensend.joboffer.context.application;
 
 import com.oxygensend.commons_jdk.DefaultView;
 import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.joboffer.context.application.dto.ApplicationFilter;
-import com.oxygensend.joboffer.context.application.dto.ApplicationSort;
-import com.oxygensend.joboffer.context.application.dto.ChangeStatusRequest;
 import com.oxygensend.joboffer.context.application.dto.CreateApplicationCommand;
-import com.oxygensend.joboffer.context.application.dto.CreateApplicationRequest;
-import com.oxygensend.joboffer.context.application.view.ApplicationListView;
-import com.oxygensend.joboffer.context.application.view.ApplicationStatusView;
-import com.oxygensend.joboffer.context.application.view.ApplicationView;
+import com.oxygensend.joboffer.context.application.dto.request.ChangeStatusRequest;
+import com.oxygensend.joboffer.context.application.dto.request.CreateApplicationRequest;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationListView;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationStatusView;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationView;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationSort;
+import com.oxygensend.joboffer.domain.repository.filter.SortDirection;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -74,7 +74,7 @@ final class ApplicationController {
     @GetMapping
     PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
                                                      @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,
-                                                     @RequestParam(required = false, defaultValue = "ASC") Sort.Direction dir,
+                                                     @RequestParam(required = false, defaultValue = "ASC") SortDirection dir,
                                                      Pageable pageable) {
         var filter = ApplicationFilter.builder()
                                       .userId(userId)

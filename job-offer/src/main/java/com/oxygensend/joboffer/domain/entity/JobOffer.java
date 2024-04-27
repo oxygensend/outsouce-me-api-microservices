@@ -1,12 +1,12 @@
 package com.oxygensend.joboffer.domain.entity;
 
-import com.oxygensend.joboffer.domain.Experience;
-import com.oxygensend.joboffer.domain.FormOfEmployment;
+import com.oxygensend.joboffer.domain.entity.part.Experience;
+import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.Slug;
-import com.oxygensend.joboffer.domain.WorkType;
-import com.oxygensend.joboffer.infrastructure.jpa.ExperienceConverter;
-import com.oxygensend.joboffer.infrastructure.jpa.StringSetConverter;
-import com.oxygensend.joboffer.infrastructure.jpa.WorkTypesConverter;
+import com.oxygensend.joboffer.domain.entity.part.WorkType;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.ExperienceConverter;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.StringSetConverter;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.WorkTypesConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

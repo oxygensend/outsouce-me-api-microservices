@@ -1,8 +1,9 @@
 package com.oxygensend.joboffer.infrastructure.services.notifications;
 
 
-import com.oxygensend.joboffer.config.properties.JobOffersProperties;
-import com.oxygensend.joboffer.config.properties.ServiceProperties;
+import com.oxygensend.joboffer.context.JobOffersProperties;
+import com.oxygensend.joboffer.infrastructure.JobOffersPropertiesImpl;
+import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import com.oxygensend.joboffer.context.notifications.InternalMessage;
 import com.oxygensend.joboffer.context.notifications.Mail;
 import com.oxygensend.joboffer.context.notifications.NotificationEvent;
