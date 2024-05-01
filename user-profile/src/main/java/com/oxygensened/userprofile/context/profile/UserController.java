@@ -36,7 +36,8 @@ class UserController {
 
     @GetMapping("/{id}")
     UserView show(@PathVariable Long id) {
-        return userService.getUser(id);
+        var x = userService.getUser(id);
+        return x;
     }
 
     @PatchMapping("/{id}")
