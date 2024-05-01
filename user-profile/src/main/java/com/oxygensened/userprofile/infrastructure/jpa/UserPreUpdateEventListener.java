@@ -37,7 +37,7 @@ final class UserPreUpdateEventListener implements PreUpdateEventListener {
             }
 
             if (!changes.isEmpty()) {
-                domainEventPublisher.publish(new UserDetailsDataEvent(user.id().toString(), changes));
+                domainEventPublisher.publish(new UserDetailsDataEvent(user.id(), changes));
             }
         }
         return false;

@@ -5,10 +5,11 @@ import java.util.Set;
 
 public record AuthRegisterRequest(String identity,
                                   String password,
-                                  Set<String> roles) {
+                                  Set<String> roles,
+                                  String businessId) {
 
 
     public static AuthRegisterRequest create(RegisterUserCommand command) {
-        return new AuthRegisterRequest(command.email(), command.password(), Set.of(command.role()));
+        return new AuthRegisterRequest(command.email(), command.password(), Set.of(command.role()), command.businessId());
     }
 }
