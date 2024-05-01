@@ -6,6 +6,7 @@ import com.oxygensened.userprofile.context.language.dto.request.UpdateLanguageRe
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Tag(name = "Language")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
 public class LanguageController {

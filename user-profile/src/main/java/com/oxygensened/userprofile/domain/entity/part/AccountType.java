@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public enum AccountType {
-    Developer("ROLE_DEVELOPER", 0), Principle("ROLE_PRINCIPLE", 1);
+    DEVELOPER("ROLE_DEVELOPER", 0), PRINCIPLE("ROLE_PRINCIPLE", 1);
     private final String role;
     private final int numericMapping;
 

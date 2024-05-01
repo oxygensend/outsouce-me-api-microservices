@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Address")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/static-data/addresses")
 internal class AddressController(private val addressService: AddressService) {

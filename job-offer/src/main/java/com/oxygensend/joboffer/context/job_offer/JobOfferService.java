@@ -2,13 +2,13 @@ package com.oxygensend.joboffer.context.job_offer;
 
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
+import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
-import com.oxygensend.joboffer.context.job_offer.dto.request.CreateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
-import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
+import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
 import com.oxygensend.joboffer.domain.entity.Address;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
@@ -18,7 +18,11 @@ import com.oxygensend.joboffer.domain.exception.OnlyPrincipleCanPublishJobOfferE
 import com.oxygensend.joboffer.domain.repository.AddressRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
-import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Pageable;
@@ -48,9 +52,10 @@ public class JobOfferService {
             throw new OnlyPrincipleCanPublishJobOfferException();
         }
 
-        var salaryRange = command.salaryRange().toSalaryRange();
+        var salaryRange = Optional.ofNullable(command.salaryRange()).map(SalaryRangeDto::toSalaryRange).orElse(null);
         var address = addressRepository.findByPostCodeAndCity(command.address().postCode(), command.address().city())
                                        .orElse(command.address().toAddress());
+        var validTo = command.validTo() != null ? LocalDateTime.of(command.validTo(), LocalTime.NOON) : null;
 
         var jobOffer = JobOffer.builder()
                                .user(principal)
@@ -62,7 +67,7 @@ public class JobOfferService {
                                .address(address)
                                .technologies(command.technologies())
                                .workTypes(command.workTypes())
-                               .validTo(command.validTo())
+                               .validTo(validTo)
                                .build();
 
         jobOffer = jobOfferRepository.save(jobOffer);
@@ -97,14 +102,15 @@ public class JobOfferService {
         var jobOffer = jobOfferRepository.findBySlug(slug)
                                          .orElseThrow(JobOfferNotFoundException::new);
 
+
         updateIfPresent(request.name(), jobOffer::setName);
         updateIfPresent(request.description(), jobOffer::setDescription);
         updateIfPresent(request.formOfEmployment(), jobOffer::setFormOfEmployment);
         updateIfPresent(request.experience(), jobOffer::setExperience);
-        updateIfPresent(request.validTo(), jobOffer::setValidTo);
         updateIfPresent(request.technologies(), jobOffer::setTechnologies);
         updateSalaryRange(request.salaryRange(), jobOffer.salaryRange());
         updateAddress(request.address(), jobOffer::setAddress);
+        updateValidToDate(request.validTo(), jobOffer::setValidTo);
         jobOffer.setUpdatedAt(jobOffer.updatedAt());
 
         jobOffer = jobOfferRepository.save(jobOffer);
@@ -115,7 +121,15 @@ public class JobOfferService {
         var page = jobOfferRepository.findAll(filter, pageable)
                                      .map(jobOfferViewFactory::createInfo);
 
-        return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
+    }
+
+    private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
+        if (JsonNullableWrapper.isPresent(validTo)) {
+            var validToUnWrapped = JsonNullableWrapper.unwrap(validTo);
+            var newValue = validToUnWrapped != null ? LocalDateTime.of(validToUnWrapped, LocalTime.NOON) : null;
+            validToSetter.accept(newValue);
+        }
     }
 
     private void updateAddress(JsonNullable<AddressDto> addressDto, Consumer<Address> addressSetter) {

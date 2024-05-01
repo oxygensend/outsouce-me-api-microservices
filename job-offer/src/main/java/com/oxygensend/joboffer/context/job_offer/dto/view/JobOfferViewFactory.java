@@ -30,7 +30,8 @@ public class JobOfferViewFactory {
                                        jobOffer.numberOfApplications(),
                                        salaryRangeView,
                                        addressView,
-                                       jobOffer.createdAt());
+                                       jobOffer.createdAt(),
+                                       jobOffer.validTo());
     }
 
     public JobOfferView createInfo(JobOffer jobOffer) {
@@ -40,6 +41,7 @@ public class JobOfferViewFactory {
                                 jobOffer.name(),
                                 jobOffer.description(),
                                 jobOffer.shortDescription(),
+                                jobOffer.numberOfApplications(),
                                 userView);
     }
 

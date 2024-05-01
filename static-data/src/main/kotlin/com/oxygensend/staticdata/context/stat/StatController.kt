@@ -3,11 +3,13 @@ package com.oxygensend.staticdata.context.stat
 import com.oxygensend.staticdata.domain.FormOfEmployment
 import com.oxygensend.staticdata.domain.WorkType
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "Form of Employment")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/static-data")
 internal class StatController {

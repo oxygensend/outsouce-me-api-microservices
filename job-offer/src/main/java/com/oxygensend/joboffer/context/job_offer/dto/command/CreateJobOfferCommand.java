@@ -5,6 +5,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -17,5 +18,5 @@ public record CreateJobOfferCommand(String name,
                                     Set<WorkType> workTypes,
                                     Experience experience,
                                     String principalId,
-                                    LocalDateTime validTo) {
+                                    LocalDate validTo) {
 }

@@ -1,15 +1,16 @@
 package com.oxygensend.joboffer.context.job_offer.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
-import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
 import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
+import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
 import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 public record CreateJobOfferRequest(@NotEmpty
@@ -27,7 +28,7 @@ public record CreateJobOfferRequest(@NotEmpty
                                     Experience experience,
                                     @NotEmpty
                                     String principalId,
-                                    LocalDateTime validTo) {
+                                    LocalDate validTo) {
 
 
     public CreateJobOfferCommand toCommand() {

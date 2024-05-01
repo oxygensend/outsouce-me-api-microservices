@@ -8,6 +8,7 @@ import com.oxygensend.joboffer.domain.entity.part.SupportedCurrency;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -23,7 +24,7 @@ public record UpdateJobOfferRequest(@NotBlank
                                     JsonNullable<AddressDto> address,
                                     Set<String> technologies,
                                     JsonNullable<Experience> experience,
-                                    JsonNullable<LocalDateTime> validTo) {
+                                    JsonNullable<LocalDate> validTo) {
 
 
     public record SalaryRangeDto(Double downRange,

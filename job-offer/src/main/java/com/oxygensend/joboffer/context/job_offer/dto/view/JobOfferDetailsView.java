@@ -18,11 +18,12 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
     public final SalaryRangeView salaryRange;
     public final AddressView address;
     public final LocalDateTime createdAt;
+    public final LocalDateTime validto;
 
 
     public JobOfferDetailsView(Long id, String slug, String name, BaseUserView user, String description, Set<WorkType> workTypes,
                                Experience experience, FormOfEmployment formOfEmployment, List<String> technologies, int numberOfApplications,
-                               SalaryRangeView salaryRange, AddressView address, LocalDateTime createdAt) {
+                               SalaryRangeView salaryRange, AddressView address, LocalDateTime createdAt, LocalDateTime validto) {
         super(id, slug, name, user);
         this.description = description;
         this.workTypes = workTypes;
@@ -33,5 +34,6 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
         this.salaryRange = salaryRange;
         this.address = address;
         this.createdAt = createdAt;
+        this.validto = validto;
     }
 }
