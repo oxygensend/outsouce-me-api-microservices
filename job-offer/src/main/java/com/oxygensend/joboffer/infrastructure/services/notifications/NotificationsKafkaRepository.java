@@ -8,16 +8,18 @@ import com.oxygensend.joboffer.context.notifications.NotificationEvent;
 import com.oxygensend.joboffer.context.notifications.NotificationsRepository;
 import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import java.util.UUID;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 final class NotificationsKafkaRepository implements NotificationsRepository {
-    private final KafkaTemplate<String, NotificationEvent<?>> notificationsKafkaTemplate;
+    private final KafkaTemplate<String, NotificationEvent> notificationsKafkaTemplate;
     private final String login;
     private final String serviceId;
 
-    NotificationsKafkaRepository(KafkaTemplate<String, NotificationEvent<?>> notificationsKafkaTemplate, JobOffersProperties jobOffersProperties,
+    NotificationsKafkaRepository(KafkaTemplate<String, NotificationEvent> notificationsKafkaTemplate, JobOffersProperties jobOffersProperties,
                                  ServiceProperties serviceProperties) {
         this.notificationsKafkaTemplate = notificationsKafkaTemplate;
         this.serviceId = jobOffersProperties.serviceId();
@@ -35,8 +37,13 @@ final class NotificationsKafkaRepository implements NotificationsRepository {
         send(message);
     }
 
-    private <T> void send(T message) {
-        var event = new NotificationEvent<>(message, login, serviceId);
-        notificationsKafkaTemplate.sendDefault(UUID.randomUUID().toString(), event);
+    private void send(NotificationEvent message) {
+        RecordHeaders headers = new RecordHeaders();
+        headers.add("type", message.getClass().getSimpleName().getBytes());
+        headers.add("serviceId", serviceId.getBytes());
+        headers.add("login", login.getBytes());
+        ProducerRecord<String, NotificationEvent> record = new ProducerRecord<>(notificationsKafkaTemplate.getDefaultTopic(),
+                                                                                null, UUID.randomUUID().toString(), message, headers);
+        notificationsKafkaTemplate.send(record);
     }
 }

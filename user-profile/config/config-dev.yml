@@ -14,7 +14,7 @@ services:
     url: http://localhost:9002
     userRegisteredTopic: outsource-me-api-user-registered
   notifications:
-    login: 123214
+    login: 1234
     externalTopic: outsource-me-api-notifications
 
 

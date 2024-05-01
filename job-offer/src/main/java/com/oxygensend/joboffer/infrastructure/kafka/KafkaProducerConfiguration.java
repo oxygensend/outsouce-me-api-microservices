@@ -40,8 +40,8 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, NotificationEvent<?>> notificationsKafkaTemplate() {
-        var producerFactory = new DefaultKafkaProducerFactory<String, NotificationEvent<?>>(configProperties());
+    public KafkaTemplate<String, NotificationEvent> notificationsKafkaTemplate() {
+        var producerFactory = new DefaultKafkaProducerFactory<String, NotificationEvent>(configProperties());
         var kafkaTemplate = new KafkaTemplate<>(producerFactory);
         kafkaTemplate.setProducerListener(new KafkaProducerListener<>());
         kafkaTemplate.setDefaultTopic(serviceProperties.notifications().externalTopic());

@@ -2,13 +2,13 @@ package com.oxygensend.joboffer.context.notifications;
 
 import java.util.Set;
 
-public record InternalMessage(String message, Set<Recipient> recipients) {
+public record InternalMessage(String content, Set<Recipient> recipients) implements NotificationEvent {
 
-    public InternalMessage(String message, Recipient recipient) {
-        this(message, Set.of(recipient));
+    public InternalMessage(String content, Recipient recipient) {
+        this(content, Set.of(recipient));
     }
 
-    public record Recipient(String systemId) {
+    public record Recipient(String id) {
 
     }
 }

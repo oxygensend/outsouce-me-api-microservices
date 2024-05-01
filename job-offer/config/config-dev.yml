@@ -11,7 +11,7 @@ eureka:
 
 services:
   notifications:
-    login: 123214
+    login: 1234
     externalTopic: outsource-me-api-notifications
 
 

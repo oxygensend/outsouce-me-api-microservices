@@ -49,7 +49,16 @@ services:
       #      - ./kafka/broker/data:/var/lib/kafka/data
     networks:
       - outsource_me
-
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    logging:
+      driver: "none"
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - outsource_me
 
 networks:
   outsource_me:
