@@ -50,5 +50,10 @@ class UserJpaFacadeRepository implements UserRepository {
         return userJpaRepository.findTheNewestSlugVersion(slug);
     }
 
+    @Override
+    public Optional<String> getThumbnail(Long userId) {
+        return userJpaRepository.getThumbnail(userId);
+    }
+
 
 }

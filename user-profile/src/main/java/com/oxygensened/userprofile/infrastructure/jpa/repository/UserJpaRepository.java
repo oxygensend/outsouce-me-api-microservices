@@ -18,4 +18,7 @@ interface UserJpaRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT coalesce( max(cast( substring_index(u.slug, '-', -1) as long)),-1) FROM User u WHERE u.slug like :slug%")
     long findTheNewestSlugVersion(@Param("slug") String slug);
+
+    @Query("SELECT u.imageNameSmall FROM User u where u.id = :userId")
+    Optional<String> getThumbnail(@Param("userId") Long userId);
 }

@@ -5,12 +5,12 @@ import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsReques
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.context.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
-import com.oxygensened.userprofile.domain.entity.Address;
-import com.oxygensened.userprofile.domain.repository.AddressRepository;
-import com.oxygensened.userprofile.domain.entity.User;
-import com.oxygensened.userprofile.domain.repository.UserRepository;
-import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
+import com.oxygensened.userprofile.domain.entity.Address;
+import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
+import com.oxygensened.userprofile.domain.repository.AddressRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
@@ -75,6 +75,12 @@ public class UserService {
 
     public Resource loadThumbnail(String filename) {
         return thumbnailService.load(filename);
+    }
+
+    public Resource loadThumbnailByUserId(Long id) {
+        return userRepository.getThumbnail(id)
+                             .map(thumbnailService::load)
+                             .orElseThrow(() -> UserNotFoundException.withId(id));
     }
 
     private User updateDetails(User user, UserDetailsRequest request) {

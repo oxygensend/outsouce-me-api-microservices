@@ -1,11 +1,11 @@
 package com.oxygensened.userprofile.context.profile;
 
 import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
@@ -69,5 +69,11 @@ class UserController {
     @ResponseStatus(HttpStatus.OK)
     Resource getImage(@PathVariable String filename) {
         return userService.loadThumbnail(filename);
+    }
+
+    @GetMapping(value = "/{id}/thumbnail", produces = "image/webp")
+    @ResponseStatus(HttpStatus.OK)
+    Resource getImage(@PathVariable Long id) {
+        return userService.loadThumbnailByUserId(id);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DomainUserService {
 
-    public void addTechnology(User user, String technology) {
+    public void  addTechnology(User user, String technology) {
         if (user.technologies().contains(technology)) {
             throw new TechnologyIsObtainedByUserException("Technology %s is already obtained by user".formatted(technology));
         }
@@ -24,6 +24,7 @@ public class DomainUserService {
         user.removeTechnology(technology);
     }
 
+    // TODO usługa ignoruje job positions, która jest niekatywna i ma date
     public void changeActiveJobPosition(User user, JobPosition jobPosition) {
         if (jobPosition.endDate() != null) { // If end date is defined Job should not be marked as active
             return;

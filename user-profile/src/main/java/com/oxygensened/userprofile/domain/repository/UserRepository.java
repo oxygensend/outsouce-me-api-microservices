@@ -19,4 +19,5 @@ public interface UserRepository {
 
     long findTheNewestSlugVersion(String slug);
 
+    Optional<String> getThumbnail(Long userId);
 }

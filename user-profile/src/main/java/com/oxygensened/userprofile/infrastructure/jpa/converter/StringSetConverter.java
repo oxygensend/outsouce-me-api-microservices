@@ -2,7 +2,10 @@ package com.oxygensened.userprofile.infrastructure.jpa.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
+import org.apache.logging.log4j.util.Strings;
 
 @Converter
 public class StringSetConverter implements AttributeConverter<Set<String>, String> {
@@ -15,6 +18,14 @@ public class StringSetConverter implements AttributeConverter<Set<String>, Strin
 
     @Override
     public Set<String> convertToEntityAttribute(String s) {
-        return Set.of(s.split(DELIMITER));
+        Set<String> set = new HashSet<>();
+        if (s == null) {
+            return set;
+        }
+        Arrays.stream(s.split(DELIMITER))
+              .filter(Strings::isNotEmpty)
+              .forEach(set::add);
+
+        return set;
     }
 }

@@ -1,8 +1,10 @@
 package com.oxygensened.userprofile.context.technology;
 
+import com.oxygensened.userprofile.context.technology.dto.AddTechnologiesRequest;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyRequest;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyView;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Technology")
@@ -29,10 +33,18 @@ public class TechnologyController {
         return technologyService.addTechnology(userId, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}/technologies")
     void delete(@PathVariable Long userId,
-                @Validated @RequestBody TechnologyRequest request) {
-        technologyService.deleteTechnology(userId, request);
+                @RequestParam(required = true, name = "name") String name) {
+        technologyService.deleteTechnology(userId, name);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/{userId}/technologies/addAll")
+    void add(@PathVariable Long userId,
+             @Validated @RequestBody AddTechnologiesRequest request) {
+        technologyService.addTechnologies(userId, request);
     }
 
 }
