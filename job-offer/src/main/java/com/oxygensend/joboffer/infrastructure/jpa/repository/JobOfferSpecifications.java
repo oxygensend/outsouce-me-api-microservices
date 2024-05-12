@@ -32,7 +32,10 @@ final class JobOfferSpecifications {
 
         root.fetch("user", JoinType.INNER);
 
-        predicates.add(cb.equal(root.get("archived"), filter.archived()));
+        if (filter.archived() != null) {
+            predicates.add(cb.equal(root.get("archived"), filter.archived()));
+        }
+
         predicateOfNullable(predicates, filter.userId(), value -> cb.equal(root.get("user").get("id"), value));
 
         if (filter.postCode() != null || filter.city() != null) {

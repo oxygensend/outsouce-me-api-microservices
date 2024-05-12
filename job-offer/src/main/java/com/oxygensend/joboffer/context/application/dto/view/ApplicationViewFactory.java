@@ -30,12 +30,21 @@ public class ApplicationViewFactory {
                                    attachments);
     }
 
-    public ApplicationListView createListView(Application application){
+    public ApplicationListView createListView(Application application) {
         var jobOfferView = jobOfferViewFactory.createBaseJobOfferView(application.jobOffer());
         return new ApplicationListView(application.id(),
                                        application.status(),
                                        jobOfferView,
                                        application.createdAt());
+    }
+
+    public ApplicationInfoView createInfoView(Application application) {
+        var jobOfferView = jobOfferViewFactory.createBaseJobOfferView(application.jobOffer());
+        var attachments = createAttachments(application);
+        return new ApplicationInfoView(application.description(),
+                                       jobOfferView,
+                                       application.createdAt(),
+                                       attachments);
     }
 
     private List<AttachmentView> createAttachments(Application application) {

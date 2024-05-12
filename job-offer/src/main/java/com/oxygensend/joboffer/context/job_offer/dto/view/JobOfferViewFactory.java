@@ -15,7 +15,7 @@ public class JobOfferViewFactory {
 
     public JobOfferDetailsView create(JobOffer jobOffer) {
         var userView = userViewFactory.createUserView(jobOffer.user());
-        var salaryRangeView = SalaryRangeView.from(jobOffer.salaryRange());
+        var salaryRangeView = jobOffer.salaryRange() != null ? SalaryRangeView.from(jobOffer.salaryRange()) : null;
         var addressView = AddressView.from(jobOffer.address());
 
         return new JobOfferDetailsView(jobOffer.id(),

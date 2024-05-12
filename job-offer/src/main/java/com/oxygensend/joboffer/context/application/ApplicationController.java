@@ -5,6 +5,7 @@ import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.application.dto.CreateApplicationCommand;
 import com.oxygensend.joboffer.context.application.dto.request.ChangeStatusRequest;
 import com.oxygensend.joboffer.context.application.dto.request.CreateApplicationRequest;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationInfoView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationListView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationStatusView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationView;
@@ -45,7 +46,6 @@ final class ApplicationController {
     @ResponseStatus(HttpStatus.CREATED)
     DefaultView create(@RequestPart @Validated @Parameter CreateApplicationRequest request,
                        @RequestPart(required = false) List<MultipartFile> attachments) {
-
         var command = CreateApplicationCommand.create(request, attachments);
         applicationService.createApplication(command);
         return DefaultView.of("Application was created successfully");
@@ -69,6 +69,11 @@ final class ApplicationController {
     @ResponseStatus(HttpStatus.OK)
     ApplicationView get(@PathVariable Long id) {
         return applicationService.getApplication(id);
+    }
+    @GetMapping("/{id}/info")
+    @ResponseStatus(HttpStatus.OK)
+    ApplicationInfoView getInfo(@PathVariable Long id) {
+        return applicationService.getApplicationInfo(id);
     }
 
     @GetMapping

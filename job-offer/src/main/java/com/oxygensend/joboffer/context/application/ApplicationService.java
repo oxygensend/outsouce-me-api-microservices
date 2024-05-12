@@ -1,16 +1,16 @@
 package com.oxygensend.joboffer.context.application;
 
 import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.context.application.dto.CreateApplicationCommand;
+import com.oxygensend.joboffer.context.application.dto.view.ApplicationInfoView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationListView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationViewFactory;
 import com.oxygensend.joboffer.context.attachment.AttachmentService;
 import com.oxygensend.joboffer.context.attachment.CreateAttachmentCommand;
 import com.oxygensend.joboffer.context.notifications.NotificationsService;
-import com.oxygensend.joboffer.domain.entity.part.ApplicationStatus;
 import com.oxygensend.joboffer.domain.entity.Application;
+import com.oxygensend.joboffer.domain.entity.part.ApplicationStatus;
 import com.oxygensend.joboffer.domain.exception.ApplicationAlreadyExistsException;
 import com.oxygensend.joboffer.domain.exception.ApplicationNotFoundException;
 import com.oxygensend.joboffer.domain.exception.NoSuchJobOfferException;
@@ -19,6 +19,7 @@ import com.oxygensend.joboffer.domain.exception.OnlyDeveloperCanApplyForJobOffer
 import com.oxygensend.joboffer.domain.repository.ApplicationRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Pageable;
@@ -89,6 +90,12 @@ public class ApplicationService {
         var paginator = applicationRepository.findAll(filter, pageable)
                                              .map(applicationViewFactory::createListView);
         return new PagedListView<>(paginator.getContent(), paginator.getNumberOfElements(), paginator.getNumber(), paginator.getTotalPages());
+    }
+
+    public ApplicationInfoView getApplicationInfo(Long id) {
+        return applicationRepository.findById(id)
+                                    .map(applicationViewFactory::createInfoView)
+                                    .orElseThrow(ApplicationNotFoundException::new);
     }
 
     private void storeAttachments(List<MultipartFile> attachments, Application application) {
