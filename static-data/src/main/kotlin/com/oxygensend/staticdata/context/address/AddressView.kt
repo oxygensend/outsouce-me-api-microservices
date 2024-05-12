@@ -2,8 +2,8 @@ package com.oxygensend.staticdata.context.address
 
 import com.oxygensend.staticdata.domain.Address
 
-data class AddressView(val city: String) {
+data class AddressView(val city: String, val lon: Double?, val lat: Double?) {
     companion object {
-        fun from(address: Address) = AddressView(address.city)
+        fun from(address: Address) = AddressView(address.city, address.lon, address.lat)
     }
 }
