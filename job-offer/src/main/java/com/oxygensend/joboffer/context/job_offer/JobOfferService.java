@@ -6,10 +6,10 @@ import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
 import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferManagementView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
-import com.oxygensend.joboffer.domain.entity.Address;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
 import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;
@@ -108,8 +108,9 @@ public class JobOfferService {
         updateIfPresent(request.formOfEmployment(), jobOffer::setFormOfEmployment);
         updateIfPresent(request.experience(), jobOffer::setExperience);
         updateIfPresent(request.technologies(), jobOffer::setTechnologies);
-        updateSalaryRange(request.salaryRange(), jobOffer.salaryRange());
-        updateAddress(request.address(), jobOffer::setAddress);
+        updateIfPresent(request.workTypes(), jobOffer::setWorkTypes);
+        updateSalaryRange(request.salaryRange(), jobOffer);
+        updateAddress(request.address(), jobOffer);
         updateValidToDate(request.validTo(), jobOffer::setValidTo);
         jobOffer.setUpdatedAt(jobOffer.updatedAt());
 
@@ -124,6 +125,13 @@ public class JobOfferService {
         return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
     }
 
+    public JobOfferManagementView getJobOfferManagement(String slug) {
+        var jobOffer = jobOfferRepository.findBySlug(slug)
+                                         .orElseThrow(JobOfferNotFoundException::new);
+
+        return jobOfferViewFactory.createJobOfferManagementView(jobOffer);
+    }
+
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
         if (JsonNullableWrapper.isPresent(validTo)) {
             var validToUnWrapped = JsonNullableWrapper.unwrap(validTo);
@@ -132,21 +140,35 @@ public class JobOfferService {
         }
     }
 
-    private void updateAddress(JsonNullable<AddressDto> addressDto, Consumer<Address> addressSetter) {
+    private void updateAddress(JsonNullable<AddressDto> addressDto, JobOffer jobOffer) {
         if (JsonNullableWrapper.isPresent(addressDto)) {
             var addressDtoUnwrapped = JsonNullableWrapper.unwrap(addressDto);
-            var address = addressRepository.findByPostCodeAndCity(addressDtoUnwrapped.postCode(), addressDtoUnwrapped.city());
-            address.ifPresentOrElse(addressSetter, () -> addressSetter.accept(JsonNullableWrapper.unwrap(addressDto).toAddress()));
+            if (addressDtoUnwrapped == null) {
+                jobOffer.setAddress(null);
+            } else {
+                var address = addressRepository.findByPostCodeAndCity(addressDtoUnwrapped.postCode(), addressDtoUnwrapped.city());
+                address.ifPresentOrElse(jobOffer::setAddress, () -> jobOffer.setAddress(JsonNullableWrapper.unwrap(addressDto).toAddress()));
+            }
         }
     }
 
-    private void updateSalaryRange(JsonNullable<UpdateJobOfferRequest.SalaryRangeDto> salaryRangeDto, SalaryRange salaryRange) {
+    private void updateSalaryRange(JsonNullable<UpdateJobOfferRequest.SalaryRangeDto> salaryRangeDto, JobOffer jobOffer) {
         if (JsonNullableWrapper.isPresent(salaryRangeDto)) {
             var salaryRangeDtoUnwrapped = JsonNullableWrapper.unwrap(salaryRangeDto);
-            updateIfPresent(salaryRangeDtoUnwrapped.downRange(), salaryRange::setDownRange);
-            updateIfPresent(salaryRangeDtoUnwrapped.upRange(), salaryRange::setUpRange);
-            updateIfPresent(salaryRangeDtoUnwrapped.currency(), salaryRange::setCurrency);
-            updateIfPresent(salaryRangeDtoUnwrapped.type(), salaryRange::setType);
+            if (salaryRangeDtoUnwrapped == null) {
+                jobOffer.setSalaryRange(null);
+            } else {
+                var salaryRange = Optional.ofNullable(jobOffer.salaryRange()).orElseGet(() -> {
+                    var newSalaryRange = new SalaryRange();
+                    jobOffer.setSalaryRange(newSalaryRange);
+                    return newSalaryRange;
+                });
+
+                updateIfPresent(salaryRangeDtoUnwrapped.downRange(), salaryRange::setDownRange);
+                updateIfPresent(salaryRangeDtoUnwrapped.upRange(), salaryRange::setUpRange);
+                updateIfPresent(salaryRangeDtoUnwrapped.currency(), salaryRange::setCurrency);
+                updateIfPresent(salaryRangeDtoUnwrapped.type(), salaryRange::setType);
+            }
         }
     }
 }

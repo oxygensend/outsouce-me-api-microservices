@@ -27,7 +27,8 @@ public class ApplicationViewFactory {
                                    application.description(),
                                    jobOfferView,
                                    userView,
-                                   attachments);
+                                   attachments,
+                                   application.createdAt());
     }
 
     public ApplicationListView createListView(Application application) {

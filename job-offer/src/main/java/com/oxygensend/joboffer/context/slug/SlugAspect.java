@@ -5,7 +5,6 @@ import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.service.SlugService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Objects;
 import java.util.StringJoiner;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -40,7 +39,7 @@ final class SlugAspect {
                 var slug = createSlug(entity, annotation);
                 var currentSlug = getSlug(entity);
 
-                if (Objects.equals(currentSlug, slug)) { // this means that the slug is not changed
+                if (currentSlug != null && currentSlug.startsWith(slug)) { // this means that the slug is not changed
                     return;
                 }
 

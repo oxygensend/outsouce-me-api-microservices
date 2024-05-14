@@ -8,12 +8,15 @@ public class JobOfferView extends BaseJobOfferView {
     public final int numberOfApplications;
 
     public final UserView user;
+    public final boolean archived;
 
-    public JobOfferView(Long id, String slug, String name, String description, String shortDescription, int numberOfApplications, UserView user) {
+
+    public JobOfferView(Long id, String slug, String name, String description, String shortDescription, int numberOfApplications, UserView user, boolean archived) {
         super(id, slug, name);
         this.description = description;
         this.shortDescription = shortDescription;
         this.numberOfApplications = numberOfApplications;
         this.user = user;
+        this.archived = archived;
     }
 }

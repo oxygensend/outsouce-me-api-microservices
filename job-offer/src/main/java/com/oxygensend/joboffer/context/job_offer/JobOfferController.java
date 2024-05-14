@@ -4,6 +4,7 @@ import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.joboffer.context.job_offer.dto.request.CreateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferManagementView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 final class JobOfferController {
 
     private final JobOfferService jobOfferService;
+
 
     JobOfferController(JobOfferService jobOfferService) {
         this.jobOfferService = jobOfferService;
@@ -73,7 +75,7 @@ final class JobOfferController {
                                      @RequestParam(name = "address.postCode", required = false) String postCode,
                                      @RequestParam(name = "address.city", required = false) String city,
                                      @RequestParam(name = "formOfEmployments", required = false) List<FormOfEmployment> formOfEmployments,
-                                     @RequestParam(name = "archived", required = false, defaultValue = "true") Boolean archived,
+                                     @RequestParam(name = "archived", required = false) Boolean archived,
                                      @RequestParam(name = "userId", required = false) String userId,
                                      @RequestParam(name = "sort", required = false, defaultValue = "NEWEST") JobOfferSort sort,
                                      Pageable pageable) {
@@ -91,4 +93,12 @@ final class JobOfferController {
 
         return jobOfferService.getPaginatedJobOffers(filter, pageable);
     }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{slug}/management")
+    JobOfferManagementView managementInfo(@PathVariable String slug) {
+        return jobOfferService.getJobOfferManagement(slug);
+    }
+
 }

@@ -60,7 +60,7 @@ public class JobOffer {
     private boolean archived = false;
     @Convert(converter = StringSetConverter.class)
     private Set<String> technologies = new HashSet<>();
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "jobOffer", fetch = FetchType.LAZY)
     private List<Application> applications = new ArrayList<>();
     @Convert(converter = WorkTypesConverter.class)
     private Set<WorkType> workTypes = new HashSet<>();
