@@ -40,7 +40,7 @@ public class SlugAspect {
                 var slug = createSlug(entity, annotation);
                 var currentSlug = getSlug(entity);
 
-                if (Objects.equals(currentSlug, slug)) { // this means that the slug is not changed
+                if (currentSlug != null && currentSlug.startsWith(slug)) { // this means that the slug is not changed
                     return;
                 }
 

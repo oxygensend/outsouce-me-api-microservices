@@ -3,9 +3,11 @@ package com.oxygensened.userprofile.context.profile;
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
+import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +43,7 @@ class UserController {
     }
 
     @PatchMapping("/{id}")
-    UserView update(@PathVariable Long id, @RequestBody UserDetailsRequest request) {
+    UserView update(@PathVariable @Parameter() Long id, @RequestBody UserDetailsRequest request) {
         return userService.updateUserDetails(id, request);
     }
 
@@ -76,4 +78,11 @@ class UserController {
     Resource getImage(@PathVariable Long id) {
         return userService.loadThumbnailByUserId(id);
     }
+
+    @GetMapping(value = "/search")
+    @ResponseStatus(HttpStatus.OK)
+    PagedListView<UserSearchResult> search(@RequestParam String query, Pageable pageable) {
+        return userService.search(query, pageable);
+    }
+
 }

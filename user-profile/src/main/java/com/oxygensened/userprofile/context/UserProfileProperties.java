@@ -7,4 +7,7 @@ public interface UserProfileProperties {
 
     Map<Topics, String> topics();
 
+    String thumbnailServerUrl();
+
+
 }

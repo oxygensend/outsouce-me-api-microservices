@@ -21,9 +21,10 @@ spring:
     url: jdbc:mysql://localhost:3308/user_profile
     user: root
     password: 12345
-#    driver-class-name: com.mysql.cj.jdbc.DriveR
+    #    driver-class-name: com.mysql.cj.jdbc.DriveR
     enabled: true
-#
+
+
 eureka:
   client:
     enabled: true
@@ -74,3 +75,5 @@ kafka:
 
 user-profile:
   service-id: user-profile-service
+  elasticsearch:
+    boostrap-type: reindex

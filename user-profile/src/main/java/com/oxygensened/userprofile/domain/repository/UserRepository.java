@@ -1,7 +1,9 @@
 package com.oxygensened.userprofile.domain.repository;
 
+import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import com.oxygensened.userprofile.domain.entity.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +22,8 @@ public interface UserRepository {
     long findTheNewestSlugVersion(String slug);
 
     Optional<String> getThumbnail(Long userId);
+
+    Page<UserSearchResult> search(String query, Pageable pageable);
+
+    List<User> findAll();
 }

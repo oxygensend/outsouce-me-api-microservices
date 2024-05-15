@@ -1,11 +1,13 @@
 package com.oxygensened.userprofile.context.profile;
 
+import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.context.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
 import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
+import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
@@ -82,6 +84,12 @@ public class UserService {
                              .map(thumbnailService::load)
                              .orElseThrow(() -> UserNotFoundException.withId(id));
     }
+
+    public PagedListView<UserSearchResult> search(String query, Pageable pageable) {
+        var paginator = userRepository.search(query, pageable);
+        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
+    }
+
 
     private User updateDetails(User user, UserDetailsRequest request) {
         updateIfPresent(request.name(), user::setName);
