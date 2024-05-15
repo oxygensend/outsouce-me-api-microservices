@@ -10,6 +10,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferManagementView
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
+import com.oxygensend.joboffer.domain.JobOfferSearchResult;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
 import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;
@@ -130,6 +131,11 @@ public class JobOfferService {
                                          .orElseThrow(JobOfferNotFoundException::new);
 
         return jobOfferViewFactory.createJobOfferManagementView(jobOffer);
+    }
+
+    public PagedListView<JobOfferSearchResult> search(String query, Pageable pageable) {
+        var paginator = jobOfferRepository.search(query, pageable);
+        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
     }
 
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {

@@ -1,7 +1,8 @@
 package com.oxygensend.joboffer.domain.repository;
 
-import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
+import com.oxygensend.joboffer.domain.JobOfferSearchResult;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,8 @@ public interface JobOfferRepository {
     Page<JobOffer> findAll(JobOfferFilter filter, Pageable pageable);
 
     List<JobOffer> findExpiredJobOffers();
+
+    List<JobOffer> findAll();
+
+    Page<JobOfferSearchResult> search(String query, Pageable pageable);
 }

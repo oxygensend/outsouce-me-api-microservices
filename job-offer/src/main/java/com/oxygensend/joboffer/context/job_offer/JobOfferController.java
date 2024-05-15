@@ -6,6 +6,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferReque
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferManagementView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
+import com.oxygensend.joboffer.domain.JobOfferSearchResult;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
@@ -99,6 +100,12 @@ final class JobOfferController {
     @GetMapping("/{slug}/management")
     JobOfferManagementView managementInfo(@PathVariable String slug) {
         return jobOfferService.getJobOfferManagement(slug);
+    }
+
+    @GetMapping(value = "/search")
+    @ResponseStatus(HttpStatus.OK)
+    PagedListView<JobOfferSearchResult> search(@RequestParam String query, Pageable pageable) {
+        return jobOfferService.search(query, pageable);
     }
 
 }

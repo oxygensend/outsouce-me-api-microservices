@@ -71,3 +71,6 @@ kafka:
       backoff-period-service-unavailable: 5000
     retry-backoff-ms: 1000
 
+job-offers:
+  elasticsearch:
+    boostrap-type: none

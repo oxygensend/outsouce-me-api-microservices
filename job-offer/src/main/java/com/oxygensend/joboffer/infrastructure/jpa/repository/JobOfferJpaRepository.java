@@ -16,4 +16,7 @@ interface JobOfferJpaRepository extends JpaRepository<JobOffer, Long> {
     long findTheNewestSlugVersion(@Param("slug") String slug);
 
     List<JobOffer> findAll(Specification<JobOffer> specification);
+
+    @Query("SELECT j FROM JobOffer j JOIN FETCH j.address JOIN FETCH j.user WHERE j.archived = false ")
+    List<JobOffer> findAll();
 }
