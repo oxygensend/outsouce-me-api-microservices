@@ -24,4 +24,9 @@ class UniversityJpaFacadeRepository implements UniversityRepository {
     public List<University> findAll() {
         return universityJpaRepository.findAll();
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return universityJpaRepository.existsByName(name);
+    }
 }

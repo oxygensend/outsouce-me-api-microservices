@@ -9,5 +9,7 @@ public interface UserProfileProperties {
 
     String thumbnailServerUrl();
 
+    String plUniversitiesSourceUrl();
+
 
 }

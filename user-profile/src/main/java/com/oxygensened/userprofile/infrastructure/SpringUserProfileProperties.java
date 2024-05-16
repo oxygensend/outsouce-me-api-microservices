@@ -11,7 +11,8 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "user-profile")
 record SpringUserProfileProperties(String serviceId,
                                    Map<Topics, String> topics,
-                                   @NotNull String thumbnailServerUrl) implements UserProfileProperties {
+                                   @NotNull String thumbnailServerUrl,
+                                   String plUniversitiesSourceUrl) implements UserProfileProperties {
     private final static Integer TOPICS_SIZE = 1;
 
     public SpringUserProfileProperties {

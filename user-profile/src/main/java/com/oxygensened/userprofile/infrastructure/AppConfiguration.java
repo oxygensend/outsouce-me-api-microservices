@@ -7,8 +7,7 @@ import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClient;
 
 @EnableConfigurationProperties( {SpringUserProfileProperties.class})
 //@EnableJpaRepositories(basePackages = "com.oxygensend.userprofile.infrastructure.jpa.repository")
@@ -22,5 +21,10 @@ public class AppConfiguration {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.registerModule(new JsonNullableModule());
         return mapper;
+    }
+
+    @Bean
+    RestClient restClient() {
+        return RestClient.create();
     }
 }

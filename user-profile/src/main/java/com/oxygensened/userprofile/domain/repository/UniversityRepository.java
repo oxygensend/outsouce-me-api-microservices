@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface UniversityRepository {
     Optional<University> findById(Long id);
     List<University> findAll();
+
+    boolean existsByName(String name);
 }
