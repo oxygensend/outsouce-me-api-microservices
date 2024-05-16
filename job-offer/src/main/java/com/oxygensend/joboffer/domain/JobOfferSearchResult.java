@@ -1,13 +1,13 @@
 package com.oxygensend.joboffer.domain;
 
-public record JobOfferSearchResult(Long id,
+public record JobOfferSearchResult(String id,
                                    String name,
                                    String slug,
                                    String description,
                                    String shortDescription,
                                    int numberOfApplications) {
 
-    public JobOfferSearchResult(Long id, String name, String slug, String description, int numberOfApplications) {
+    public JobOfferSearchResult(String id, String name, String slug, String description, int numberOfApplications) {
         this(id, name, slug, description, shortDescription(description), numberOfApplications);
     }
 

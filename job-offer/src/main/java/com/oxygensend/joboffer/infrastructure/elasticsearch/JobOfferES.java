@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class JobOfferES {
 
     @Id
-    private Long id;
+    private String id;
     @Field
     private String name;
     @Field
@@ -24,14 +24,14 @@ public class JobOfferES {
     @Field(type = FieldType.Text)
     private Set<String> technologies;
     @Field
-    private Integer popularityOrder;
+    private int popularityOrder = 0;
     @Field
     private int numberOfApplications;
 
     public JobOfferES() {
     }
 
-    public JobOfferES(Long id, String name, String slug, String description, String city, String principalFullName, Set<String> technologies,
+    public JobOfferES(String id, String name, String slug, String description, String city, String principalFullName, Set<String> technologies,
                       Integer popularityOrder, int numberOfApplications) {
         this.id = id;
         this.name = name;
@@ -40,15 +40,15 @@ public class JobOfferES {
         this.city = city;
         this.principalFullName = principalFullName;
         this.technologies = technologies;
-        this.popularityOrder = popularityOrder;
+        this.popularityOrder = popularityOrder ==  null ? 0 : popularityOrder;
         this.numberOfApplications = numberOfApplications;
     }
 
-    public Long id() {
+    public String id() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

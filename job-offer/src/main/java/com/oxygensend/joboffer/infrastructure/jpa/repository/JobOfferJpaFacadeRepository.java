@@ -88,7 +88,7 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
 
     @Override
     public Page<JobOfferSearchResult> search(String query, Pageable pageable) {
-        var esQuery = new NativeQueryBuilder().withSourceFilter(FetchSourceFilter.of(new String[] {"id", "name", "description", "numberOfApplications"}, null))
+        var esQuery = new NativeQueryBuilder().withSourceFilter(FetchSourceFilter.of(new String[] {"id", "name", "description", "slug", "numberOfApplications"}, null))
                                               .withQuery(Queries.wrapperQueryAsQuery("{\"multi_match\": {\"query\": \"" + query + "\"}}"))
                                               .withPageable(pageable)
                                               .withSort(Sort.by(Sort.Direction.DESC, "popularityOrder"))
