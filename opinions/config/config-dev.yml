@@ -9,9 +9,15 @@ spring:
       uri: mongodb://localhost:27018/opinions
 
 kafka:
+  producer:
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
   consumer:
     application-id: opinion-service
     bootstrap-servers: localhost:29092
     security-protocol: PLAINTEXT
     user-details-data-topic: outsource-me-api-user-data
 
+opinions:
+  topics:
+    user-opinions-data: outsource-me-api-user-opinions-details

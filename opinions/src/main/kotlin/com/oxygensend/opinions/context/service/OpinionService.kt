@@ -4,6 +4,7 @@ import com.oxygensend.commons_jdk.PagedListView
 import com.oxygensend.opinions.context.command.AddCommentCommand
 import com.oxygensend.opinions.context.command.CreateOpinionCommand
 import com.oxygensend.opinions.context.command.UpdateOpinionCommand
+import com.oxygensend.opinions.context.event.OpinionDetailsRecalculateEvent
 import com.oxygensend.opinions.context.utils.updateIfDefined
 import com.oxygensend.opinions.context.view.CommentView
 import com.oxygensend.opinions.context.view.OpinionView
@@ -15,6 +16,7 @@ import com.oxygensend.opinions.domain.aggregate.filter.CommentsFilter
 import com.oxygensend.opinions.domain.aggregate.filter.OpinionsFilter
 import com.oxygensend.opinions.domain.exception.*
 import org.bson.types.ObjectId
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -22,7 +24,8 @@ import org.springframework.stereotype.Service
 class OpinionService(
     private val opinionRepository: OpinionRepository,
     private val opinionAggregateRepository: OpinionAggregateRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher
 ) {
     fun getOpinions(filter: OpinionsFilter, pageable: Pageable): PagedListView<OpinionView> {
         val paginator = opinionAggregateRepository.findAggregatedOpinions(filter, pageable)
@@ -38,6 +41,7 @@ class OpinionService(
         }
         updateIfDefined(command.scale) {
             opinion.scale = command.scale.value!!
+            publishRecalculationEvent(opinion.receiver)
         }
 
         opinionRepository.save(opinion)
@@ -46,6 +50,7 @@ class OpinionService(
     fun deleteOpinion(opinionId: ObjectId) {
         val opinion = opinionRepository.findById(opinionId) ?: throw OpinionNotFoundException()
         opinionRepository.delete(opinion)
+        publishRecalculationEvent(opinion.receiver)
     }
 
     fun createOpinion(command: CreateOpinionCommand): OpinionView {
@@ -60,6 +65,7 @@ class OpinionService(
         )
 
         opinionRepository.save(opinion)
+        publishRecalculationEvent(opinion.receiver)
         return OpinionView.from(opinion, author)
     }
 
@@ -116,6 +122,10 @@ class OpinionService(
         opinionRepository.existsByAuthorAndReceiver(authorId, receiverId).takeIf { it }?.let {
             throw OpinionAlreadyExistException("User $receiverId already has opinion from $authorId")
         }
+    }
+
+    private fun publishRecalculationEvent(receiver: String) {
+        return applicationEventPublisher.publishEvent(OpinionDetailsRecalculateEvent(receiver))
     }
 
 }

@@ -28,7 +28,7 @@ class OpinionUserService(private val userRepository: UserRepository, private val
 
     fun getUserOpinionsDetails(userId: String): UserOpinionsDetailsView {
         val user = userRepository.findById(userId) ?: throw UserNotFoundException()
-        val userOpinionsDetails = opinionAggregateRepository.getUserOpinionsDetails(user)
+        val userOpinionsDetails = opinionAggregateRepository.getUserOpinionsDetails(user.id)
         return UserOpinionsDetailsView(userOpinionsDetails.opinionsCount, userOpinionsDetails.opinionsRate)
     }
 }

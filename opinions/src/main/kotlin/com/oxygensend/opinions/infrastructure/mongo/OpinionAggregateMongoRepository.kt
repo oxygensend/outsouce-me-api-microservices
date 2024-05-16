@@ -60,9 +60,9 @@ internal class OpinionAggregateMongoRepository(private val mongoTemplate: MongoT
         return mongoTemplate.aggregate(aggregation, Opinion::class.java, AggregatedOpinionDto::class.java).mappedResults
     }
 
-    override fun getUserOpinionsDetails(user: User): UserOpinionsDetailsDto {
+    override fun getUserOpinionsDetails(userId: String): UserOpinionsDetailsDto {
         val aggregation = Aggregation.newAggregation(
-            Aggregation.match(Criteria.where(Opinion::receiver.name).`is`(user.id)),
+            Aggregation.match(Criteria.where(Opinion::receiver.name).`is`(userId)),
             Aggregation.group()
                 .count().`as`(UserOpinionsDetailsDto::opinionsCount.name)
                 .avg(Opinion::scale.name).`as`(UserOpinionsDetailsDto::opinionsRate.name)

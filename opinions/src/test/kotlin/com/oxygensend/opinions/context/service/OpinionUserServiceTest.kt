@@ -59,7 +59,7 @@ internal class OpinionUserServiceTest {
             thumbnailPath = "path/to/thumbnail"
         )
         Mockito.`when`(userRepository.findById(userId)).thenReturn(user)
-        Mockito.`when`(opinionAggregateRepository.getUserOpinionsDetails(user)).thenReturn(UserOpinionsDetailsDto(5, 4.5))
+        Mockito.`when`(opinionAggregateRepository.getUserOpinionsDetails(user.id)).thenReturn(UserOpinionsDetailsDto(5, 4.5))
 
         val userOpinionsDetailsView = opinionUserService.getUserOpinionsDetails(userId)
 

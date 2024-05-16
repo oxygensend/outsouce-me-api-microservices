@@ -36,3 +36,17 @@ kafka:
       backoff-period-service-unavailable: 5000
     retry-backoff-ms: 1000
     max-poll-interval-ms: 30000
+  producer:
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    retry-backoff-in-ms: 100
+    retries: 5
+    ssl:
+      #    keyStore: ${server.ssl.keystore}
+      #    keyStoreType: ${server.ssl.keystoretype}
+      #    keyStorePassword: ${server.ssl.keystorepassword}
+      #    keyPassword: ${server.ssl.keypassword}
+      #    trustStore: ${server.ssl.truststore}
+      #    trustStorePassword: ${server.ssl.truststorepassword}
+      #    trustStoreType: ${server.ssl.truststoretype}
+      enabled: false
