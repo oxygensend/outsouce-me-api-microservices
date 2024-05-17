@@ -1,13 +1,14 @@
-package com.oxygensend.joboffer.context.job_offer;
+package com.oxygensend.joboffer.infrastructure.domain;
 
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import com.oxygensend.joboffer.domain.service.JobOfferOrderService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JobOfferOrderService {
+class JobOfferOrderServiceImpl implements JobOfferOrderService {
 
 
     public void calculateJobOfferPopularityRate(JobOffer jobOffer, List<String> featuredTechnologies) {

@@ -3,6 +3,7 @@ package com.oxygensend.joboffer.context.job_offer;
 import com.oxygensend.joboffer.context.technology.TechnologyRepository;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
+import com.oxygensend.joboffer.domain.service.JobOfferOrderService;
 import jakarta.persistence.EntityManager;
 import java.time.Duration;
 import java.time.Instant;
