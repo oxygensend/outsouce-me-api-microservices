@@ -13,6 +13,8 @@ record SpringJobOffersProperties(@NotNull
                                  @NotNull
                                  String userThumbnailServerUrl,
                                  @NotNull
-                                 String checkJobOfferExpirationCron) implements JobOffersProperties {
+                                 String checkJobOfferExpirationCron,
+                                 @NotNull
+                                 String recalculateJobOffersPopularityRateCron) implements JobOffersProperties {
 
 }

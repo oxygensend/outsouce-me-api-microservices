@@ -2,6 +2,7 @@ package com.oxygensend.joboffer.infrastructure.kafka;
 
 import com.oxygensend.commons_jdk.exception.ApiException;
 import com.oxygensend.joboffer.context.user.event.UserDetailsEvent;
+import com.oxygensend.joboffer.context.user.event.UserOpinionsDetailsEvent;
 import com.oxygensend.joboffer.domain.exception.ServiceUnavailableException;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +50,21 @@ public class KafkaConsumerConfiguration {
     ConcurrentKafkaListenerContainerFactory<String, UserDetailsEvent> userDetailsEventConcurrentKafkaListenerContainerFactory(
             ConsumerFactory<String, UserDetailsEvent> consumerFactory) {
         var containerFactory = new ConcurrentKafkaListenerContainerFactory<String, UserDetailsEvent>();
+        containerFactory.setConsumerFactory(consumerFactory);
+        containerFactory.setCommonErrorHandler(errorHandler());
+        return containerFactory;
+    }
+
+    @Bean
+    ConsumerFactory<String, UserOpinionsDetailsEvent> userOpinionsDetailsEventConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerProperties(), new StringDeserializer(),
+                                                 errorHandlingDeserializer(UserOpinionsDetailsEvent.class));
+    }
+
+    @Bean
+    ConcurrentKafkaListenerContainerFactory<String, UserOpinionsDetailsEvent> userOpinionsDetailsEventConcurrentKafkaListenerContainerFactory(
+            ConsumerFactory<String, UserOpinionsDetailsEvent> consumerFactory) {
+        var containerFactory = new ConcurrentKafkaListenerContainerFactory<String, UserOpinionsDetailsEvent>();
         containerFactory.setConsumerFactory(consumerFactory);
         containerFactory.setCommonErrorHandler(errorHandler());
         return containerFactory;

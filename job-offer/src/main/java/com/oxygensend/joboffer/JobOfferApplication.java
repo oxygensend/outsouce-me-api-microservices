@@ -1,15 +1,14 @@
 package com.oxygensend.joboffer;
 
 import com.oxygensend.commons_jdk.exception.ExceptionConfiguration;
-import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
+import com.oxygensend.commons_jdk.feign.CommonFeignConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@Import( {ExceptionConfiguration.class})
+@Import( {ExceptionConfiguration.class, CommonFeignConfiguration.class})
 @SpringBootApplication
 public class JobOfferApplication {
 

@@ -7,8 +7,12 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "services")
-public record ServiceProperties(@Valid Notifications notifications) {
+public record ServiceProperties(@Valid Notifications notifications,
+                                @Valid StaticData staticData) {
     public record Notifications(@NotEmpty String externalTopic, @NotEmpty String login) {
 
+    }
+
+    public record StaticData(@NotEmpty String url) {
     }
 }

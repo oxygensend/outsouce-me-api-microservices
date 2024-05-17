@@ -1,7 +1,5 @@
 package com.oxygensend.staticdata.context.technology
 
-import com.oxygensend.staticdata.context.technology.TechnologyView
-import com.oxygensend.staticdata.context.technology.TechnologyService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,5 +15,8 @@ internal class TechnologyController(private val technologyService: TechnologySer
 
     @GetMapping("/technologies")
     fun getAllTechnologies(): List<TechnologyView> = technologyService.getAllTechnologies();
+
+    @GetMapping("/technologies/details")
+    fun getAllTechnologiesWithDetails(): List<TechnologyWithFeaturedView> = technologyService.getAllTechnologiesWithDetails();
 
 }

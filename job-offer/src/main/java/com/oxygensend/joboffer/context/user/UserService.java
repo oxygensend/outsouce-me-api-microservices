@@ -30,7 +30,9 @@ public class UserService {
                             request.email(),
                             request.thumbnail(),
                             request.activeJobPositon(),
-                            request.accountType());
+                            request.accountType(),
+                            null,
+                            null);
 
         userRepository.save(user);
         return userViewFactory.createUserDetailsView(user);

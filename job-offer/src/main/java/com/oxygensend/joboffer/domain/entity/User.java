@@ -18,11 +18,18 @@ public class User {
     private String thumbnail;
     private String activeJobPosition;
     private AccountType accountType;
+    @Column(nullable = false)
+    private int opinionsCount = 0;
+    @Column(nullable = false)
+    private double opinionsRate = 0;
+    private Double latitude;
+    private Double longitude;
 
     public User() {
     }
 
-    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition, AccountType accountType) {
+    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition, AccountType accountType,
+                Double longitude, Double latitude) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -30,6 +37,8 @@ public class User {
         this.thumbnail = thumbnail;
         this.activeJobPosition = activeJobPosition;
         this.accountType = accountType;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String id() {
@@ -102,5 +111,37 @@ public class User {
 
     public boolean canPublishJobOffers() {
         return accountType == AccountType.PRINCIPLE;
+    }
+
+    public int opinionsCount() {
+        return opinionsCount;
+    }
+
+    public void setOpinionsCount(int opinionsCount) {
+        this.opinionsCount = opinionsCount;
+    }
+
+    public double opinionsRate() {
+        return opinionsRate;
+    }
+
+    public void setOpinionsRate(double opinionsRate) {
+        this.opinionsRate = opinionsRate;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double latitude() {
+        return latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double longitude() {
+        return longitude;
     }
 }

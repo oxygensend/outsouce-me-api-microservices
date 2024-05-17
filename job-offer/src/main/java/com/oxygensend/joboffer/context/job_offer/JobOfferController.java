@@ -102,10 +102,11 @@ final class JobOfferController {
         return jobOfferService.getJobOfferManagement(slug);
     }
 
-    @GetMapping(value = "/search")
+    @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     PagedListView<JobOfferSearchResult> search(@RequestParam String query, Pageable pageable) {
         return jobOfferService.search(query, pageable);
     }
+
 
 }

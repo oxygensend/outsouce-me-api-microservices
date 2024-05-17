@@ -1,7 +1,8 @@
 package com.oxygensend.joboffer.context.user.event;
 
-import com.oxygensend.joboffer.domain.entity.part.AccountType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oxygensend.joboffer.domain.entity.User;
+import com.oxygensend.joboffer.domain.entity.part.AccountType;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
@@ -12,23 +13,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
-final class UserDetailsEventConsumer {
+class UserDetailsEventConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsEventConsumer.class);
-    private static final List<String> SUPPORTED_FIELDS = List.of("name", "surname", "email", "imageNameSmall", "activeJobPosition", "accountType");
+    private static final List<String> SUPPORTED_FIELDS = List.of("name", "surname", "email", "imageNameSmall", "activeJobPosition", "accountType", "address");
+    private static final ObjectMapper OM = new ObjectMapper();
     private final UserRepository userRepository;
+
 
     UserDetailsEventConsumer(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @KafkaListener(
             id = "user-details-data-event-consumer2",
             topics = "${kafka.consumer.user-details-data-topic}",
             containerFactory = "userDetailsEventConcurrentKafkaListenerContainerFactory"
     )
-    void consume(ConsumerRecord<String, UserDetailsEvent> record) {
+    public void consume(ConsumerRecord<String, UserDetailsEvent> record) {
         LOGGER.info("XX");
         var event = record.value();
         if (event.fields().keySet().stream().noneMatch(SUPPORTED_FIELDS::contains)) {
@@ -55,7 +60,12 @@ final class UserDetailsEventConsumer {
         var activeJobPosition = (String) event.fields().get("activeJobPosition");
         var accountType = AccountType.valueOf((String) event.fields().get("accountType"));
 
-        return new User(event.id(), name, surname, email, thumbnail, activeJobPosition, accountType);
+        var addressField = event.fields().get("address");
+        var address = OM.convertValue(addressField, AddressDto.class);
+        var longitude = address != null ? address.lon() : null;
+        var latitude = address != null ? address.lat() : null;
+
+        return new User(event.id(), name, surname, email, thumbnail, activeJobPosition, accountType, longitude, latitude);
     }
 
     private User updateUserFromEvent(UserDetailsEvent event, User user) {
@@ -65,8 +75,18 @@ final class UserDetailsEventConsumer {
         updateIfPresent(event.fields(), "imageNameSmall", user::setThumbnail);
         updateIfPresent(event.fields(), "activeJobPosition", user::setActiveJobPosition);
         updateIfPresent(event.fields(), "accountType", user::setActiveJobPosition);
+        updateAddress(event.fields(), user);
+
 
         return user;
+    }
+
+    private void updateAddress(Map<String, Object> fields, User user) {
+        if (fields.containsKey("address")) {
+            var address = OM.convertValue(fields.get("address"), AddressDto.class);
+            user.setLongitude(address.lon());
+            user.setLatitude(address.lat());
+        }
     }
 
 

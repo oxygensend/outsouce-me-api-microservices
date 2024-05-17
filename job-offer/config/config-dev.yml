@@ -3,6 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3308/job_offer
     username: root
     password: 12345
+  elasticsearch:
+    uris: http://localhost:9200
+    password: elastic
+    username: elastic
 
 eureka:
   client:
@@ -13,6 +17,11 @@ services:
   notifications:
     login: 1234
     externalTopic: outsource-me-api-notifications
+  opinions:
+    userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
+  static-data:
+    url: http://localhost:8888
+
 
 
 feign:
@@ -38,3 +47,6 @@ job-offers:
     root-location: job-offer/storage
     attachments-location: attachments
   check-job-offer-expiration-cron: 0 0 1 * * *
+  recalculate-job-offers-popularity-rate-cron: 0 0 1 * * *
+  elasticsearch:
+    boostrap-type: reindex
