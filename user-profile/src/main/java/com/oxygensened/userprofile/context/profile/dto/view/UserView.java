@@ -31,6 +31,6 @@ public record UserView(String email,
         var address = user.address() != null ? AddressView.from(user.address()) : null;
         return new UserView(user.email(), user.id().toString(), user.name(), user.surname(), user.fullName(), user.phoneNumber(), user.description(),
                             user.linkedinUrl(), user.githubUrl(), user.dateOfBirth(), user.accountType(), address, user.activeJobPosition(),
-                            user.opinionsRate(), user.opinions().size(), user.imageName(), user.technologies().stream().toList(), user.experience());
+                            user.opinionsRate(), user.opinionsCount(), user.imageName(), user.technologies().stream().toList(), user.experience());
     }
 }

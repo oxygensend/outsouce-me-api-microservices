@@ -99,7 +99,7 @@ public class UserService {
         updateIfPresent(request.githubUrl(), user::setGithubUrl);
         updateIfPresent(request.linkedinUrl(), user::setLinkedinUrl);
         updateIfPresent(request.dateOfBirth(), user::setDateOfBirth);
-        updateAddress(request.addressDto(), user::setAddress);
+        updateAddress(request.address(), user::setAddress);
         updateIfPresent(request.lookingForJob(), user::setLookingForJob);
         updateIfPresent(request.experience(), user::setExperience);
         user.setUpdatedAt(LocalDateTime.now());

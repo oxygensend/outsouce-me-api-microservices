@@ -16,7 +16,7 @@ public record UserDetailsRequest(@NotBlank JsonNullable<String> name,
                                  @NotBlank JsonNullable<String> githubUrl,
                                  @NotBlank JsonNullable<String> linkedinUrl,
                                  @NotBlank JsonNullable<LocalDate> dateOfBirth,
-                                 @Valid JsonNullable<AddressDto> addressDto,
+                                 @Valid JsonNullable<AddressDto> address,
                                  Boolean lookingForJob,
                                  JsonNullable<Experience> experience) {
 }

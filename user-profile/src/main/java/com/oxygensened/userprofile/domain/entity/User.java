@@ -1,17 +1,15 @@
 package com.oxygensened.userprofile.domain.entity;
 
+import com.oxygensened.userprofile.domain.Slug;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.entity.part.Experience;
-import com.oxygensened.userprofile.domain.Slug;
+import com.oxygensened.userprofile.infrastructure.jpa.converter.AccountTypeConverter;
 import com.oxygensened.userprofile.infrastructure.jpa.converter.ExperienceConverter;
 import com.oxygensened.userprofile.infrastructure.jpa.converter.StringSetConverter;
-import com.oxygensened.userprofile.infrastructure.jpa.converter.AccountTypeConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,7 +24,6 @@ import java.util.Set;
 
 @Entity
 public class User {
-
     @Id
     private Long id;
     @Column(nullable = false)
@@ -53,8 +50,6 @@ public class User {
     @Column(nullable = false)
     private boolean lookingForJob;
     private String activeJobPosition;
-    @Column(nullable = false)
-    private double opinionsRate = 0;
     @Convert(converter = ExperienceConverter.class)
     private Experience experience;
     private double popularityOrder;
@@ -68,9 +63,6 @@ public class User {
     @JoinColumn
     private Address address;
 
-    @OneToMany(mappedBy = "toWho", targetEntity = Opinion.class, orphanRemoval = true)
-    private List<Opinion> opinions = new ArrayList<>();
-
     @OneToMany(mappedBy = "individual", targetEntity = Education.class)
     private List<Education> educations = new ArrayList<>();
 
@@ -80,14 +72,20 @@ public class User {
     @OneToMany(mappedBy = "user", targetEntity = Language.class)
     private List<Language> languages = new ArrayList<>();
 
+    @Column(nullable = false)
+    private double opinionsRate = 0;
+    @Column(nullable = false)
+    private int opinionsCount = 0;
+
+
     public User() {
     }
 
     public User(Long id, String externalId, String email, String name, String surname, String phoneNumber, String description, String githubUrl, String linkedinUrl,
                 LocalDate dateOfBirth, Integer redirectCount, AccountType accountType, String slug, boolean lookingForJob, String activeJobPosition,
                 double opinionsRate, Experience experience, double popularityOrder, String imageName, String imageNameSmall, LocalDateTime createdAt,
-                LocalDateTime updatedAt, Set<String> technologies, Address address, List<Opinion> opinions,
-                List<Education> educations, List<JobPosition> jobPositions, List<Language> languages) {
+                LocalDateTime updatedAt, Set<String> technologies, Address address, List<Education> educations, List<JobPosition> jobPositions,
+                List<Language> languages, int opinionsCount) {
         this.id = id;
         this.externalId = externalId;
         this.email = email;
@@ -112,10 +110,10 @@ public class User {
         this.updatedAt = updatedAt;
         this.technologies = technologies;
         this.address = address;
-        this.opinions = opinions;
         this.educations = educations;
         this.jobPositions = jobPositions;
         this.languages = languages;
+        this.opinionsCount = opinionsCount;
     }
 
     public static UserBuilder builder() {
@@ -302,14 +300,6 @@ public class User {
         this.address = address;
     }
 
-    public List<Opinion> opinions() {
-        return opinions;
-    }
-
-    public void setOpinions(List<Opinion> opinions) {
-        this.opinions = opinions;
-    }
-
     public List<Education> educations() {
         return educations;
     }
@@ -355,6 +345,13 @@ public class User {
         technologies.remove(technology);
     }
 
+    public int opinionsCount() {
+        return opinionsCount;
+    }
+
+    public void setOpinionsCount(int opinionsCount) {
+        this.opinionsCount = opinionsCount;
+    }
 
     public Map<String, Object> toMap() {
         return Map.of("externalId", externalId,

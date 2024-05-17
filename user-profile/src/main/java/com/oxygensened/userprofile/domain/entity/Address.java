@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,9 +11,13 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonProperty
     private String city;
+    @JsonProperty
     private String postCode;
+    @JsonProperty
     private String lon;
+    @JsonProperty
     private String lat;
 
     public Address() {

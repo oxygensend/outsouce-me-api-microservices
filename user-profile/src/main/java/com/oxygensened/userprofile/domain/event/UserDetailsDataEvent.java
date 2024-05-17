@@ -1,6 +1,5 @@
 package com.oxygensened.userprofile.domain.event;
 
-import com.oxygensened.userprofile.context.Topics;
 import java.util.Map;
 
 public record UserDetailsDataEvent(String id, Map<String, Object> fields) implements DomainEvent {

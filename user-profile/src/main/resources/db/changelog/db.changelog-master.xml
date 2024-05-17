@@ -5,4 +5,5 @@
 
     <include file="db/changelog/versions/1711384358191-changelog.sql" />
     <include file="db/changelog/versions/1713085686111-changelog.sql" />
+    <include file="db/changelog/versions/1715886994783-changelog.sql" />
 </databaseChangeLog>

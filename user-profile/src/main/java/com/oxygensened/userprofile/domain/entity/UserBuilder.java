@@ -23,7 +23,6 @@ public class UserBuilder {
     private String slug;
     private boolean lookingForJob;
     private String activeJobPosition;
-    private double opinionsRate = 0;
     private Experience experience;
     private double popularityOrder;
     private String imageName;
@@ -32,10 +31,12 @@ public class UserBuilder {
     private LocalDateTime updatedAt;
     private Set<String> technologies = Set.of();
     private Address address;
-    private List<Opinion> opinions = List.of();
     private List<Education> educations = List.of();
     private List<JobPosition> jobPositions = List.of();
     private List<Language> languages = List.of();
+
+    private double opinionsRate = 0;
+    private int opinionsCount = 0;
 
     public UserBuilder id(Long id) {
         this.id = id;
@@ -158,11 +159,6 @@ public class UserBuilder {
     }
 
 
-    public UserBuilder opinions(List<Opinion> opinions) {
-        this.opinions = opinions;
-        return this;
-    }
-
     public UserBuilder educations(List<Education> educations) {
         this.educations = educations;
         return this;
@@ -178,8 +174,13 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder opinionsCount(int opinionsCount) {
+        this.opinionsCount = opinionsCount;
+        return this;
+    }
+
     public User build() {
-        return new User(id, externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, opinions, educations, jobPositions, languages);
+        return new User(id, externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, educations, jobPositions, languages, opinionsCount);
     }
 
 }

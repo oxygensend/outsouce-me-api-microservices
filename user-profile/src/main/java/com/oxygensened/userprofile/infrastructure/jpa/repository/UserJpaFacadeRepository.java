@@ -96,5 +96,10 @@ class UserJpaFacadeRepository implements UserRepository {
         return userJpaRepository.findAll();
     }
 
+    @Override
+    public List<User> findAllDevelopers() {
+        return userJpaRepository.findAllDevelopers();
+    }
+
 
 }

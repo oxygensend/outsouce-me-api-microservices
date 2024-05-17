@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
 import com.oxygensened.userprofile.domain.entity.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,7 @@ interface UserJpaRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.imageNameSmall FROM User u where u.id = :userId")
     Optional<String> getThumbnail(@Param("userId") Long userId);
+
+    @Query("SELECT u FROM User u WHERE u.accountType = 0")
+    List<User> findAllDevelopers();
 }

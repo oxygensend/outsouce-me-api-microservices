@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.context;
 
+import com.oxygensened.userprofile.domain.event.Topics;
 import java.util.Map;
 
 public interface UserProfileProperties {
@@ -11,5 +12,6 @@ public interface UserProfileProperties {
 
     String plUniversitiesSourceUrl();
 
+    String developersPopularityRateRecalculationCron();
 
 }

@@ -26,4 +26,6 @@ public interface UserRepository {
     Page<UserSearchResult> search(String query, Pageable pageable);
 
     List<User> findAll();
+
+    List<User> findAllDevelopers();
 }

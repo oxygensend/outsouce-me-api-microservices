@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 final class UserPreUpdateEventListener implements PreUpdateEventListener {
 
     private static final List<String> listenToFields = List.of("name", "surname", "phoneNumber", "imageName",
-                                                               "imageNameSmall", "activeJobPosition", "accountType");
+                                                               "imageNameSmall", "activeJobPosition", "accountType", "address");
     private final DomainEventPublisher domainEventPublisher;
 
     UserPreUpdateEventListener(DomainEventPublisher domainEventPublisher) {

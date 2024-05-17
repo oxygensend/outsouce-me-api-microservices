@@ -3,19 +3,27 @@ spring:
     url: jdbc:mysql://localhost:3308/user_profile
     username: root
     password: 12345
+  elasticsearch:
+    uris: http://localhost:9200
+    password: elastic
+    username: elastic
 
 eureka:
   client:
-    enabled: true
+    enabled: false
 
 
 services:
   auth:
     url: http://localhost:9002
     userRegisteredTopic: outsource-me-api-user-registered
+  opinions:
+    userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
   notifications:
     login: 1234
     externalTopic: outsource-me-api-notifications
+  static-data:
+    url: http://localhost:8888
 
 
 feign:
@@ -39,3 +47,6 @@ user-profile:
   storage:
     rootLocation: user-profile/storage
     thumbnailDir: thumbnails
+  thumbnailServerUrl: http://localhost:9001/user/thumbnails
+  plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
+  developers-popularity-rate-recalculation-cron: 0 0 0 * * *
