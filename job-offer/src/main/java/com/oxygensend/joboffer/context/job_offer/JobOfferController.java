@@ -52,7 +52,7 @@ final class JobOfferController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping("/{slug}/addRedirect")
+    @PostMapping("/{slug}/add-redirect")
     void addRedirect(@PathVariable String slug) {
         jobOfferService.addRedirect(slug);
     }

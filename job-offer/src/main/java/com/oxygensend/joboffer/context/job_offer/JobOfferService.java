@@ -1,6 +1,8 @@
 package com.oxygensend.joboffer.context.job_offer;
 
 import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
@@ -38,17 +40,24 @@ public class JobOfferService {
     private final JobOfferRepository jobOfferRepository;
     private final JobOfferViewFactory jobOfferViewFactory;
     private final AddressRepository addressRepository;
+    private final RequestContext requestContext;
 
-    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository) {
+    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.jobOfferViewFactory = jobOfferViewFactory;
         this.addressRepository = addressRepository;
+        this.requestContext = requestContext;
     }
 
     public JobOfferDetailsView createJobOffer(CreateJobOfferCommand command) {
         var principal = userRepository.findById(command.principalId())
                                       .orElseThrow(() -> NoSuchUserException.withId(command.principalId()));
+
+        if (!requestContext.isUserAuthenticated(principal.id())) {
+            throw new AccessDeniedException();
+        }
+
         if (!principal.canPublishJobOffers()) {
             throw new OnlyPrincipleCanPublishJobOfferException();
         }
@@ -103,6 +112,9 @@ public class JobOfferService {
         var jobOffer = jobOfferRepository.findBySlug(slug)
                                          .orElseThrow(JobOfferNotFoundException::new);
 
+        if (!requestContext.isUserAuthenticated(jobOffer.user().id())) {
+            throw new AccessDeniedException();
+        }
 
         updateIfPresent(request.name(), jobOffer::setName);
         updateIfPresent(request.description(), jobOffer::setDescription);

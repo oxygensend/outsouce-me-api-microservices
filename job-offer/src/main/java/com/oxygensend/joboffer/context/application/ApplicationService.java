@@ -1,6 +1,8 @@
 package com.oxygensend.joboffer.context.application;
 
 import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensend.joboffer.context.application.dto.CreateApplicationCommand;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationInfoView;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationListView;
@@ -34,19 +36,26 @@ public class ApplicationService {
     private final AttachmentService attachmentService;
     private final ApplicationViewFactory applicationViewFactory;
     private final NotificationsService notificationsService;
+    private final RequestContext requestContext;
 
     ApplicationService(UserRepository userRepository, JobOfferRepository jobOfferRepository, ApplicationRepository applicationRepository,
-                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory, NotificationsService notificationsService) {
+                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory, NotificationsService notificationsService, RequestContext requestContext) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.applicationRepository = applicationRepository;
         this.attachmentService = attachmentService;
         this.applicationViewFactory = applicationViewFactory;
         this.notificationsService = notificationsService;
+        this.requestContext = requestContext;
     }
 
     public void createApplication(CreateApplicationCommand command) {
         var user = userRepository.findById(command.userId()).orElseThrow(() -> NoSuchUserException.withId(command.userId()));
+
+        if (!requestContext.isUserAuthenticated(user.id())) {
+            throw new AccessDeniedException();
+        }
+
         if (!user.canApplyForJobOffers()) {
             throw new OnlyDeveloperCanApplyForJobOfferException();
         }
