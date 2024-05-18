@@ -14,7 +14,7 @@
     <description>Outsource me API service for user profile management</description>
 
     <properties>
-        <commons-jdk.version>1.0.0-SNAPSHOT</commons-jdk.version>
+        <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>3.0.2</validation-api.version>
         <slugify.version>3.0.6</slugify.version>

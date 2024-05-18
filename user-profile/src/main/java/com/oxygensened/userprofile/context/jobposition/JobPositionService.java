@@ -1,17 +1,21 @@
 package com.oxygensened.userprofile.context.jobposition;
 
+import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensened.userprofile.context.company.CompanyService;
 import com.oxygensened.userprofile.context.jobposition.dto.request.CreateJobPositionRequest;
-import com.oxygensened.userprofile.context.jobposition.dto.view.JobPositionView;
 import com.oxygensened.userprofile.context.jobposition.dto.request.UpdateJobPositionRequest;
+import com.oxygensened.userprofile.context.jobposition.dto.view.JobPositionView;
 import com.oxygensened.userprofile.domain.entity.JobPosition;
-import com.oxygensened.userprofile.domain.repository.JobPositionRepository;
-import com.oxygensened.userprofile.domain.repository.UserRepository;
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
 import com.oxygensened.userprofile.domain.exception.JobPositionNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
+import com.oxygensened.userprofile.domain.repository.JobPositionRepository;
+import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.service.DomainUserService;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
@@ -19,21 +23,30 @@ import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
 @Service
 public class JobPositionService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobPositionService.class);
     // TODO Develop the process of changing active job
     private final UserRepository userRepository;
     private final JobPositionRepository jobPositionRepository;
     private final CompanyService companyService;
     private final DomainUserService domainUserService;
+    private final RequestContext requestContext;
 
-    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService, DomainUserService domainUserService) {
+    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService, DomainUserService domainUserService, RequestContext requestContext) {
         this.userRepository = userRepository;
         this.jobPositionRepository = jobPositionRepository;
         this.companyService = companyService;
         this.domainUserService = domainUserService;
+        this.requestContext = requestContext;
     }
 
     public JobPositionView createJobPosition(Long userId, CreateJobPositionRequest request) {
         var user = userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.withId(userId));
+        if (!requestContext.isUserAuthenticated(userId)) {
+            LOGGER.info("User {} is not allow to create job position for different entities", requestContext.userIdAsString());
+            throw new AccessDeniedException();
+        }
+
+
         var company = companyService.getCompany(request.companyName());
 
         var jobPosition = JobPosition.builder()
@@ -55,6 +68,11 @@ public class JobPositionService {
         var jobPosition = jobPositionRepository.findByIdAndIndividualId(jobPositionId, userId)
                                                .orElseThrow(() -> JobPositionNotFoundException.withId(jobPositionId));
 
+        if (!requestContext.isUserAuthenticated(userId)) {
+            LOGGER.info("User {} is not allow to update job position for different entities", requestContext.userIdAsString());
+            throw new AccessDeniedException();
+        }
+
         updateIfPresent(request.name(), jobPosition::setName);
         updateIfPresent(request.formOfEmployment(), jobPosition::setFormOfEmployment);
         updateIfPresent(request.description(), jobPosition::setDescription);
@@ -70,6 +88,11 @@ public class JobPositionService {
     public void deleteJobPosition(Long userId, Long jobPositionId) {
         var jobPosition = jobPositionRepository.findByIdAndIndividualId(jobPositionId, userId)
                                                .orElseThrow(() -> JobPositionNotFoundException.withId(jobPositionId));
+
+        if (!requestContext.isUserAuthenticated(userId)) {
+            LOGGER.info("User {} is not allow to delete job position for different entities", requestContext.userIdAsString());
+            throw new AccessDeniedException();
+        }
 
         jobPosition.individual().setActiveJobPosition(null);
         jobPositionRepository.delete(jobPosition);

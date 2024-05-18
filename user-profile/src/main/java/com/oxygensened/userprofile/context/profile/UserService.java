@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.context.profile;
 
 import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
@@ -10,6 +11,7 @@ import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
 import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
@@ -17,6 +19,8 @@ import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +31,19 @@ import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
 
 @Service
 public class UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final ThumbnailService thumbnailService;
 
-    public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService) {
+    private final RequestContext requestContext;
+
+    public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
+                       RequestContext requestContext) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
+        this.requestContext = requestContext;
     }
 
     public UserView getUser(Long id) {
@@ -46,6 +55,11 @@ public class UserService {
     public UserView updateUserDetails(Long id, UserDetailsRequest request) {
         var user = userRepository.findById(id)
                                  .orElseThrow(() -> UserNotFoundException.withId(id));
+
+        if (!requestContext.isUserAuthenticated(id)) {
+            LOGGER.info("User {} is not allow to update user details for different entities", requestContext.userIdAsString());
+            throw new AccessDeniedException();
+        }
 
         var updatedUser = updateDetails(user, request);
         userRepository.save(updatedUser);
@@ -59,6 +73,11 @@ public class UserService {
     public void uploadThumbnail(Long id, MultipartFile file) {
         var user = userRepository.findById(id)
                                  .orElseThrow(() -> UserNotFoundException.withId(id));
+
+        if (!requestContext.isUserAuthenticated(id)) {
+            LOGGER.info("User {} is not allow to upload thumbnail for different entities", requestContext.userIdAsString());
+            throw new AccessDeniedException();
+        }
 
         var mainThumbnailOptions = buildThumbnailOptions(120, 120, 0.6f);
         var smallThumbnailOptions = buildThumbnailOptions(100, 100, 0.7f);
