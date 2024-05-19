@@ -3,11 +3,15 @@ package com.oxygensend.joboffer.context.user.event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oxygensend.joboffer.domain.entity.User;
 import com.oxygensend.joboffer.domain.entity.part.AccountType;
+import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 class UserDetailsEventConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsEventConsumer.class);
-    private static final List<String> SUPPORTED_FIELDS = List.of("name", "surname", "email", "imageNameSmall", "activeJobPosition", "accountType", "address");
+    private static final List<String> SUPPORTED_FIELDS = List.of("name", "surname", "email", "imageNameSmall", "activeJobPosition", "accountType",
+                                                                 "address", "technologies", "experience");
     private static final ObjectMapper OM = new ObjectMapper();
     private final UserRepository userRepository;
 
@@ -65,7 +70,11 @@ class UserDetailsEventConsumer {
         var longitude = address != null ? address.lon() : null;
         var latitude = address != null ? address.lat() : null;
 
-        return new User(event.id(), name, surname, email, thumbnail, activeJobPosition, accountType, longitude, latitude);
+        var technologiesField = event.fields().get("technologies");
+        Set<String> technologies = technologiesField != null ? ((List<String>) technologiesField).stream().collect(Collectors.toSet()) : new HashSet<>();
+        var experience = Experience.valueOf((String) event.fields().get("experience"));
+
+        return new User(event.id(), name, surname, email, thumbnail, activeJobPosition, accountType, longitude, latitude, experience, technologies);
     }
 
     private User updateUserFromEvent(UserDetailsEvent event, User user) {
@@ -76,9 +85,24 @@ class UserDetailsEventConsumer {
         updateIfPresent(event.fields(), "activeJobPosition", user::setActiveJobPosition);
         updateIfPresent(event.fields(), "accountType", user::setActiveJobPosition);
         updateAddress(event.fields(), user);
+        updateTechnologies(event.fields(), user);
+        updateExperience(event.fields(), user);
 
 
         return user;
+    }
+
+    private void updateTechnologies(Map<String, Object> fields, User user) {
+        if (fields.containsKey("technologies")) {
+            var technologies = ((List<String>) fields.get("technologies")).stream().collect(Collectors.toSet());
+            user.setTechnologies(technologies);
+        }
+    }
+
+    private void updateExperience(Map<String, Object> fields, User user) {
+        if (fields.containsKey("experience")) {
+            user.setExperience(Experience.valueOf((String) fields.get("experience")));
+        }
     }
 
     private void updateAddress(Map<String, Object> fields, User user) {

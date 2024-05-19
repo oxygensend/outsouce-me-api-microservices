@@ -1,12 +1,19 @@
 package com.oxygensend.joboffer.domain.entity;
 
 import com.oxygensend.joboffer.domain.entity.part.AccountType;
+import com.oxygensend.joboffer.domain.entity.part.Experience;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.ExperienceConverter;
+import com.oxygensend.joboffer.infrastructure.jpa.converter.StringSetConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
     private String id;
     @Column(nullable = false)
@@ -25,6 +32,12 @@ public class User {
     private Double latitude;
     private Double longitude;
 
+    @Convert(converter = ExperienceConverter.class)
+    private Experience experience;
+    @Convert(converter = StringSetConverter.class)
+    private Set<String> technologies = new HashSet<>();
+
+
     public User() {
     }
 
@@ -39,6 +52,22 @@ public class User {
         this.accountType = accountType;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+
+    public User(String id, String name, String surname, String email, String thumbnail, String activeJobPosition, AccountType accountType,
+                Double longitude, Double latitude, Experience experience, Set<String> technologies) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.thumbnail = thumbnail;
+        this.activeJobPosition = activeJobPosition;
+        this.accountType = accountType;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.experience = experience;
+        this.technologies = technologies;
     }
 
     public String id() {
@@ -143,5 +172,21 @@ public class User {
 
     public Double longitude() {
         return longitude;
+    }
+
+    public Experience experience() {
+        return experience;
+    }
+
+    public void setExperience(Experience experience) {
+        this.experience = experience;
+    }
+
+    public Set<String> technologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(Set<String> technologies) {
+        this.technologies = technologies;
     }
 }

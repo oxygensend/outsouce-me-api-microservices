@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.oxygensend.joboffer.domain.entity.Address;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record AddressView(String postCode, String city, String lon, String lat) {
+public record AddressView(String postCode, String city, Double lon, Double lat) {
 
     public static AddressView from(Address address) {
         return new AddressView(address.postCode(), address.city(), null, null);

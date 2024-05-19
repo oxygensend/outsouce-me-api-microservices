@@ -23,6 +23,11 @@ spring:
     password: 12345
 #    driver-class-name: com.mysql.cj.jdbc.DriveR
     enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 #
 eureka:
   client:

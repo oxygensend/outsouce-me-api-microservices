@@ -14,7 +14,8 @@ public class ExperienceConverter implements AttributeConverter<Experience, Integ
 
     @Override
     public Experience convertToEntityAttribute(Integer dbData) {
-        return Experience.fromNumericMapping(dbData)
-                         .orElseThrow(() -> new PersistenceException("Cannot find numericMapping of %s".formatted(dbData)));
+
+        return dbData == null ? null : Experience.fromNumericMapping(dbData)
+                                                 .orElseThrow(() -> new PersistenceException("Cannot find numericMapping of %s".formatted(dbData)));
     }
 }

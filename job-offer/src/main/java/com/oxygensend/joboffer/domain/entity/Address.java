@@ -4,27 +4,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Address {
+public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String city;
     private String postCode;
-    private String lon;
-    private String lat;
+    private Double lon;
+    private Double lat;
     public Address() {
     }
 
-    public Address(String city, String postCode, String lon, String lat) {
+    public Address(String city, String postCode, Double lon, Double lat) {
         this.city = city;
         this.postCode = postCode;
         this.lon = lon;
         this.lat = lat;
     }
 
-    public Address(Long id, String city, String postCode, String lon, String lat) {
+    public Address(Long id, String city, String postCode, Double lon, Double lat) {
         this.id = id;
         this.city = city;
         this.postCode = postCode;
@@ -52,19 +53,19 @@ public class Address {
         this.postCode = postCode;
     }
 
-    public String lon() {
+    public Double lon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
-    public String lat() {
+    public Double lat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 }

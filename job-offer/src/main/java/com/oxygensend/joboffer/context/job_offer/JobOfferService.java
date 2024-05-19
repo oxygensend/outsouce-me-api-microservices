@@ -13,6 +13,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
 import com.oxygensend.joboffer.domain.JobOfferSearchResult;
+import com.oxygensend.joboffer.domain.JobOffersForYou;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
 import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;
@@ -22,12 +23,14 @@ import com.oxygensend.joboffer.domain.repository.AddressRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
+import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +44,15 @@ public class JobOfferService {
     private final JobOfferViewFactory jobOfferViewFactory;
     private final AddressRepository addressRepository;
     private final RequestContext requestContext;
+    private final JobOffersForYou jobOffersForYou;
 
-    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext) {
+    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.jobOfferViewFactory = jobOfferViewFactory;
         this.addressRepository = addressRepository;
         this.requestContext = requestContext;
+        this.jobOffersForYou = jobOffersForYou;
     }
 
     public JobOfferDetailsView createJobOffer(CreateJobOfferCommand command) {
@@ -132,9 +137,19 @@ public class JobOfferService {
     }
 
     public PagedListView<JobOfferView> getPaginatedJobOffers(JobOfferFilter filter, Pageable pageable) {
-        var page = jobOfferRepository.findAll(filter, pageable)
-                                     .map(jobOfferViewFactory::createInfo);
+        Page<JobOfferView> page;
+        if (filter.sort() == JobOfferSort.FOR_YOU) {
+            if (!requestContext.isAuthorized()) {
+                throw new RuntimeException();
+            }
 
+            var userId = requestContext.userId().get();
+            page = jobOffersForYou.getForUser(userId, filter, pageable)
+                                  .map(jobOfferViewFactory::createInfo);
+        } else {
+            page = jobOfferRepository.findAll(filter, pageable)
+                                     .map(jobOfferViewFactory::createInfo);
+        }
         return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
     }
 
@@ -149,6 +164,7 @@ public class JobOfferService {
         var paginator = jobOfferRepository.search(query, pageable);
         return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
     }
+
 
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
         if (JsonNullableWrapper.isPresent(validTo)) {

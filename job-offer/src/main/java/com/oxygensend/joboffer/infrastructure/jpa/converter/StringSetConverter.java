@@ -15,6 +15,6 @@ public class StringSetConverter implements AttributeConverter<Set<String>, Strin
 
     @Override
     public Set<String> convertToEntityAttribute(String s) {
-        return Set.of(s.split(DELIMITER));
+        return s != null ? Set.of(s.split(DELIMITER)) : Set.of();
     }
 }

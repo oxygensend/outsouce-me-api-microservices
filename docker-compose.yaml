@@ -51,7 +51,7 @@ services:
       - outsource_me
   mailhog:
     image: mailhog/mailhog
-    restart: always
+    container_name: outsource-me-mailhog
     logging:
       driver: "none"
     ports:
@@ -75,6 +75,13 @@ services:
     networks:
       - outsource_me
 
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: outsource-me-redis
+    ports:
+      - '6379:6379'
+    networks:
+      - outsource_me
 networks:
   outsource_me:
 

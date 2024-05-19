@@ -58,7 +58,6 @@ final class JobOfferSpecifications {
         switch (filter.sort()) {
             case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
             case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
-            case FOR_YOU -> throw new UnsupportedOperationException("FOR_YOU sorting is not supported in jpa layer");
         }
 
         return cb.and(predicates.toArray(new Predicate[0]));

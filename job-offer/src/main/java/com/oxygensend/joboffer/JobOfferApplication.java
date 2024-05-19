@@ -17,4 +17,5 @@ public class JobOfferApplication {
         SpringApplication.run(JobOfferApplication.class, args);
     }
 
+
 }

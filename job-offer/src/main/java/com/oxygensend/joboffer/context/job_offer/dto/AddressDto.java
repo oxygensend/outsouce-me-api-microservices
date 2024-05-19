@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record AddressDto(@NotEmpty String postCode,
                          @NotEmpty String city,
-                         @NotBlank String lon,
-                         @NotBlank String lat) {
+                         @NotBlank Double lon,
+                         @NotBlank Double lat) {
 
 
     public Address toAddress() {
