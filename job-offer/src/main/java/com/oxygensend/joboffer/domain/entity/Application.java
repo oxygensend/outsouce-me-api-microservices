@@ -8,15 +8,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "application", indexes = {
+        @Index(name = "job_offer_user_idx", columnList = "job_offer_id, user_id"),
+        @Index(name = "deleted_user_job_offer_status_idx", columnList = "deleted, user_id, job_offer_id, status"),
+        @Index(name = "deleted_user_job_offer_created_at_idx", columnList = "deleted, user_id, job_offer_id, created_at"),
+})
 @Entity
-public class Application  implements Serializable{
+public class Application implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

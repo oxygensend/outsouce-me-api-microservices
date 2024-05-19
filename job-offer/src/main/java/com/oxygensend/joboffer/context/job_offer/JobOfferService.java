@@ -13,7 +13,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.context.utils.JsonNullableWrapper;
 import com.oxygensend.joboffer.domain.JobOfferSearchResult;
-import com.oxygensend.joboffer.domain.JobOffersForYou;
+import com.oxygensend.joboffer.domain.service.JobOffersForYou;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
 import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;

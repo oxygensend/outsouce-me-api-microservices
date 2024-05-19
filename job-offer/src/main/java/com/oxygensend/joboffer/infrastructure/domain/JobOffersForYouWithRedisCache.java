@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.domain;
 
-import com.oxygensend.joboffer.domain.JobOffersForYou;
+import com.oxygensend.joboffer.domain.service.JobOffersForYou;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.exception.NoSuchUserException;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;

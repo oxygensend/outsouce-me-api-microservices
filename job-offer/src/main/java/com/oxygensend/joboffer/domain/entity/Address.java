@@ -4,8 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 
+@Table(name = "address", indexes = {
+        @Index(name = "post_code_city_idx", columnList = "postCode, city")
+
+})
 @Entity
 public class Address implements Serializable {
     @Id
@@ -15,6 +21,7 @@ public class Address implements Serializable {
     private String postCode;
     private Double lon;
     private Double lat;
+
     public Address() {
     }
 

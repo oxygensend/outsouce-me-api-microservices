@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.domain.entity;
 
+import com.oxygensend.joboffer.domain.Slug;
 import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
-import com.oxygensend.joboffer.domain.Slug;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import com.oxygensend.joboffer.infrastructure.jpa.converter.ExperienceConverter;
 import com.oxygensend.joboffer.infrastructure.jpa.converter.StringSetConverter;
@@ -17,8 +17,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +28,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Table(indexes = {
+        @Index(name = "slug_idx", columnList = "slug", unique = true),
+        @Index(name = "archived_idx", columnList = "archived"),
+        @Index(name = "user_archived_popularity_idx", columnList = "user_id,archived,popularityOrder DESC"),
+})
 @Entity
 public class JobOffer implements Serializable {
 

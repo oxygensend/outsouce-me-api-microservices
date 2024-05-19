@@ -1,4 +1,4 @@
-package com.oxygensend.joboffer.domain;
+package com.oxygensend.joboffer.domain.service;
 
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
