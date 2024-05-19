@@ -3,7 +3,7 @@ package com.oxygensened.userprofile.infrastructure.jpa.repository;
 import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
-import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.infrastructure.elasticsearch.ElasticSearchMapper;
 import com.oxygensened.userprofile.infrastructure.elasticsearch.UserES;
 import jakarta.persistence.EntityManager;
@@ -59,7 +59,7 @@ class UserJpaFacadeRepository implements UserRepository {
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable, UserFilters filters) {
+    public Page<User> findAll(Pageable pageable, UserFilter filters) {
         var specification = UserSpecification.read(filters);
         return JpaUtils.findPageable(entityManager, pageable, User.class, specification);
     }

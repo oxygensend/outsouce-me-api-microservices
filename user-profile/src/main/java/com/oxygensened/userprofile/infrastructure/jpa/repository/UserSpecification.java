@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
-import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
-import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
+import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.entity.User;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -20,15 +20,15 @@ final class UserSpecification implements Specification<User> {
     private final List<Predicate> predicates = new ArrayList<>();
     private final AccountType accountType;
     private final Boolean lookingForJob;
-    private final UserOrder order;
+    private final UserSort order;
 
-    private UserSpecification(AccountType accountType, Boolean lookingForJob, UserOrder order) {
+    private UserSpecification(AccountType accountType, Boolean lookingForJob, UserSort order) {
         this.accountType = accountType;
         this.lookingForJob = lookingForJob;
         this.order = order;
     }
 
-    public static UserSpecification read(UserFilters userFilters) {
+    public static UserSpecification read(UserFilter userFilters) {
         return new UserSpecification(userFilters.accountType(), userFilters.lookingForJob(), userFilters.order());
     }
 
@@ -56,7 +56,7 @@ final class UserSpecification implements Specification<User> {
         switch (order) {
             case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
             case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
-            case NORMAL -> query.orderBy(cb.desc(root.get("displayOrder")));
+            case FOR_YOU -> query.orderBy(cb.desc(root.get("displayOrder")));
         }
     }
 }

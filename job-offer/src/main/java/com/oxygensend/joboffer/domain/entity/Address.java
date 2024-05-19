@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 
+@JsonIgnoreProperties(value = {"id"})
 @Table(name = "address", indexes = {
         @Index(name = "post_code_city_idx", columnList = "postCode, city")
 

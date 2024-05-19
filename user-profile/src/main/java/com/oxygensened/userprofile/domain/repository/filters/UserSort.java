@@ -1,8 +1,8 @@
 package com.oxygensened.userprofile.domain.repository.filters;
 
-public enum UserOrder {
+public enum UserSort {
     POPULAR,
     NEWEST,
-    NORMAL
+    FOR_YOU
 
 }

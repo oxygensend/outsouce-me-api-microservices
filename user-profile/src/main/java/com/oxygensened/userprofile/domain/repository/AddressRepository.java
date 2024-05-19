@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface AddressRepository {
 
-    Optional<Address> findByPostCode(String postCode);
+    Optional<Address> findByPostCodeAndCity(String postCode, String city);
 }

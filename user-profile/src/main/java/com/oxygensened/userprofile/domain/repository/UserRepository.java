@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.domain.repository;
 
 import com.oxygensened.userprofile.domain.UserSearchResult;
-import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.entity.User;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,7 @@ public interface UserRepository {
 
     Optional<User> findByExternalId(String externalId);
 
-    Page<User> findAll(Pageable pageable, UserFilters filters);
+    Page<User> findAll(Pageable pageable, UserFilter filters);
 
     long findTheNewestSlugVersion(String slug);
 

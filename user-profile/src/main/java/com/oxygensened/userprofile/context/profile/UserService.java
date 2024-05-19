@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.context.profile;
 
 import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
 import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
@@ -11,11 +12,13 @@ import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
 import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
-import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
+import com.oxygensened.userprofile.domain.repository.filters.UserSort;
+import com.oxygensened.userprofile.domain.service.DevelopersForYou;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -35,15 +38,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final ThumbnailService thumbnailService;
-
     private final RequestContext requestContext;
+    private final DevelopersForYou developersForYou;
 
     public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
-                       RequestContext requestContext) {
+                       RequestContext requestContext, DevelopersForYou developersForYou) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
         this.requestContext = requestContext;
+        this.developersForYou = developersForYou;
     }
 
     public UserView getUser(Long id) {
@@ -66,8 +70,19 @@ public class UserService {
         return UserView.from(user);
     }
 
-    public Page<UserView> getPaginatedUsers(UserFilters filters, Pageable pageable) {
-        return userRepository.findAll(pageable, filters).map(UserView::from);
+    public Page<UserView> getPaginatedUsers(UserFilter filters, Pageable pageable) {
+        if (filters.order() == UserSort.FOR_YOU) {
+            if (!requestContext.hasAuthority(AccountType.PRINCIPLE.role())) {
+                throw new RuntimeException("X");
+            }
+
+            var userId = requestContext.userId().get();
+            return developersForYou.getForUser(Long.valueOf(userId), filters, pageable)
+                                   .map(UserView::from);
+        } else {
+            return userRepository.findAll(pageable, filters)
+                                 .map(UserView::from);
+        }
     }
 
     public void uploadThumbnail(Long id, MultipartFile file) {
@@ -127,7 +142,8 @@ public class UserService {
 
     private void updateAddress(JsonNullable<AddressDto> addressDto, Consumer<Address> addressSetter) {
         if (JsonNullableWrapper.isPresent(addressDto)) {
-            var address = addressRepository.findByPostCode(JsonNullableWrapper.unwrap(addressDto).postCode());
+            var unwrapped = JsonNullableWrapper.unwrap(addressDto);
+            var address = addressRepository.findByPostCodeAndCity(unwrapped.postCode(), unwrapped.city());
             address.ifPresentOrElse(addressSetter, () -> addressSetter.accept(JsonNullableWrapper.unwrap(addressDto).toAddress()));
         }
     }

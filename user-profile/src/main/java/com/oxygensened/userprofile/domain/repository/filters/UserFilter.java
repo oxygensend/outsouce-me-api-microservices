@@ -2,7 +2,7 @@ package com.oxygensened.userprofile.domain.repository.filters;
 
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 
-public record UserFilters(AccountType accountType, Boolean lookingForJob, UserOrder order) {
+public record UserFilter(AccountType accountType, Boolean lookingForJob, UserSort order) {
     public static Builder builder() {
         return new Builder();
     }
@@ -10,7 +10,7 @@ public record UserFilters(AccountType accountType, Boolean lookingForJob, UserOr
     public static class Builder {
         private AccountType accountType;
         private Boolean lookingForJob;
-        private UserOrder order;
+        private UserSort order;
 
         public Builder accountType(AccountType accountType) {
             this.accountType = accountType;
@@ -22,13 +22,13 @@ public record UserFilters(AccountType accountType, Boolean lookingForJob, UserOr
             return this;
         }
 
-        public Builder order(UserOrder order) {
+        public Builder order(UserSort order) {
             this.order = order;
             return this;
         }
 
-        public UserFilters build() {
-            return new UserFilters(accountType, lookingForJob, order);
+        public UserFilter build() {
+            return new UserFilter(accountType, lookingForJob, order);
         }
     }
 }

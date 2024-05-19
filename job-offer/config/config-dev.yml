@@ -44,9 +44,11 @@ job-offers:
   service-id: job-offers-service
   user-thumbnail-server-url: http://localhost:8080/api/v1/users/thumbnail
   storage:
-    root-location: job-offer/storage
+    root-location: storage
     attachments-location: attachments
   check-job-offer-expiration-cron: 0 0 1 * * *
   recalculate-job-offers-popularity-rate-cron: 0 0 1 * * *
   elasticsearch:
     boostrap-type: reindex
+  topics:
+    JOB_OFFER_DATA: outsource-me-api-job-offer-data

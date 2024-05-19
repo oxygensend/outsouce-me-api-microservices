@@ -17,4 +17,9 @@ class AddressFacadeRepository implements AddressRepository {
     public Optional<Address> findByPostCode(String postCode) {
         return addressJpaRepository.findByPostCode(postCode);
     }
+
+    @Override
+    public Optional<Address> findByPostCodeAndCity(String postCode, String city) {
+        return addressJpaRepository.findByPostCodeAndCity(postCode, city);
+    }
 }

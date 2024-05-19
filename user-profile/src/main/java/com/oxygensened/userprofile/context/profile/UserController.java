@@ -5,8 +5,8 @@ import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsReques
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
-import com.oxygensened.userprofile.domain.repository.filters.UserFilters;
-import com.oxygensened.userprofile.domain.repository.filters.UserOrder;
+import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
+import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
@@ -50,13 +50,13 @@ class UserController {
     @GetMapping
     PagedListView<UserView> paginatedList(@RequestParam(required = false) AccountType accountType,
                                           @RequestParam(required = false) Boolean lookingForJob,
-                                          @RequestParam(required = false) UserOrder order,
+                                          @RequestParam(required = false) UserSort order,
                                           Pageable pageable) {
-        var filters = UserFilters.builder()
-                                 .accountType(accountType)
-                                 .lookingForJob(lookingForJob)
-                                 .order(order)
-                                 .build();
+        var filters = UserFilter.builder()
+                                .accountType(accountType)
+                                .lookingForJob(lookingForJob)
+                                .order(order)
+                                .build();
 
         var page = userService.getPaginatedUsers(filters, pageable);
         return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());

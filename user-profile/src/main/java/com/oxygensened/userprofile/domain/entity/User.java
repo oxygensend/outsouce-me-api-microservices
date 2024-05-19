@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
     private Long id;
     @Column(nullable = false)
@@ -79,6 +80,7 @@ public class User {
     private double opinionsRate = 0;
     @Column(nullable = false)
     private int opinionsCount = 0;
+    private Integer displayOrder;
 
 
     public User() {
@@ -373,4 +375,13 @@ public class User {
                       "accountType", accountType,
                       "slug", slug);
     }
+
+    public Integer displayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
 }

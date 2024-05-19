@@ -3,7 +3,7 @@ package com.oxygensened.userprofile.context.profile;
 import com.oxygensened.userprofile.context.technology.TechnologyRepository;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
-import com.oxygensened.userprofile.domain.service.DevelopersOrderService;
+import com.oxygensened.userprofile.domain.service.DeveloperOrderService;
 import jakarta.persistence.EntityManager;
 import java.time.Duration;
 import java.time.Instant;
@@ -20,10 +20,10 @@ public class UserAdminService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminService.class);
     private final EntityManager entityManager;
     private final TechnologyRepository technologyRepository;
-    private final DevelopersOrderService developersOrderService;
+    private final DeveloperOrderService developersOrderService;
     private final UserRepository userRepository;
 
-    public UserAdminService(EntityManager entityManager, TechnologyRepository technologyRepository, DevelopersOrderService developersOrderService,
+    public UserAdminService(EntityManager entityManager, TechnologyRepository technologyRepository, DeveloperOrderService developersOrderService,
                             UserRepository userRepository) {
         this.entityManager = entityManager;
         this.technologyRepository = technologyRepository;

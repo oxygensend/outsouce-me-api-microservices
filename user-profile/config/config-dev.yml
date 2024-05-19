@@ -24,6 +24,8 @@ services:
     externalTopic: outsource-me-api-notifications
   static-data:
     url: http://localhost:8888
+  job-offers:
+    jobOfferDataTopic: outsource-me-api-job-offer-data
 
 
 feign:
