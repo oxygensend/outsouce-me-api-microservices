@@ -1,5 +1,7 @@
 package com.oxygensend.joboffer.context.job_offer.dto.view;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.oxygensend.joboffer.context.user.dto.view.BaseUserView;
 import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
@@ -20,10 +22,14 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
     public final LocalDateTime createdAt;
     public final LocalDateTime validto;
 
-
-    public JobOfferDetailsView(Long id, String slug, String name, BaseUserView user, String description, Set<WorkType> workTypes,
-                               Experience experience, FormOfEmployment formOfEmployment, List<String> technologies, int numberOfApplications,
-                               SalaryRangeView salaryRange, AddressView address, LocalDateTime createdAt, LocalDateTime validto) {
+    @JsonCreator
+    public JobOfferDetailsView(@JsonProperty("id") Long id, @JsonProperty("slug") String slug, @JsonProperty("name") String name,
+                               @JsonProperty("user") BaseUserView user, @JsonProperty("description") String description,
+                               @JsonProperty("workTypes") Set<WorkType> workTypes, @JsonProperty("experience") Experience experience,
+                               @JsonProperty("formOfEmployment") FormOfEmployment formOfEmployment, @JsonProperty("technologies") List<String> technologies,
+                               @JsonProperty("numberOfApplications") int numberOfApplications, @JsonProperty("salaryRange") SalaryRangeView salaryRange,
+                               @JsonProperty("address") AddressView address, @JsonProperty("createdAt") LocalDateTime createdAt,
+                               @JsonProperty("validTo") LocalDateTime validTo) {
         super(id, slug, name, user);
         this.description = description;
         this.workTypes = workTypes;
@@ -34,6 +40,8 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
         this.salaryRange = salaryRange;
         this.address = address;
         this.createdAt = createdAt;
-        this.validto = validto;
+        this.validto = validTo;
     }
+
+
 }

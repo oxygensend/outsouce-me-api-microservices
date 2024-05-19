@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/attachments")
 final class AttachmentController {
-
     private final AttachmentService attachmentService;
 
     AttachmentController(AttachmentService attachmentService) {
@@ -25,6 +24,5 @@ final class AttachmentController {
     Resource get(@PathVariable Long id) {
         return attachmentService.downloadAttachment(id);
     }
-
 
 }

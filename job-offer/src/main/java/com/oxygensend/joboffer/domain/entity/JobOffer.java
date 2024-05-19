@@ -66,8 +66,7 @@ public class JobOffer implements Serializable {
     private Integer displayOrder;
     @Column(nullable = false)
     private boolean archived = false;
-    @Convert(converter = StringSetConverter.class)
-    private Set<String> technologies = new HashSet<>();
+    @Convert(converter = StringSetConverter.class) private Set<String> technologies = new HashSet<>();
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "jobOffer", fetch = FetchType.LAZY)
     private List<Application> applications = new ArrayList<>();
     @Convert(converter = WorkTypesConverter.class)

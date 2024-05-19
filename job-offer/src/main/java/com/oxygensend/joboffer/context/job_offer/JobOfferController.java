@@ -12,6 +12,7 @@ import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/job-offers")
-final class JobOfferController {
+public class JobOfferController {
 
     private final JobOfferService jobOfferService;
 
@@ -39,16 +40,23 @@ final class JobOfferController {
         this.jobOfferService = jobOfferService;
     }
 
+    @Cacheable(value = "job-offers", key = "#slug")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{slug}")
+    public JobOfferDetailsView show(@PathVariable String slug) {
+        return jobOfferService.getJobOffer(slug);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{slug}/management")
+    JobOfferManagementView managementInfo(@PathVariable String slug) {
+        return jobOfferService.getJobOfferManagement(slug);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     JobOfferDetailsView create(@Validated @RequestBody CreateJobOfferRequest request) {
         return jobOfferService.createJobOffer(request.toCommand());
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{slug}")
-    JobOfferDetailsView show(@PathVariable String slug) {
-        return jobOfferService.getJobOffer(slug);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -93,13 +101,6 @@ final class JobOfferController {
                                    .build();
 
         return jobOfferService.getPaginatedJobOffers(filter, pageable);
-    }
-
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{slug}/management")
-    JobOfferManagementView managementInfo(@PathVariable String slug) {
-        return jobOfferService.getJobOfferManagement(slug);
     }
 
     @GetMapping("/search")

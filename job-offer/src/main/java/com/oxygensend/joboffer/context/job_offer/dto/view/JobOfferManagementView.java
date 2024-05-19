@@ -1,5 +1,7 @@
 package com.oxygensend.joboffer.context.job_offer.dto.view;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.oxygensend.joboffer.context.application.dto.view.ApplicationManagementView;
 import com.oxygensend.joboffer.domain.entity.part.Experience;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
@@ -25,10 +27,15 @@ public class JobOfferManagementView extends BaseJobOfferView {
     public final List<ApplicationManagementView> applications;
     public final boolean archived;
 
-    public JobOfferManagementView(Long id, String slug, String name, String description, Set<WorkType> workTypes, Experience experience,
-                                  FormOfEmployment formOfEmployment, List<String> technologies, int numberOfApplications, SalaryRangeView salaryRange,
-                                  AddressView address, LocalDateTime createdAt, LocalDateTime validto, int redirectCount,
-                                  List<ApplicationManagementView> applications, boolean archived) {
+    @JsonCreator
+    public JobOfferManagementView(@JsonProperty("id") Long id, @JsonProperty("slug") String slug, @JsonProperty("name") String name,
+                                  @JsonProperty("description") String description, @JsonProperty("workTypes") Set<WorkType> workTypes,
+                                  @JsonProperty("experience") Experience experience, @JsonProperty("formOfEmployment") FormOfEmployment formOfEmployment,
+                                  @JsonProperty("technologies") List<String> technologies, @JsonProperty("numberOfApplications") int numberOfApplications,
+                                  @JsonProperty("salaryRange") SalaryRangeView salaryRange, @JsonProperty("address") AddressView address,
+                                  @JsonProperty("createdAt") LocalDateTime createdAt, @JsonProperty("validTo") LocalDate validto,
+                                  @JsonProperty("redirectCount") int redirectCount, @JsonProperty("applications") List<ApplicationManagementView> applications,
+                                  @JsonProperty("archived") boolean archived) {
         super(id, slug, name);
         this.description = description;
         this.workTypes = workTypes;
@@ -39,9 +46,10 @@ public class JobOfferManagementView extends BaseJobOfferView {
         this.salaryRange = salaryRange;
         this.address = address;
         this.createdAt = createdAt;
-        this.validTo = validto.toLocalDate();
+        this.validTo = validto;
         this.redirectCount = redirectCount;
         this.applications = applications;
         this.archived = archived;
     }
+
 }

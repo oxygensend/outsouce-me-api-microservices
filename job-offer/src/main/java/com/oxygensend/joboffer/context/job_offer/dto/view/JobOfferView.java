@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.context.job_offer.dto.view;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.oxygensend.joboffer.context.user.dto.view.UserView;
 
 public class JobOfferView extends BaseJobOfferView {
@@ -11,6 +12,7 @@ public class JobOfferView extends BaseJobOfferView {
     public final boolean archived;
 
 
+    @JsonCreator
     public JobOfferView(Long id, String slug, String name, String description, String shortDescription, int numberOfApplications, UserView user, boolean archived) {
         super(id, slug, name);
         this.description = description;

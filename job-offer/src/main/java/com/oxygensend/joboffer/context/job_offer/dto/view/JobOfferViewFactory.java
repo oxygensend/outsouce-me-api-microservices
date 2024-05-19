@@ -87,7 +87,7 @@ public class JobOfferViewFactory {
                                           salaryRangeView,
                                           addressView,
                                           jobOffer.createdAt(),
-                                          jobOffer.validTo(),
+                                          jobOffer.validTo().toLocalDate(),
                                           jobOffer.redirectCount(),
                                           applications,
                                           jobOffer.archived());

@@ -14,6 +14,7 @@ import com.oxygensend.joboffer.domain.repository.filter.ApplicationSort;
 import com.oxygensend.joboffer.domain.repository.filter.SortDirection;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +35,41 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/applications")
-final class ApplicationController {
+public class ApplicationController {
 
     private final ApplicationService applicationService;
 
     ApplicationController(ApplicationService applicationService) {
         this.applicationService = applicationService;
+    }
+
+    @Cacheable(value = "applications", key = "#id")
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationView get(@PathVariable Long id) {
+        return applicationService.getApplication(id);
+    }
+
+    @Cacheable(value = "applications", key = "#id + '-info'")
+    @GetMapping("/{id}/info")
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationInfoView getInfo(@PathVariable Long id) {
+        return applicationService.getApplicationInfo(id);
+    }
+
+    @Cacheable(value = "applications-users", key = "#userId-#sort-#dir-#pageable.pageNumber-#pageable.pageSize")
+    @GetMapping
+    public PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
+                                                            @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,
+                                                            @RequestParam(required = false, defaultValue = "ASC") SortDirection dir,
+                                                            Pageable pageable) {
+        var filter = ApplicationFilter.builder()
+                                      .userId(userId)
+                                      .sort(sort)
+                                      .dir(dir)
+                                      .build();
+
+        return applicationService.getApplicationsByUser(filter, pageable);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,31 +93,6 @@ final class ApplicationController {
                                        @RequestBody @Validated ChangeStatusRequest request) {
         applicationService.changeStatus(id, request.status());
         return new ApplicationStatusView(request.status());
-    }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    ApplicationView get(@PathVariable Long id) {
-        return applicationService.getApplication(id);
-    }
-    @GetMapping("/{id}/info")
-    @ResponseStatus(HttpStatus.OK)
-    ApplicationInfoView getInfo(@PathVariable Long id) {
-        return applicationService.getApplicationInfo(id);
-    }
-
-    @GetMapping
-    PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
-                                                     @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,
-                                                     @RequestParam(required = false, defaultValue = "ASC") SortDirection dir,
-                                                     Pageable pageable) {
-        var filter = ApplicationFilter.builder()
-                                      .userId(userId)
-                                      .sort(sort)
-                                      .dir(dir)
-                                      .build();
-
-        return applicationService.getApplicationsByUser(filter, pageable);
     }
 
 
