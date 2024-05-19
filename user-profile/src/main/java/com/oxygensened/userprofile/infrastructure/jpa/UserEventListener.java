@@ -1,29 +1,40 @@
 package com.oxygensened.userprofile.infrastructure.jpa;
 
-import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
 import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
 import com.oxygensened.userprofile.domain.event.UserDetailsDataEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.hibernate.event.spi.PreUpdateEvent;
-import org.hibernate.event.spi.PreUpdateEventListener;
+import org.hibernate.event.spi.PostInsertEvent;
+import org.hibernate.event.spi.PostInsertEventListener;
+import org.hibernate.event.spi.PostUpdateEvent;
+import org.hibernate.event.spi.PostUpdateEventListener;
+import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.stereotype.Component;
 
 @Component
-final class UserPreUpdateEventListener implements PreUpdateEventListener {
+final class UserEventListener implements PostUpdateEventListener, PostInsertEventListener {
 
     private static final List<String> listenToFields = List.of("name", "surname", "phoneNumber", "imageName",
-                                                               "imageNameSmall", "activeJobPosition", "accountType", "address");
+                                                               "imageNameSmall", "activeJobPosition", "accountType", "address",
+                                                               "experience", "technologies");
     private final DomainEventPublisher domainEventPublisher;
 
-    UserPreUpdateEventListener(DomainEventPublisher domainEventPublisher) {
+    UserEventListener(DomainEventPublisher domainEventPublisher) {
         this.domainEventPublisher = domainEventPublisher;
     }
 
     @Override
-    public boolean onPreUpdate(PreUpdateEvent event) {
+    public void onPostInsert(PostInsertEvent event) {
+        if (event.getEntity() instanceof User user) {
+            domainEventPublisher.publish(new UserDetailsDataEvent(user.id(), user.toMap()));
+        }
+    }
+
+    @Override
+    public void onPostUpdate(PostUpdateEvent event) {
         if (event.getEntity() instanceof User user) {
 
             Object[] oldState = event.getOldState();
@@ -40,6 +51,10 @@ final class UserPreUpdateEventListener implements PreUpdateEventListener {
                 domainEventPublisher.publish(new UserDetailsDataEvent(user.id(), changes));
             }
         }
+    }
+
+    @Override
+    public boolean requiresPostCommitHandling(EntityPersister persister) {
         return false;
     }
 }

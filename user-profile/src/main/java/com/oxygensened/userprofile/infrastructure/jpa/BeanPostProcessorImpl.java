@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanPostProcessorImpl implements BeanPostProcessor {
 
-    private final UserPreUpdateEventListener userChangesInterceptor;
+    private final UserEventListener userChangesInterceptor;
 
-    BeanPostProcessorImpl(UserPreUpdateEventListener userChangesInterceptor) {
+    BeanPostProcessorImpl(UserEventListener userChangesInterceptor) {
         this.userChangesInterceptor = userChangesInterceptor;
     }
 
@@ -27,7 +27,10 @@ public class BeanPostProcessorImpl implements BeanPostProcessor {
                     .getServiceRegistry()
                     .getService(EventListenerRegistry.class);
 
-            serviceRegistry.getEventListenerGroup(EventType.PRE_UPDATE)
+            serviceRegistry.getEventListenerGroup(EventType.POST_UPDATE)
+                           .appendListener(userChangesInterceptor);
+
+            serviceRegistry.getEventListenerGroup(EventType.POST_INSERT)
                            .appendListener(userChangesInterceptor);
         }
         return bean;

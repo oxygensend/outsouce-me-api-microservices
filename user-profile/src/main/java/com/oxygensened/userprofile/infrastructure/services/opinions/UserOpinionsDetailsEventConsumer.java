@@ -1,4 +1,4 @@
-package com.oxygensened.userprofile.context.opinions;
+package com.oxygensened.userprofile.infrastructure.services.opinions;
 
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.UserRepository;

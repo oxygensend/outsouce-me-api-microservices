@@ -2,7 +2,8 @@ package com.oxygensened.userprofile.infrastructure.kafka;
 
 import com.oxygensend.commons_jdk.exception.ApiException;
 import com.oxygensened.userprofile.context.auth.event.UserRegisteredEvent;
-import com.oxygensened.userprofile.context.opinions.UserOpinionsDetailsEvent;
+import com.oxygensened.userprofile.infrastructure.services.joboffers.JobOfferDataEvent;
+import com.oxygensened.userprofile.infrastructure.services.opinions.UserOpinionsDetailsEvent;
 import com.oxygensened.userprofile.domain.exception.ServiceUnavailableException;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +70,22 @@ public class KafkaConsumerConfiguration {
         containerFactory.setCommonErrorHandler(errorHandler());
         return containerFactory;
     }
+
+    @Bean
+    ConsumerFactory<String, JobOfferDataEvent> jobOfferDataEventConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerProperties(), new StringDeserializer(),
+                                                 errorHandlingDeserializer(JobOfferDataEvent.class));
+    }
+
+    @Bean
+    ConcurrentKafkaListenerContainerFactory<String, JobOfferDataEvent> jobOfferDataEventConcurrentKafkaListenerContainerFactory(
+            ConsumerFactory<String, JobOfferDataEvent> consumerFactory) {
+        var containerFactory = new ConcurrentKafkaListenerContainerFactory<String, JobOfferDataEvent>();
+        containerFactory.setConsumerFactory(consumerFactory);
+        containerFactory.setCommonErrorHandler(errorHandler());
+        return containerFactory;
+    }
+
 
     private Map<String, Object> consumerProperties() {
         Map<String, Object> configProps = new HashMap<>();

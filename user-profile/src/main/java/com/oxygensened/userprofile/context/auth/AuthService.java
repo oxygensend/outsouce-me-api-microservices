@@ -6,8 +6,6 @@ import com.oxygensened.userprofile.context.auth.dto.request.RegisterRequest;
 import com.oxygensened.userprofile.context.auth.dto.view.RegisterView;
 import com.oxygensened.userprofile.context.notifications.NotificationsService;
 import com.oxygensened.userprofile.domain.entity.User;
-import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
-import com.oxygensened.userprofile.domain.event.UserDetailsDataEvent;
 import com.oxygensened.userprofile.domain.exception.UserAlreadyExistsException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
@@ -20,14 +18,12 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private final NotificationsService notificationsService;
-    private final DomainEventPublisher domainEventPublisher;
     private final UserIdGenerator userIdGenerator;
 
-    public AuthService(AuthRepository authRepository, UserRepository userRepository, NotificationsService notificationsService, DomainEventPublisher domainEventPublisher, UserIdGenerator userIdGenerator) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, NotificationsService notificationsService, UserIdGenerator userIdGenerator) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
         this.notificationsService = notificationsService;
-        this.domainEventPublisher = domainEventPublisher;
         this.userIdGenerator = userIdGenerator;
     }
 
@@ -73,8 +69,7 @@ public class AuthService {
                        .externalId(externalId)
                        .build();
 
-        user = userRepository.save(user);
-        domainEventPublisher.publish(new UserDetailsDataEvent(user.id(), user.toMap()));
+        userRepository.save(user);
     }
 
 
