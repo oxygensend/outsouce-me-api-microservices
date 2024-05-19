@@ -9,7 +9,7 @@ import jakarta.persistence.Converter;
 public class ExperienceConverter implements AttributeConverter<Experience, Integer> {
     @Override
     public Integer convertToDatabaseColumn(Experience attribute) {
-        return attribute.numericMapping();
+        return attribute != null ? attribute.numericMapping() : null;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.oxygensend.joboffer.infrastructure.kafka;
 
-import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
+import com.oxygensend.joboffer.context.JobOffersProperties;
 import com.oxygensend.joboffer.context.notifications.NotificationEvent;
+import com.oxygensend.joboffer.domain.event.DomainEvent;
+import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,11 +34,21 @@ public class KafkaProducerConfiguration {
     private final static Logger LOGGER = LoggerFactory.getLogger(KafkaProducerConfiguration.class);
     private final KafkaProducerProperties kafkaProperties;
     private final ServiceProperties serviceProperties;
+    private final JobOffersProperties jobOffersProperties;
 
-    KafkaProducerConfiguration(KafkaProducerProperties kafkaProperties, ServiceProperties serviceProperties) {
+    KafkaProducerConfiguration(KafkaProducerProperties kafkaProperties, ServiceProperties serviceProperties, JobOffersProperties jobOffersProperties) {
         this.kafkaProperties = kafkaProperties;
         this.serviceProperties = serviceProperties;
+        this.jobOffersProperties = jobOffersProperties;
         verifyTopicsExistence();
+    }
+
+    @Bean
+    public KafkaTemplate<String, DomainEvent> userDataKafkaTemplate() {
+        var producerFactory = new DefaultKafkaProducerFactory<String, DomainEvent>(configProperties());
+        var kafkaTemplate = new KafkaTemplate<>(producerFactory);
+        kafkaTemplate.setProducerListener(new KafkaProducerListener<>());
+        return kafkaTemplate;
     }
 
     @Bean
@@ -106,6 +118,7 @@ public class KafkaProducerConfiguration {
     private Set<String> getAllTopics() {
         Set<String> topics = new HashSet<>();
         topics.add(serviceProperties.notifications().externalTopic());
+        topics.addAll(jobOffersProperties.topics().values());
         return topics;
     }
 

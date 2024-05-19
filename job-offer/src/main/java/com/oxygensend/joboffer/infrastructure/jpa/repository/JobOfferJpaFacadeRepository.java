@@ -41,8 +41,8 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
 
     @Override
     public JobOffer save(JobOffer jobOffer) {
-        var jobOfferES = elasticSearchMapper.mapJobOfferToJobOfferES(jobOffer);
         var saveJobOffer = jobOfferJpaRepository.save(jobOffer);
+        var jobOfferES = elasticSearchMapper.mapJobOfferToJobOfferES(saveJobOffer);
 
         if (saveJobOffer.archived()) {
             elasticsearchOperations.delete(jobOffer.id().toString(), JobOfferES.class);

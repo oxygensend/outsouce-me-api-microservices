@@ -1,7 +1,9 @@
 package com.oxygensend.joboffer.infrastructure;
 
 import com.oxygensend.joboffer.context.JobOffersProperties;
+import com.oxygensend.joboffer.domain.event.Topics;
 import jakarta.validation.constraints.NotNull;
+import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -15,6 +17,8 @@ record SpringJobOffersProperties(@NotNull
                                  @NotNull
                                  String checkJobOfferExpirationCron,
                                  @NotNull
-                                 String recalculateJobOffersPopularityRateCron) implements JobOffersProperties {
+                                 String recalculateJobOffersPopularityRateCron,
+                                 @NotNull
+                                 Map<Topics, String> topics) implements JobOffersProperties {
 
 }

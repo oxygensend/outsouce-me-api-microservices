@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
+// TODO migrate to PreUpdateEventListener
 @Aspect
 @Component
 final class SlugAspect {
