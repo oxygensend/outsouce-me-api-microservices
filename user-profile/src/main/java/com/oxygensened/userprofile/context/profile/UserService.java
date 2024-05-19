@@ -2,9 +2,11 @@ package com.oxygensened.userprofile.context.profile;
 
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commons_jdk.exception.UnauthorizedException;
 import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
+import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.context.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
@@ -40,19 +42,21 @@ public class UserService {
     private final ThumbnailService thumbnailService;
     private final RequestContext requestContext;
     private final DevelopersForYou developersForYou;
+    private final UserViewFactory userViewFactory;
 
     public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
-                       RequestContext requestContext, DevelopersForYou developersForYou) {
+                       RequestContext requestContext, DevelopersForYou developersForYou, UserViewFactory userViewFactory) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
         this.requestContext = requestContext;
         this.developersForYou = developersForYou;
+        this.userViewFactory = userViewFactory;
     }
 
     public UserView getUser(Long id) {
         return userRepository.findById(id)
-                             .map(UserView::from)
+                             .map(userViewFactory::create)
                              .orElseThrow(() -> UserNotFoundException.withId(id));
     }
 
@@ -67,22 +71,12 @@ public class UserService {
 
         var updatedUser = updateDetails(user, request);
         userRepository.save(updatedUser);
-        return UserView.from(user);
+        return userViewFactory.create(updatedUser);
     }
 
     public Page<UserView> getPaginatedUsers(UserFilter filters, Pageable pageable) {
-        if (filters.order() == UserSort.FOR_YOU) {
-            if (!requestContext.hasAuthority(AccountType.PRINCIPLE.role())) {
-                throw new RuntimeException("X");
-            }
-
-            var userId = requestContext.userId().get();
-            return developersForYou.getForUser(Long.valueOf(userId), filters, pageable)
-                                   .map(UserView::from);
-        } else {
-            return userRepository.findAll(pageable, filters)
-                                 .map(UserView::from);
-        }
+        return userRepository.findAll(pageable, filters)
+                             .map(userViewFactory::create);
     }
 
     public void uploadThumbnail(Long id, MultipartFile file) {
@@ -122,6 +116,26 @@ public class UserService {
     public PagedListView<UserSearchResult> search(String query, Pageable pageable) {
         var paginator = userRepository.search(query, pageable);
         return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
+    }
+
+    public PagedListView<DeveloperView> getPaginatedDevelopers(UserFilter filter, Pageable pageable) {
+        Page<DeveloperView> page;
+        if (filter.sort() == UserSort.FOR_YOU) {
+            if (!requestContext.isAuthorized()) {
+                throw new UnauthorizedException();
+            }
+            if (!requestContext.hasAuthority(AccountType.PRINCIPLE.role())) {
+                throw new AccessDeniedException();
+            }
+
+            var userId = requestContext.userId().get();
+            page = developersForYou.getForUser(Long.valueOf(userId), filter, pageable)
+                                   .map(userViewFactory::createDeveloper);
+        } else {
+            page = userRepository.findAll(pageable, filter)
+                                 .map(userViewFactory::createDeveloper);
+        }
+        return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());
     }
 
 

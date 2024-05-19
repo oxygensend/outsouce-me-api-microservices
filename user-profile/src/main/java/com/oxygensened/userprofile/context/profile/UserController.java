@@ -2,13 +2,16 @@ package com.oxygensened.userprofile.context.profile;
 
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
+import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
 import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
+import com.oxygensened.userprofile.domain.entity.part.Experience;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -47,6 +50,26 @@ class UserController {
         return userService.updateUserDetails(id, request);
     }
 
+    @GetMapping("/developers-offers")
+    PagedListView<DeveloperView> developersPaginatedList(@RequestParam(required = false) UserSort sort,
+                                                         @RequestParam(name = "technologies", required = false) List<String> technologies,
+                                                         @RequestParam(name = "address.postCode", required = false) String postCode,
+                                                         @RequestParam(name = "address.city", required = false) String city,
+                                                         @RequestParam(name = "experience", required = false) Experience experience,
+                                                         Pageable pageable) {
+        var filters = UserFilter.builder()
+                                .sort(sort)
+                                .technologies(technologies)
+                                .postCode(postCode)
+                                .city(city)
+                                .experience(experience)
+                                .lookingForJob(true)
+                                .accountType(AccountType.DEVELOPER)
+                                .build();
+
+        return userService.getPaginatedDevelopers(filters, pageable);
+    }
+
     @GetMapping
     PagedListView<UserView> paginatedList(@RequestParam(required = false) AccountType accountType,
                                           @RequestParam(required = false) Boolean lookingForJob,
@@ -55,7 +78,7 @@ class UserController {
         var filters = UserFilter.builder()
                                 .accountType(accountType)
                                 .lookingForJob(lookingForJob)
-                                .order(order)
+                                .sort(order)
                                 .build();
 
         var page = userService.getPaginatedUsers(filters, pageable);

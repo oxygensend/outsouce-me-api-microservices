@@ -1,59 +1,59 @@
 package com.oxygensened.userprofile.infrastructure.jpa.repository;
 
+import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.repository.filters.UserSort;
-import com.oxygensened.userprofile.domain.entity.part.AccountType;
-import com.oxygensened.userprofile.domain.entity.User;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import org.springframework.data.jpa.domain.Specification;
 
+import static com.oxygensened.userprofile.infrastructure.jpa.repository.SpecificationUtils.addFindInSetPredicate;
+import static com.oxygensened.userprofile.infrastructure.jpa.repository.SpecificationUtils.predicateOfNullable;
 
-final class UserSpecification implements Specification<User> {
 
-    private final List<Predicate> predicates = new ArrayList<>();
-    private final AccountType accountType;
-    private final Boolean lookingForJob;
-    private final UserSort order;
+final class UserSpecification {
 
-    private UserSpecification(AccountType accountType, Boolean lookingForJob, UserSort order) {
-        this.accountType = accountType;
-        this.lookingForJob = lookingForJob;
-        this.order = order;
+    private UserSpecification() {
+
     }
 
-    public static UserSpecification read(UserFilter userFilters) {
-        return new UserSpecification(userFilters.accountType(), userFilters.lookingForJob(), userFilters.order());
+    public static Specification<User> getPredicateForUsersQuery(UserFilter filter) {
+        return (root, query, cb) -> getPredicateForUsersQuery(root, query, cb, filter);
     }
 
+    private static Predicate getPredicateForUsersQuery(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb, UserFilter filter) {
+        final var predicates = new ArrayList<Predicate>();
 
-    @Override
-    public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        predicateOfNullable(accountType, value -> cb.equal(root.get("accountType"), value));
-        predicateOfNullable(lookingForJob, value -> cb.equal(root.get("lookingForJob"), value));
+        predicateOfNullable(predicates, filter.accountType(), value -> cb.equal(root.get("accountType"), value));
+        predicateOfNullable(predicates, filter.lookingForJob(), value -> cb.equal(root.get("lookingForJob"), value));
+        predicateOfNullable(predicates, filter.experience(), value -> cb.equal(root.get("experience"), value));
 
-        specifyOrder(query, cb, root);
+        if (filter.postCode() != null || filter.city() != null) {
+            var addressJoin = root.join("address", JoinType.LEFT);
+            predicateOfNullable(predicates, filter.postCode(), value -> cb.equal(addressJoin.get("postCode"), value));
+            predicateOfNullable(predicates, filter.city(), value -> cb.equal(addressJoin.get("city"), value));
+        }
+
+        for (var tech : filter.technologies()) {
+            addFindInSetPredicate(predicates, cb, root.get("technologies"), tech);
+        }
+
+        specifyOrder(query, cb, root, filter.sort());
 
         return cb.and(predicates.toArray(new Predicate[0]));
     }
 
 
-    private void predicateOfNullable(Object value, Function<Object, Predicate> predicate) {
-        Optional.ofNullable(value).map(predicate).ifPresent(predicates::add);
-    }
-
-    private void specifyOrder(CriteriaQuery<?> query, CriteriaBuilder cb, Root<User> root) {
-        if (order == null) {
+    private static void specifyOrder(CriteriaQuery<?> query, CriteriaBuilder cb, Root<User> root, UserSort sort) {
+        if (sort == null) {
             return;
         }
 
-        switch (order) {
+        switch (sort) {
             case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
             case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
             case FOR_YOU -> query.orderBy(cb.desc(root.get("displayOrder")));

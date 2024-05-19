@@ -1,6 +1,5 @@
 package com.oxygensend.joboffer.domain.repository.filter;
 
-import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public record JobOfferFilter(List<WorkType> workTypes,
                              String postCode,
                              String city,
                              Boolean archived,
-                             JobOfferSort sort) {
+                             JobOfferSort sort) implements Filter {
 
     private static final List<Filter> FILTERS = new ArrayList<>();
 
@@ -29,8 +28,9 @@ public record JobOfferFilter(List<WorkType> workTypes,
         return new Builder();
     }
 
-    public boolean match(JobOffer jobOffer) {
-        return FILTERS.stream().allMatch(filter -> filter.match(jobOffer));
+    @Override
+    public boolean match(Object object) {
+        return FILTERS.stream().allMatch(filter -> filter.match(object));
     }
 
     public static class Builder {

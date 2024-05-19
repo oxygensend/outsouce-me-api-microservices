@@ -2,6 +2,7 @@ package com.oxygensend.joboffer.context.job_offer;
 
 import com.oxygensend.commons_jdk.PagedListView;
 import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commons_jdk.exception.UnauthorizedException;
 import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensend.joboffer.context.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
@@ -140,7 +141,7 @@ public class JobOfferService {
         Page<JobOfferView> page;
         if (filter.sort() == JobOfferSort.FOR_YOU) {
             if (!requestContext.isAuthorized()) {
-                throw new RuntimeException();
+                throw new UnauthorizedException();
             }
 
             var userId = requestContext.userId().get();

@@ -60,7 +60,7 @@ class UserJpaFacadeRepository implements UserRepository {
 
     @Override
     public Page<User> findAll(Pageable pageable, UserFilter filters) {
-        var specification = UserSpecification.read(filters);
+        var specification = UserSpecification.getPredicateForUsersQuery(filters);
         return JpaUtils.findPageable(entityManager, pageable, User.class, specification);
     }
 
@@ -100,6 +100,7 @@ class UserJpaFacadeRepository implements UserRepository {
     public List<User> findAllDevelopers() {
         return userJpaRepository.findAllDevelopers();
     }
+
 
 
 }

@@ -13,6 +13,9 @@ public record JobOfferSearchResult(String id,
 
 
     private static String shortDescription(String description) {
+        if (description == null) {
+            return null;
+        }
         var endIndex = Math.min(description.length(), 100);
         return description.substring(0, endIndex);
     }
