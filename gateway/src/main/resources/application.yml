@@ -48,7 +48,7 @@ spring:
             - RewritePath=/applications(?<segment>.*),/api/v1/applications$\{segment}
             - name: AuthPrefilter
               args:
-                excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details" ]
+                excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details", "GET,/api/v1/job-offers/.*" ]
         - id: opinions
           uri: lb://opinions-service
           predicates:
@@ -81,8 +81,10 @@ spring:
         - id: auth
           uri: lb://auth-service
           predicates:
-            - Path=/auth/access_token,/auth/refresh_token
+            - Path=/auth/access_token,/auth/refresh_token,/auth/reset_password,/auth/verify_email
           filters:
+            - RewritePath=/auth/reset_password, /v1/users/reset_password
+            - RewritePath=/auth/verify_email, /v1/users/verify_email
             - RewritePath=/auth/(?<segment>.*),/v1/auth/$\{segment}
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin

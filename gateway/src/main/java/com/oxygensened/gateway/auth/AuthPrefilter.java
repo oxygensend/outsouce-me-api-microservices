@@ -88,7 +88,7 @@ public class AuthPrefilter extends AbstractGatewayFilterFactory<AuthPrefilter.Co
 
     private boolean filterPath(String path, ServerHttpRequest request) {
         String[] methodAndPath = path.split(",");
-        boolean isMethodMatched = methodAndPath.length > 1 && methodAndPath[0].equals(request.getMethod().name());
+        boolean isMethodMatched = methodAndPath.length < 2 || methodAndPath[0].equals(request.getMethod().name());
         boolean isPathMatched = Pattern.matches(methodAndPath[methodAndPath.length - 1], request.getPath().value());
         return isMethodMatched && isPathMatched;
     }
