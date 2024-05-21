@@ -10,7 +10,7 @@ spring:
 
 eureka:
   client:
-    enabled: false
+    enabled: true
 
 
 services:
@@ -49,6 +49,21 @@ user-profile:
   storage:
     rootLocation: user-profile/storage
     thumbnailDir: thumbnails
-  thumbnailServerUrl: http://localhost:9001/user/thumbnails
+  thumbnailServerUrl: http://localhost:8080/users/thumbnails
   plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
   developers-popularity-rate-recalculation-cron: 0 0 0 * * *
+  password-reset-frontend-url: http://localhost:3000/odzyskiwanie-hasla
+  email-verification-frontend-url: http://localhost:3000/aktywacja-konta
+  notifications:
+    email-verification-email:
+      subject: "Aktywacja konta w serwisie Outsource me"
+      body: "Witaj, aby aktywować swoje konto w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+    password-reset-email:
+      subject: "Reset hasła w serwisie Outsource me"
+      body: "Witaj, aby zresetować swoje hasło w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+    welcome-message-email:
+      subject: "%s, witaj w serwisie Outsource me!"
+      body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów.</br> Dziękujemy że jestes z nami. </br> Ekipa Outsource me"
+    welcome-message-internal:
+      body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów."
+

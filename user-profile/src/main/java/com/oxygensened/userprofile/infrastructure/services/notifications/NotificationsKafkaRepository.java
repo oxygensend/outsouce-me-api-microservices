@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.infrastructure.services.notifications;
 
-import com.oxygensened.userprofile.context.UserProfileProperties;
+import com.oxygensened.userprofile.context.notifications.InternalMessage;
+import com.oxygensened.userprofile.context.properties.UserProfileProperties;
 import com.oxygensened.userprofile.context.notifications.Mail;
 import com.oxygensened.userprofile.context.notifications.NotificationEvent;
 import com.oxygensened.userprofile.context.notifications.NotificationsRepository;
@@ -28,6 +29,11 @@ class NotificationsKafkaRepository implements NotificationsRepository {
     @Override
     public void sendMail(Mail mail) {
         send(mail);
+    }
+
+    @Override
+    public void sendInternalMessage(InternalMessage internalMessage) {
+        send(internalMessage);
     }
 
 

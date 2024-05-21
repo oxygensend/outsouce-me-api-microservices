@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.kafka;
 
-import com.oxygensened.userprofile.context.UserProfileProperties;
+import com.oxygensened.userprofile.context.properties.UserProfileProperties;
 import com.oxygensened.userprofile.context.notifications.NotificationEvent;
 import com.oxygensened.userprofile.domain.event.DomainEvent;
 import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;

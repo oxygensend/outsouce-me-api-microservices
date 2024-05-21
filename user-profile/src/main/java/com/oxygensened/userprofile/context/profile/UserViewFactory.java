@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.profile;
 
-import com.oxygensened.userprofile.context.UserProfileProperties;
+import com.oxygensened.userprofile.context.properties.UserProfileProperties;
 import com.oxygensened.userprofile.context.profile.dto.view.AddressView;
 import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;

@@ -10,7 +10,7 @@ spring:
 
 eureka:
   client:
-    enabled: false
+    enabled: true
 
 
 services:
@@ -42,7 +42,7 @@ kafka:
 
 job-offers:
   service-id: job-offers-service
-  user-thumbnail-server-url: http://localhost:8080/api/v1/users/thumbnail
+  user-thumbnail-server-url: http://localhost:8080/users/thumbnails
   storage:
     root-location: storage
     attachments-location: attachments
@@ -52,3 +52,9 @@ job-offers:
     boostrap-type: reindex
   topics:
     JOB_OFFER_DATA: outsource-me-api-job-offer-data
+  notifications:
+    job-offer-application-email:
+      subject: "Masz nową aplikacje na oferte %s"
+      body: "Użytkownik %s właśnie zaaplikował na twoją oferte <b>%s</b>. Sprawdź to!"
+    job-offer-application-internal:
+      body: "Użytkownik %s właśnie zaaplikował na twoją oferte"

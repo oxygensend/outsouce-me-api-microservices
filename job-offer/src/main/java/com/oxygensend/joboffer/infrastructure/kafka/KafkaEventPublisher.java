@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.kafka;
 
-import com.oxygensend.joboffer.context.JobOffersProperties;
+import com.oxygensend.joboffer.context.properties.JobOffersProperties;
 import com.oxygensend.joboffer.domain.event.DomainEvent;
 import com.oxygensend.joboffer.domain.event.DomainEventPublisher;
 import org.springframework.kafka.core.KafkaTemplate;

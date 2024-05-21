@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.domain;
 
-import com.oxygensened.userprofile.context.UserProfileProperties;
+import com.oxygensened.userprofile.context.properties.UserProfileProperties;
 import com.oxygensened.userprofile.domain.service.UniversityProvider;
 import java.util.Collections;
 import java.util.List;

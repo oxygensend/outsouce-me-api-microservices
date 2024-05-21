@@ -42,14 +42,14 @@ public class AuthService {
         var user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.withEmail(email));
         String token = authRepository.generateEmailVerificationToken(user.externalId());
 
-        notificationsService.sendEmailVerificationLink(email, user.externalId(), token);
+        notificationsService.sendEmailVerificationLink(email, user.id().toString(), token);
     }
 
     public void resendPasswordResetLink(String email) {
         var user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.withEmail(email));
         String token = authRepository.generatePasswordResetToken(user.externalId());
 
-        notificationsService.sendPasswordResetLink(email, user.externalId(), token);
+        notificationsService.sendPasswordResetLink(email, user.id(), token);
     }
 
     private void checkIfUserExists(String email) {
@@ -70,6 +70,7 @@ public class AuthService {
                        .build();
 
         userRepository.save(user);
+        notificationsService.sendWelcomingMessages(user);
     }
 
 

@@ -32,7 +32,7 @@ final class UserRegisteredEventConsumer {
         }
 
         String token = authRepository.generateEmailVerificationToken(event.userId());
-        notificationsService.sendEmailVerificationLink(event.email(), event.userId(), token);
+        notificationsService.sendEmailVerificationLink(event.email(), event.businessId(), token);
 
         LOGGER.info("Email verification link sent to user {}", event.email());
     }

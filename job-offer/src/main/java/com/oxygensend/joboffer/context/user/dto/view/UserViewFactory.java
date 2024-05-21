@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.context.user.dto.view;
 
-import com.oxygensend.joboffer.context.JobOffersProperties;
+import com.oxygensend.joboffer.context.properties.JobOffersProperties;
 import com.oxygensend.joboffer.domain.entity.User;
 import org.springframework.stereotype.Component;
 
