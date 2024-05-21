@@ -15,6 +15,8 @@
 
     <properties>
         <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
+        <javassist.version>3.24.0-GA</javassist.version>
+        <validation-api.version>3.0.2</validation-api.version>
     </properties>
 
     <dependencies>
@@ -22,6 +24,14 @@
             <groupId>com.oxygensend</groupId>
             <artifactId>commons-jdk</artifactId>
             <version>${commons-jdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

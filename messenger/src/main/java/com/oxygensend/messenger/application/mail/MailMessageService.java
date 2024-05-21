@@ -1,5 +1,7 @@
 package com.oxygensend.messenger.application.mail;
 
+import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commons_jdk.request_context.RequestContext;
 import com.oxygensend.messenger.application.mail.dto.MailMessageRequest;
 import com.oxygensend.messenger.application.mail.dto.SendMailCommand;
 import com.oxygensend.messenger.application.notifications.NotificationsService;
@@ -22,16 +24,22 @@ public class MailMessageService {
     private final MailMessageRepository repository;
     private final UserRepository userRepository;
     private final NotificationsService notificationsService;
+    private final RequestContext requestContext;
 
-    MailMessageService(MailService mailService, MailMessageQueue queue, MailMessageRepository repository, UserRepository userRepository, NotificationsService notificationsService) {
+    MailMessageService(MailService mailService, MailMessageQueue queue, MailMessageRepository repository, UserRepository userRepository, NotificationsService notificationsService, RequestContext requestContext) {
         this.mailService = mailService;
         this.queue = queue;
         this.repository = repository;
         this.userRepository = userRepository;
         this.notificationsService = notificationsService;
+        this.requestContext = requestContext;
     }
 
     public void sendMailMessage(MailMessageRequest request) {
+        if (!requestContext.isUserAuthenticated(request.senderId())) {
+            throw new AccessDeniedException();
+        }
+
         if (request.senderId().equals(request.recipientId())) {
             throw new SameUserException("Sender and recipient cannot be the same");
         }
@@ -55,7 +63,7 @@ public class MailMessageService {
             LOGGER.error("Failed to send mail message to {}  from {}", command.to().email(), command.from().email());
         } else {
             LOGGER.info("Mail message sent to {} from {}", command.to(), command.from());
-            var mailMessage = new MailMessage(command.subject(), command.body(), command.from(), command.to());
+            var mailMessage = new MailMessage(command.subject(), command.body(), command.to(), command.from());
             repository.save(mailMessage);
             notificationsService.sendInternalMessageInformingAboutMailMessageDelivery(mailMessage);
         }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
-@RequestMapping("api/v1/mail-messages")
+@RequestMapping("/api/v1/mail-messages")
 @RestController
 class MailMessageEndpoint {
 

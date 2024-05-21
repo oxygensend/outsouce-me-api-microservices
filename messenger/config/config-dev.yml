@@ -31,3 +31,5 @@ services:
 
 messages:
   serviceId: "messaging-service"
+  notifications:
+    mail-message-delivery-internal: "Masz nową wiadomość email od użytkownika: %s. Sprawdź swoją skrzynkę pocztową."
