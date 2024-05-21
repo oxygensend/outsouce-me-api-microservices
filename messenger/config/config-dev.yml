@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3308/messages
+    username: root
+    password: 12345
+  url: jdbc:mysql://localhost:3308/messages
+  user: root
+  password: 12345
+  enabled: true
+
+kafka:
+  producer:
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+  consumer:
+    application-id: messaging-service
+    bootstrap-servers: localhost:29092
+    security-protocol: PLAINTEXT
+
+
+eureka:
+  client:
+    enabled: true
+
+services:
+  notifications:
+    login: 1234
+    externalTopic: outsource-me-api-notifications
+  userProfile:
+    userDetailsDataTopic: outsource-me-api-user-data
+
+messages:
+  serviceId: "messaging-service"

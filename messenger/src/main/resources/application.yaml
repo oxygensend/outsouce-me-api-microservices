@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: messaging-service
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+
+messages:
+  mail:
+    host: localhost
+    port: 1025
+    protocol: smtp
+    auth: false
+    starttls-enable: false
+    debug: true
+    test-connection: false
+
+kafka:
+  producer:
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    retry-backoff-in-ms: 100
+    retries: 5
+    ssl:
+      #    keyStore: ${server.ssl.keystore}
+      #    keyStoreType: ${server.ssl.keystoretype}
+      #    keyStorePassword: ${server.ssl.keystorepassword}
+      #    keyPassword: ${server.ssl.keypassword}
+      #    trustStore: ${server.ssl.truststore}
+      #    trustStorePassword: ${server.ssl.truststorepassword}
+      #    trustStoreType: ${server.ssl.truststoretype}
+      enabled: false
+  consumer:
+    consumer-number: 1
+    securityProtocol: SASL_SSL
+    saslMechanism: SCRAM-SHA-512
+    max-poll-records: 10000
+    max-poll-interval-ms: 30000
+    request-timeout-ms: 11000
+    connections-max-idle-ms: 240000
+    pool-timeout-ms: 1000
+    auto-offset-reset: earliest
+    ssl:
+      enabled: false
+    retry:
+      max-retries: 5
+      back-off-period: 500
+      backoff-period-service-unavailable: 5000
+    retry-backoff-ms: 1000
+server:
+  port: 8001
