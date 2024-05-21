@@ -14,4 +14,8 @@ public interface UserProfileProperties {
 
     String developersPopularityRateRecalculationCron();
 
+    String emailVerificationFrontendUrl();
+
+    String passwordResetFrontendUrl();
+
 }

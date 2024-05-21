@@ -45,10 +45,6 @@ class UserController {
         return x;
     }
 
-    @PatchMapping("/{id}")
-    UserView update(@PathVariable @Parameter() Long id, @RequestBody UserDetailsRequest request) {
-        return userService.updateUserDetails(id, request);
-    }
 
     @GetMapping("/developers-offers")
     PagedListView<DeveloperView> developersPaginatedList(@RequestParam(required = false) UserSort sort,
@@ -68,6 +64,11 @@ class UserController {
                                 .build();
 
         return userService.getPaginatedDevelopers(filters, pageable);
+    }
+
+    @PatchMapping("/{id}")
+    UserView update(@PathVariable @Parameter() Long id, @RequestBody UserDetailsRequest request) {
+        return userService.updateUserDetails(id, request);
     }
 
     @GetMapping

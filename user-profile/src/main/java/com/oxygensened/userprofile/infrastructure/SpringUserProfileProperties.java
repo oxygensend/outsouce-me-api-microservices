@@ -2,7 +2,7 @@ package com.oxygensened.userprofile.infrastructure;
 
 import com.oxygensened.userprofile.context.UserProfileProperties;
 import com.oxygensened.userprofile.domain.event.Topics;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -11,9 +11,12 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "user-profile")
 record SpringUserProfileProperties(String serviceId,
                                    Map<Topics, String> topics,
-                                   @NotNull String thumbnailServerUrl,
-                                   String plUniversitiesSourceUrl,
-                                   String developersPopularityRateRecalculationCron) implements UserProfileProperties {
+                                   @NotEmpty String thumbnailServerUrl,
+                                   @NotEmpty String plUniversitiesSourceUrl,
+                                   @NotEmpty String developersPopularityRateRecalculationCron,
+                                   @NotEmpty String emailVerificationFrontendUrl,
+                                   @NotEmpty String passwordResetFrontendUrl
+) implements UserProfileProperties {
     private final static Integer TOPICS_SIZE = 1;
 
     public SpringUserProfileProperties {
