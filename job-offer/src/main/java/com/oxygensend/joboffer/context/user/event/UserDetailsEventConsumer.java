@@ -72,7 +72,7 @@ class UserDetailsEventConsumer {
 
         var technologiesField = event.fields().get("technologies");
         Set<String> technologies = technologiesField != null ? ((List<String>) technologiesField).stream().collect(Collectors.toSet()) : new HashSet<>();
-        var experience = Experience.valueOf((String) event.fields().get("experience"));
+        var experience = event.fields().get("experience") != null ? Experience.valueOf((String) event.fields().get("experience")): null;
 
         return new User(event.id(), name, surname, email, thumbnail, activeJobPosition, accountType, longitude, latitude, experience, technologies);
     }

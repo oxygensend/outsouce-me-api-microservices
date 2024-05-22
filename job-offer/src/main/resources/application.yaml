@@ -79,3 +79,7 @@ kafka:
 job-offers:
   elasticsearch:
     boostrap-type: none
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace

@@ -15,6 +15,4 @@ CREATE INDEX job_offer_user_idx ON application (job_offer_id, user_id);
 -- changeset oxygensend:1716100574123-5
 CREATE INDEX post_code_city_idx ON address (post_code, city);
 
--- changeset oxygensend:1716100574123-6
-CREATE INDEX user_archived_popularity_idx ON job_offer (user_id, archived, popularity_order DESC);
 

@@ -10,7 +10,7 @@ spring:
 
 eureka:
   client:
-    enabled: true
+    enabled: false
 
 
 services:

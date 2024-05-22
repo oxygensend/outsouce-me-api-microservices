@@ -31,7 +31,11 @@ import java.util.Set;
 @Table(indexes = {
         @Index(name = "slug_idx", columnList = "slug", unique = true),
         @Index(name = "archived_idx", columnList = "archived"),
-        @Index(name = "user_archived_popularity_idx", columnList = "user_id,archived,popularityOrder DESC"),
+        @Index(name = "popularity_idx", columnList = "popularityOrder DESC"),
+        @Index(name = "createdAt_idx", columnList = "createdAt DESC"),
+        @Index(name = "archived_user_popularity_idx", columnList = "archived,user_id,popularityOrder DESC"),
+        @Index(name = "archived_createdAt_idx", columnList = "archived,createdAt DESC"),
+        @Index(name = "valid_to_idx", columnList = "valid_to"),
 })
 @Entity
 public class JobOffer implements Serializable {

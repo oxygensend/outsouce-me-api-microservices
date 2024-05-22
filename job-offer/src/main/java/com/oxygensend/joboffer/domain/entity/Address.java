@@ -10,9 +10,8 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 
 @JsonIgnoreProperties(value = {"id"})
-@Table(name = "address", indexes = {
-        @Index(name = "post_code_city_idx", columnList = "postCode, city")
-
+@Table(indexes = {
+        @Index(name = "postCode_city_idx", columnList = "post_code,city", unique = true)
 })
 @Entity
 public class Address implements Serializable {
