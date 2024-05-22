@@ -2,8 +2,8 @@ package com.oxygensend.staticdata.infrastructure.mongo
 
 import com.oxygensend.staticdata.domain.Address
 import com.oxygensend.staticdata.domain.AddressRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Repository
 
@@ -12,15 +12,9 @@ internal class AddressMongoFacadeRepository(
     private val addressMongoRepository: AddressMongoRepository,
     private val mongoTemplate: MongoTemplate
 ) : AddressRepository {
+    @Cacheable("addresses")
     override fun findAll(search: String?): List<Address> {
-        val query = Query()
-            .apply {
-                search?.let {
-                    addCriteria(Criteria.where(Address::postalCodes.name).regex(search, "i"))
-                }
-            };
-
-        return mongoTemplate.find(query, Address::class.java)
+        return mongoTemplate.find(Query(), Address::class.java)
     }
 
     override fun save(address: Address): Address = addressMongoRepository.save(address)

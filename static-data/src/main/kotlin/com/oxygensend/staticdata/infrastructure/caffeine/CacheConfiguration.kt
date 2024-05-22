@@ -17,4 +17,5 @@ class CacheConfiguration(private val staticDataProperties: StaticDataProperties)
 
     @Bean
     fun caffeineStatCacheManager(): CacheManager = CaffeineCacheManager().apply { setCaffeine(statCacheConfig()) }
+
 }

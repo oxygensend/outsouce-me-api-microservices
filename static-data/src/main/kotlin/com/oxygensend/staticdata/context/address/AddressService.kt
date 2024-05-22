@@ -11,7 +11,6 @@ import org.bson.types.ObjectId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.cache.CacheManager
-import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -26,8 +25,16 @@ class AddressService(
     private val logger: Logger = LoggerFactory.getLogger(AddressService::class.java)
     private var job: Job? = null
 
-    fun findAllAddresses(search: String?): List<AddressView> = addressRepository.findAll(search)
-        .map { address -> AddressView.from(address) }
+    fun findAllAddresses(search: String?): List<AddressView> {
+        val addresses = addressRepository.findAll(search)
+
+        search?.let {
+            return addresses.filter { ad -> ad.postalCodes.any { it.startsWith(search) } }
+                .map { address -> AddressView.from(address) }
+        }
+
+        return addresses.map { AddressView.from(it) }
+    }
 
     fun forceStop() {
         job?.cancel("DD");
