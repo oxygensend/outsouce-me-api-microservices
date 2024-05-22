@@ -29,7 +29,7 @@ spring:
           uri: lb://user-profile-service
           predicates:
             - Path=/users/**, /auth/register, /auth/resend_password_reset_link
-            - NoPath=/api/v1/users/register,/api/v1/users/resend_password_reset_link,/api/v1/users/*/opinions-details,/users/*/opinions-details
+            - NoPath=/api/v1/users/register,/api/v1/users/resend_password_reset_link,/api/v1/users/*/opinions-details,/users/*/opinions-details,/api/v1/users/*/job-offers, /users/*/job-offers
           filters:
             - RewritePath=/users(?<segment>.*),/api/v1/users$\{segment}
             - RewritePath=/auth/register, /api/v1/users/register
@@ -41,14 +41,15 @@ spring:
         - id: job-offer
           uri: lb://job-offer-service
           predicates:
-            - Path=/job-offers/**, /applications/**, /attachments/**
+            - Path=/job-offers/**, /applications/**, /attachments/**, /users/*/job-offers
           filters:
-            - RewritePath=/job-offers(?<segment>.*),/api/v1/job-offers$\{segment}
+            - RewritePath=/job-offers/(?<segment>.*),/api/v1/job-offers/$\{segment}
             - RewritePath=/attachments/(?<segment>.*),/api/v1/attachments/$\{segment}
             - RewritePath=/applications(?<segment>.*),/api/v1/applications$\{segment}
+            - RewritePath=/users/(?<userId>.*)/job-offers, /api/v1/job-offers/users/$\{userId}/job-offers
             - name: AuthPrefilter
               args:
-                excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details", "GET,/api/v1/job-offers/.*" ]
+                excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details", "GET,/api/v1/job-offers/.*", "GET,/api/v1/job-offers/users/.*/job-offers" ]
         - id: opinions
           uri: lb://opinions-service
           predicates:
