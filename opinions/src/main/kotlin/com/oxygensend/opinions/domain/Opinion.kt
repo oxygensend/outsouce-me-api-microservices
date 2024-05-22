@@ -2,9 +2,18 @@ package com.oxygensend.opinions.domain
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.DocumentReference
+import org.springframework.data.mongodb.core.index.CompoundIndex
+import org.springframework.data.mongodb.core.index.CompoundIndexes
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
+@Document
+@CompoundIndexes(
+    CompoundIndex(name = "receiver.name_idx", def = "{'receiver.name': 1}"),
+    CompoundIndex(name = "receiver.name_id_asc_idx", def = "{'receiver.name': 1, 'id': 1}"),
+    CompoundIndex(name = "receiver.name_id_desc_idx", def = "{'receiver.name': 1, 'id': -1}"),
+    CompoundIndex(name = "receiver.name_author.name_idx", def = "{'receiver.name': 1, 'author.name': 1}")
+)
 class Opinion(
     @Id
     var id: ObjectId,
