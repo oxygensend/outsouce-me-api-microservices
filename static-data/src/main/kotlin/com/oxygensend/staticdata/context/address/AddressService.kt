@@ -1,15 +1,17 @@
 package com.oxygensend.staticdata.context.address
 
-import com.oxygensend.staticdata.domain.AddressDetailsRepository
 import com.oxygensend.staticdata.context.address.parser.AddressParser
 import com.oxygensend.staticdata.context.address.parser.ParsedAddressDto
 import com.oxygensend.staticdata.domain.Address
+import com.oxygensend.staticdata.domain.AddressDetailsRepository
 import com.oxygensend.staticdata.domain.AddressRepository
 import com.oxygensend.staticdata.domain.exception.AlreadyLoadingException
 import kotlinx.coroutines.*
 import org.bson.types.ObjectId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.cache.CacheManager
+import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -17,7 +19,8 @@ import java.time.Instant
 class AddressService(
     private val addressRepository: AddressRepository,
     private val addressParser: AddressParser,
-    private val addressDetailsRepository: AddressDetailsRepository
+    private val addressDetailsRepository: AddressDetailsRepository,
+    private val cacheManager: CacheManager
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(AddressService::class.java)
@@ -64,6 +67,7 @@ class AddressService(
             }
 
             addressRepository.saveBatch(batch)
+            cacheManager.getCache("addresses")?.clear()
             val endTimestamp = Instant.now().toEpochMilli()
             logger.info("Finished loading addresses in time {} ms", endTimestamp - startTimestamp)
         }

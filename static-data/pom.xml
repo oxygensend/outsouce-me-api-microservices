@@ -15,6 +15,7 @@
 
     <properties>
         <commons-jdk.version>1.0.0-SNAPSHOT</commons-jdk.version>
+        <caffeine.version>3.1.8</caffeine.version>
     </properties>
     <dependencies>
         <dependency>
@@ -34,11 +35,19 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.oxygensend</groupId>
             <artifactId>commons-jdk</artifactId>
             <version>${commons-jdk.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>

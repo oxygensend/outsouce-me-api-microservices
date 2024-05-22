@@ -1,12 +1,13 @@
 package com.oxygensend.staticdata.context.technology.loader
 
-import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import com.oxygensend.staticdata.domain.Technology
 import com.oxygensend.staticdata.domain.TechnologyRepository
+import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import org.bson.types.ObjectId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.cache.CacheManager
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.io.File
@@ -14,6 +15,7 @@ import java.io.File
 @Component
 internal class TechnologiesLoader(
     private val technologyRepository: TechnologyRepository,
+    private val cacheManager: CacheManager,
     staticDataProperties: StaticDataProperties,
 ) {
 
@@ -37,7 +39,13 @@ internal class TechnologiesLoader(
             .map { mapToTechnology(it) }
             .toList()
 
+        if (newTechnologies.isEmpty()) {
+            logger.info("No new technologies to insert into database")
+            return
+        }
+
         technologyRepository.saveAll(newTechnologies)
+        cacheManager.getCache("technologies")?.clear()
         logger.info("{} new technologies inserted into database", newTechnologies.size)
     }
 

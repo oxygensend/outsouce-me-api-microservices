@@ -11,3 +11,5 @@ spring:
 static-data:
   postal-code-data-url: https://www.kody-pocztowe.dokladnie.com/kody.csv.zip
   open-street-map-url: https://nominatim.openstreetmap.org/search?format=json
+  cache:
+    stat-cache-ttl: 6h

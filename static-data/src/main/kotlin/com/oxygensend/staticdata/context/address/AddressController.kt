@@ -2,6 +2,7 @@ package com.oxygensend.staticdata.context.address
 
 import com.oxygensend.commons_jdk.DefaultView
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Address")
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/static-data/addresses")
 internal class AddressController(private val addressService: AddressService) {
 
+    @Cacheable("addresses")
     @GetMapping("")
     fun getAddresses(@RequestParam(required = false) search: String?): List<AddressView> = addressService.findAllAddresses(search)
 
