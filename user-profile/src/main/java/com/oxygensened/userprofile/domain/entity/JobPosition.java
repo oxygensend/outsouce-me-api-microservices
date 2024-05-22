@@ -7,11 +7,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(indexes =  {
+        @Index(name = "id_individualId_idx", columnList = "id,individual_id"),
+        @Index(name = "individualId_startDate_idx", columnList = "individual_id,start_date DESC"),
+})
 public class JobPosition {
 
     @Id

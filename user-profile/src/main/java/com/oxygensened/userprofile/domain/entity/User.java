@@ -11,9 +11,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +25,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Table(indexes = {
+        @Index(name = "email_idx", columnList = "email"),
+        @Index(name = "slug_idx", columnList = "slug"),
+        @Index(name = "externalId_idx", columnList = "external_id"),
+        @Index(name = "popularityOrder_idx", columnList = "popularityOrder DESC"),
+        @Index(name = "createdAt_idx", columnList = "createdAt DESC"),
+        @Index(name = "displayOrder_idx", columnList = "displayOrder"),
+        @Index(name = "accountType_lookingForJob_popular_idx", columnList = "accountType, lookingForJob, popularityOrder"),
+        @Index(name = "accountType_lookingForJob_newest_idx", columnList = "accountType, lookingForJob, createdAt"),
+})
 @Entity
 public class User implements Serializable {
     @Id

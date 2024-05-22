@@ -20,7 +20,7 @@ public record UserView(String email,
                        AddressView address,
                        String activeJobPosition,
                        double opinionsRate,
-                       double opinionCount,
+                       double opinionsCount,
                        String imagePath,
                        List<String> technologies,
                        Experience experience

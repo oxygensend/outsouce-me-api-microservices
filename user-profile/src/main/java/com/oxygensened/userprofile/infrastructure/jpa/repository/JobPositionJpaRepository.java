@@ -9,5 +9,5 @@ interface JobPositionJpaRepository extends JpaRepository<JobPosition, Long> {
 
     Optional<JobPosition> findByIdAndIndividualId(Long id, Long userId);
 
-    List<JobPosition> findAllByIndividualId(Long userId);
+    List<JobPosition> findAllByIndividualIdOrderByStartDateDesc(Long userId);
 }

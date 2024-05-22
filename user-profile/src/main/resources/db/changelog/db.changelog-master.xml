@@ -7,4 +7,8 @@
     <include file="db/changelog/versions/1713085686111-changelog.sql" />
     <include file="db/changelog/versions/1715886994783-changelog.sql" />
     <include file="db/changelog/versions/1716129960502-changelog.sql" />
+    <include file="db/changelog/versions/1716383122509-changelog.sql" />
+    <include file="db/changelog/versions/1716383576874-changelog.sql" />
+    <include file="db/changelog/versions/1716385440253-changelog.sql" />
+    <include file="db/changelog/versions/1716385882394-changelog.sql" />
 </databaseChangeLog>

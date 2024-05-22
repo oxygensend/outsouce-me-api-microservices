@@ -21,7 +21,7 @@ class LanguageJpaFacadeRepository implements LanguageRepository {
 
     @Override
     public List<Language> findAllByUserId(Long userId) {
-        return languageJpaRepository.findAllByUserId(userId);
+        return languageJpaRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
     @Override

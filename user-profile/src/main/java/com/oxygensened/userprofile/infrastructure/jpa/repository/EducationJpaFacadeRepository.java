@@ -21,7 +21,7 @@ class EducationJpaFacadeRepository implements EducationRepository {
 
     @Override
     public List<Education> findAllByUserId(Long userId) {
-        return educationJpaRepository.findByIndividualId(userId);
+        return educationJpaRepository.findByIndividualIdOrderByStartDateDesc(userId);
     }
 
     @Override

@@ -9,5 +9,5 @@ public interface EducationJpaRepository extends JpaRepository<Education, Long> {
 
     Optional<Education> findByIdAndIndividualId(Long id, Long userId);
 
-    List<Education> findByIndividualId(Long userId);
+    List<Education> findByIndividualIdOrderByStartDateDesc(Long userId);
 }

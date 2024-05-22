@@ -32,6 +32,6 @@ class JobPositionJpaFacadeRepository implements JobPositionRepository {
 
     @Override
     public List<JobPosition> findAllByIndividualId(Long userId) {
-        return jobPositionJpaRepository.findAllByIndividualId(userId);
+        return jobPositionJpaRepository.findAllByIndividualIdOrderByStartDateDesc(userId);
     }
 }

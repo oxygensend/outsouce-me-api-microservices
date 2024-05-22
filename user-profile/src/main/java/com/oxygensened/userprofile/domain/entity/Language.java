@@ -5,9 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
+@Table(indexes =  {
+        @Index(name = "id_userId_idx", columnList = "id,user_id"),
+        @Index(name = "userId_createdAt_id", columnList = "user_id,created_at DESC"),
+})
 @Entity
 public class Language {
 
