@@ -101,7 +101,7 @@ internal class OpinionAggregateMongoRepository(private val mongoTemplate: MongoT
         return mongoTemplate.count(mongoQuery, Opinion::class.java)
     }
 
-    private fun getOpinionsSortMethod(filter: OpinionsFilter): Sort = when (filter.sortField) {
+private fun getOpinionsSortMethod(filter: OpinionsFilter): Sort = when (filter.sortField) {
         OpinionSortField.POPULARITY -> Sort.by(filter.direction.name, "likesCount")
         OpinionSortField.CREATED_AT -> Sort.by(filter.direction.name, Opinion::id.name)
         OpinionSortField.UPDATED_AT -> Sort.by(filter.direction.name, Opinion::updatedAt.name)

@@ -4,6 +4,9 @@ spring:
   threads:
     virtual:
       enabled: true
+  data:
+    mongodb:
+      auto-index-creation: true
 server:
   port: 8888
 
