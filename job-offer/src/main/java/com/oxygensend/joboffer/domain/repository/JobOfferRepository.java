@@ -21,6 +21,8 @@ public interface JobOfferRepository {
 
     Page<JobOffer> findAll(JobOfferFilter filter, Pageable pageable);
 
+    List<JobOffer> findAll(JobOfferFilter filter);
+
     List<JobOffer> findExpiredJobOffers();
 
     List<JobOffer> findAll();

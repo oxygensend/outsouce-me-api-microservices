@@ -76,6 +76,12 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
     }
 
     @Override
+    public List<JobOffer> findAll(JobOfferFilter filter) {
+        var specification = JobOfferSpecifications.getPredicateForJobOfferQuery(filter);
+        return jobOfferJpaRepository.findAll(specification);
+    }
+
+    @Override
     public List<JobOffer> findExpiredJobOffers() {
         var specification = JobOfferSpecifications.getPredicateForExpiredJobOffers();
         return jobOfferJpaRepository.findAll(specification);

@@ -87,9 +87,20 @@ public class JobOfferViewFactory {
                                           salaryRangeView,
                                           addressView,
                                           jobOffer.createdAt(),
-                                          jobOffer.validTo().toLocalDate(),
+                                          jobOffer.validTo() != null ? jobOffer.validTo().toLocalDate() : null,
                                           jobOffer.redirectCount(),
                                           applications,
                                           jobOffer.archived());
+    }
+
+    public JobOfferInfoView createJobOfferInfoView(JobOffer jobOffer) {
+        return new JobOfferInfoView(jobOffer.id(),
+                                    jobOffer.slug(),
+                                    jobOffer.name(),
+                                    jobOffer.description(),
+                                    jobOffer.shortDescription(),
+                                    jobOffer.numberOfApplications(),
+                                    jobOffer.validTo() != null ? jobOffer.validTo().toLocalDate() : null,
+                                    jobOffer.archived());
     }
 }

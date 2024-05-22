@@ -9,6 +9,7 @@ import com.oxygensend.joboffer.context.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.context.job_offer.dto.command.CreateJobOfferCommand;
 import com.oxygensend.joboffer.context.job_offer.dto.request.UpdateJobOfferRequest;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferDetailsView;
+import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferInfoView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferManagementView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.context.job_offer.dto.view.JobOfferViewFactory;
@@ -28,6 +29,7 @@ import com.oxygensend.joboffer.domain.service.JobOffersForYou;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -166,6 +168,11 @@ public class JobOfferService {
         return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
     }
 
+    public List<JobOfferInfoView> getJobOfferInfoList(JobOfferFilter filter) {
+        return jobOfferRepository.findAll(filter).stream()
+                                 .map(jobOfferViewFactory::createJobOfferInfoView)
+                                 .toList();
+    }
 
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
         if (JsonNullableWrapper.isPresent(validTo)) {
