@@ -1,6 +1,7 @@
 package com.oxygensend.staticdata
 
 import com.oxygensend.commons_jdk.exception.ExceptionConfiguration
+import com.oxygensend.commons_jdk.request_context.RequestContextConfiguration
 import com.oxygensend.staticdata.infrastructure.StaticDataProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Import
 @EnableCaching
 @EnableConfigurationProperties(StaticDataProperties::class)
 @SpringBootApplication
-@Import(ExceptionConfiguration::class)
+@Import(ExceptionConfiguration::class, RequestContextConfiguration::class)
 class StaticdataApplication
 
 fun main(args: Array<String>) {

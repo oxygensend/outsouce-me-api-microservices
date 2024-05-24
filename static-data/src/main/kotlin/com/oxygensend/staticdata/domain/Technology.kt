@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 data class Technology(
     @Id val id: String,
     val name: String,
-    val featured: Boolean,
+    var featured: Boolean,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime? = null
 )

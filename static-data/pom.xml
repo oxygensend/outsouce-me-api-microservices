@@ -14,7 +14,7 @@
     <description>Outsource me static data microservice</description>
 
     <properties>
-        <commons-jdk.version>1.0.0-SNAPSHOT</commons-jdk.version>
+        <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
         <caffeine.version>3.1.8</caffeine.version>
     </properties>
     <dependencies>

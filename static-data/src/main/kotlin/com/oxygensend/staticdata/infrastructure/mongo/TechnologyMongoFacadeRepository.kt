@@ -14,8 +14,11 @@ internal class TechnologyMongoFacadeRepository(private val technologyMongoReposi
     }
 
     override fun findByName(name: String): Technology? = technologyMongoRepository.findByName(name)
+    override fun findById(id: String): Technology? = technologyMongoRepository.findById(id).orElse(null)
 
     override fun save(technology: Technology): Technology = technologyMongoRepository.save(technology)
+    override fun delete(technology: Technology) = technologyMongoRepository.delete(technology)
+
     override fun saveAll(technologies: List<Technology>): List<Technology> = technologyMongoRepository.saveAll(technologies)
     override fun existsByName(name: String): Boolean = technologyMongoRepository.existsByName(name);
 }
