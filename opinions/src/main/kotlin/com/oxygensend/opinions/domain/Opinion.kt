@@ -21,10 +21,10 @@ class Opinion(
     var receiver: String,
     var scale: Int,
     var text: String? = null,
-) {
-    var likes: List<String> = emptyList()
-    var comments: List<Comment> = emptyList()
+    var likes: List<String> = emptyList(),
+    var comments: List<Comment> = emptyList(),
     var updatedAt: LocalDateTime? = null
+) {
 
     fun addLike(userId: String) {
         likes += userId

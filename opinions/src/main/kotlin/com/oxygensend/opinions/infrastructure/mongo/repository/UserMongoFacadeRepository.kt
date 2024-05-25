@@ -1,4 +1,4 @@
-package com.oxygensend.opinions.infrastructure.mongo
+package com.oxygensend.opinions.infrastructure.mongo.repository
 
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository

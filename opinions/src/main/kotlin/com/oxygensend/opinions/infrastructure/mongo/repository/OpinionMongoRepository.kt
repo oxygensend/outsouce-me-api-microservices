@@ -1,4 +1,4 @@
-package com.oxygensend.opinions.infrastructure.mongo
+package com.oxygensend.opinions.infrastructure.mongo.repository
 
 import com.oxygensend.opinions.domain.Opinion
 import org.bson.types.ObjectId

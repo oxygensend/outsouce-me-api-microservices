@@ -1,0 +1,25 @@
+eureka:
+  client:
+    enabled: false
+    service-url:
+      defaultZone: ${EUREKA_URI}
+
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+kafka:
+  producer:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    security-protocol: PLAINTEXT
+  consumer:
+    application-id: opinion-service
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    security-protocol: PLAINTEXT
+    user-details-data-topic: outsource-me-api-user-data
+
+opinions:
+  topics:
+    user-opinions-data: outsource-me-api-user-opinions-details

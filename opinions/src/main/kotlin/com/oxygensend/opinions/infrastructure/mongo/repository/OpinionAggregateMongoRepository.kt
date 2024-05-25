@@ -1,7 +1,6 @@
-package com.oxygensend.opinions.infrastructure.mongo
+package com.oxygensend.opinions.infrastructure.mongo.repository
 
 import com.oxygensend.opinions.domain.Opinion
-import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.aggregate.AggregatedOpinionDto
 import com.oxygensend.opinions.domain.aggregate.CommentDto
 import com.oxygensend.opinions.domain.aggregate.OpinionAggregateRepository

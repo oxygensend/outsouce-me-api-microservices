@@ -1,22 +1,25 @@
-package com.oxygensend.opinions.infrastructure.kafka;
+package com.oxygensend.opinions.infrastructure.kafka
 
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.kafka.support.ProducerListener;
+import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.clients.producer.RecordMetadata
+import org.slf4j.LoggerFactory
+import org.springframework.kafka.support.ProducerListener
+import org.springframework.lang.Nullable
+import java.lang.Exception
 
-final class KafkaProducerListener<K, V> implements ProducerListener<K, V> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerListener.class);
-
-    @Override
-    public void onSuccess(ProducerRecord<K, V> producerRecord, RecordMetadata recordMetadata) {
-        LOGGER.info("Event with key: {} transferred successfully to topic: {}", producerRecord.key(), producerRecord.topic());
+internal class KafkaProducerListener<K, V> : ProducerListener<K, V> {
+    override fun onSuccess(producerRecord: ProducerRecord<K, V>, recordMetadata: RecordMetadata) {
+        LOGGER.info("Event with key: {} transferred successfully to topic: {}", producerRecord.key(), producerRecord.topic())
     }
 
-    @Override
-    public void onError(ProducerRecord<K, V> producerRecord, RecordMetadata recordMetadata, Exception exception) {
-        LOGGER.info("Event with key: {} wasn't transferred to topic: {}", producerRecord.key(), producerRecord.topic());
-        throw new RuntimeException("Message sending failure %s %s".formatted(producerRecord.key(), producerRecord.topic()));
+    override fun onError(producerRecord: ProducerRecord<K, V>, @Nullable recordMetadata: RecordMetadata?, exception: Exception?) {
+        LOGGER.info(
+            "Event with key: ${producerRecord.key()} wasn't transferred to topic: ${producerRecord.key()}"
+        )
+        throw RuntimeException("Message sending failure ${producerRecord.key()} to ${producerRecord.topic()}")
+    }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(KafkaProducerListener::class.java)
     }
 }

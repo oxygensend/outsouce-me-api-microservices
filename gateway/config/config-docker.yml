@@ -1,0 +1,3 @@
+eureka:
+  service-url:
+    defaultZone: ${EUREKA_URL}

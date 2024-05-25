@@ -17,6 +17,7 @@
         <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>3.0.2</validation-api.version>
+        <liquibase.version>4.26.0</liquibase.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>
@@ -81,11 +86,16 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.26.0</version>
+                <version>${liquibase.version}</version>
                 <configuration>
                     <changeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.yaml</outputChangeLogFile>
@@ -98,7 +108,7 @@
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
                         <artifactId>liquibase-hibernate6</artifactId>
-                        <version>4.26.0</version>
+                        <version>${liquibase.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.springframework.boot</groupId>

@@ -1,24 +1,26 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3308/job_offer
-    username: root
-    password: 12345
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
   elasticsearch:
-    uris: http://localhost:9200
-    password: elastic
-    username: elastic
+    uris: ${ELASTICSEARCH_URL}
+    password: ${ELASTICSEARCH_PASSWORD}
+    username: ${ELASTICSEARCH_USERNAME}
   liquibase:
-    url: jdbc:mysql://localhost:3308/job_offer
-    username: root
-    password: 12345
+    url: ${DB_URL}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
 eureka:
   client:
     enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URI}
 
 
 services:
@@ -28,7 +30,7 @@ services:
   opinions:
     userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
   static-data:
-    url: http://localhost:8888
+    url: ${STATIC_DATA_SERVICE_URL}
 
 
 
@@ -39,11 +41,11 @@ feign:
 
 kafka:
   producer:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     security-protocol: PLAINTEXT
   consumer:
     application-id: job-offer-service
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     security-protocol: PLAINTEXT
     user-details-data-topic: outsource-me-api-user-data
     #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"

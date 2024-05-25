@@ -2,13 +2,13 @@ eureka:
   client:
     enabled: false
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URI}
 
 
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27018/static-data
+      uri: ${MONGO_URI}
 
 static-data:
   postal-code-data-url: https://www.kody-pocztowe.dokladnie.com/kody.csv.zip

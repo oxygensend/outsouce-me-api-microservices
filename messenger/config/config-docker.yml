@@ -1,20 +1,17 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3308/messages
-    username: root
-    password: 12345
-  liquibase:
-    url: jdbc:mysql://localhost:3308/messages
-    user: root
-    password: 12345
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
 
 kafka:
   producer:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     security-protocol: PLAINTEXT
   consumer:
     application-id: messaging-service
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     security-protocol: PLAINTEXT
 
 
@@ -22,7 +19,8 @@ eureka:
   client:
     enabled: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URI}
+
 
 services:
   notifications:
@@ -36,6 +34,6 @@ messages:
   notifications:
     mail-message-delivery-internal: "Masz nową wiadomość email od użytkownika: %s. Sprawdź swoją skrzynkę pocztową."
   mail:
-    host: localhost
-    port: 1025
-    protocol: smtp
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    protocol: ${MAIL_PROTOCOL}
