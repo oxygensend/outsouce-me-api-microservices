@@ -107,4 +107,9 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
 
         return new PageImpl<>(content, pageable, searchHits.getTotalElements());
     }
+
+    @Override
+    public void addRedirect(String slug) {
+        jobOfferJpaRepository.addRedirect(slug);
+    }
 }

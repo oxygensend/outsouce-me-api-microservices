@@ -7,4 +7,11 @@ public interface NotificationsProperties {
 
     InternalMessageProperties jobOfferApplicationInternalMessage();
 
+    InternalMessageProperties jobOfferExpiredInternalMessageToPrincipal();
+
+    MailMessageProperties jobOfferExpiredEmailToPrincipal();
+
+    InternalMessageProperties jobOfferExpiredInternalMessageToAppliers();
+
+    MailMessageProperties jobOfferExpiredEmailToAppliers();
 }

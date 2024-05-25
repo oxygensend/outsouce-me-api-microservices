@@ -1,5 +1,6 @@
 package com.oxygensend.joboffer.application.job_offer;
 
+import com.oxygensend.joboffer.application.notifications.NotificationsService;
 import com.oxygensend.joboffer.application.technology.TechnologyRepository;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
@@ -22,17 +23,20 @@ public class JobOfferAdminService {
     private final EntityManager entityManager;
     private final TechnologyRepository technologyRepository;
     private final JobOfferOrderService jobOfferOrderService;
+    private final NotificationsService notificationsService;
 
-    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager, TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService) {
+    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager, TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService, NotificationsService notificationsService) {
         this.jobOfferRepository = jobOfferRepository;
         this.entityManager = entityManager;
         this.technologyRepository = technologyRepository;
         this.jobOfferOrderService = jobOfferOrderService;
+        this.notificationsService = notificationsService;
     }
 
     public void archiveExpiredJobOffers() {
         jobOfferRepository.findExpiredJobOffers().forEach(jobOffer -> {
             jobOffer.setArchived(true);
+            notificationsService.sendJobOfferExpiredNotifications(jobOffer);
         });
 
         entityManager.flush();

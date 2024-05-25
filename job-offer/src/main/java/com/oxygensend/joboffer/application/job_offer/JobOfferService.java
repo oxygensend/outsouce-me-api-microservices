@@ -13,6 +13,7 @@ import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferInfoView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferManagementView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferViewFactory;
+import com.oxygensend.joboffer.application.notifications.NotificationsService;
 import com.oxygensend.joboffer.application.utils.JsonNullableWrapper;
 import com.oxygensend.joboffer.domain.JobOfferSearchResult;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
@@ -36,6 +37,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.oxygensend.joboffer.application.utils.Patch.updateIfPresent;
 
@@ -48,16 +50,19 @@ public class JobOfferService {
     private final AddressRepository addressRepository;
     private final RequestContext requestContext;
     private final JobOffersForYou jobOffersForYou;
+    private final NotificationsService notificationsService;
 
-    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou) {
+    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou, NotificationsService notificationsService) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.jobOfferViewFactory = jobOfferViewFactory;
         this.addressRepository = addressRepository;
         this.requestContext = requestContext;
         this.jobOffersForYou = jobOffersForYou;
+        this.notificationsService = notificationsService;
     }
 
+    @Transactional
     public JobOfferDetailsView createJobOffer(CreateJobOfferCommand command) {
         var principal = userRepository.findById(command.principalId())
                                       .orElseThrow(() -> NoSuchUserException.withId(command.principalId()));
@@ -100,12 +105,9 @@ public class JobOfferService {
     }
 
 
+    @Transactional
     public void addRedirect(String slug) {
-        var jobOffer = jobOfferRepository.findBySlug(slug)
-                                         .orElseThrow(JobOfferNotFoundException::new);
-
-        jobOffer.addRedirect();
-        jobOfferRepository.save(jobOffer);
+        jobOfferRepository.addRedirect(slug);
     }
 
     public void deleteJobOffer(String slug) {
@@ -114,6 +116,7 @@ public class JobOfferService {
 
         jobOffer.setArchived(true);
         jobOfferRepository.save(jobOffer);
+        notificationsService.sendJobOfferExpiredNotifications(jobOffer);
     }
 
     public JobOfferDetailsView updateJobOffer(String slug, UpdateJobOfferRequest request) {

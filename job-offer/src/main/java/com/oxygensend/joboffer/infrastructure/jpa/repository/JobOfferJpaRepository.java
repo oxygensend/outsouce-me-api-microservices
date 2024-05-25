@@ -19,4 +19,9 @@ interface JobOfferJpaRepository extends JpaRepository<JobOffer, Long> {
 
     @Query("SELECT j FROM JobOffer j JOIN FETCH j.address JOIN FETCH j.user WHERE j.archived = false ")
     List<JobOffer> findAll();
+
+
+    @Query("UPDATE JobOffer j SET j.redirectCount = j.redirectCount + 1 WHERE j.slug = :slug")
+    void addRedirect(String slug);
+
 }

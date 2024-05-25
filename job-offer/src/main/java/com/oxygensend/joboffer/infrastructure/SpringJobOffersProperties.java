@@ -32,8 +32,19 @@ record SpringJobOffersProperties(@NotNull
                                                SpringMailMessageProperties jobOfferApplicationEmail,
                                                @NotNull
                                                @Valid
-                                               SpringInternalMessageProperties jobOfferApplicationInternalMessage
-                                               ) implements NotificationsProperties {
+                                               SpringInternalMessageProperties jobOfferApplicationInternalMessage,
+                                               @NotNull
+                                               @Valid
+                                               SpringInternalMessageProperties jobOfferExpiredInternalMessageToPrincipal,
+                                               @NotNull
+                                               @Valid
+                                               SpringMailMessageProperties jobOfferExpiredEmailToPrincipal,
+                                               @NotNull
+                                               @Valid
+                                               SpringInternalMessageProperties jobOfferExpiredInternalMessageToAppliers,
+                                               @NotNull
+                                               @Valid
+                                               SpringMailMessageProperties jobOfferExpiredEmailToAppliers) implements NotificationsProperties {
 
 
     }
