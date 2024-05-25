@@ -1,11 +1,11 @@
 package com.oxygensend.joboffer.infrastructure.services.notifications;
 
 
-import com.oxygensend.joboffer.context.properties.JobOffersProperties;
-import com.oxygensend.joboffer.context.notifications.InternalMessage;
-import com.oxygensend.joboffer.context.notifications.Mail;
-import com.oxygensend.joboffer.context.notifications.NotificationEvent;
-import com.oxygensend.joboffer.context.notifications.NotificationsRepository;
+import com.oxygensend.joboffer.application.properties.JobOffersProperties;
+import com.oxygensend.joboffer.application.notifications.InternalMessage;
+import com.oxygensend.joboffer.application.notifications.Mail;
+import com.oxygensend.joboffer.application.notifications.NotificationEvent;
+import com.oxygensend.joboffer.application.notifications.NotificationsRepository;
 import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import java.util.UUID;
 import org.apache.kafka.clients.producer.ProducerRecord;

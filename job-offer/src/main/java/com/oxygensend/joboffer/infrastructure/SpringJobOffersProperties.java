@@ -1,9 +1,9 @@
 package com.oxygensend.joboffer.infrastructure;
 
-import com.oxygensend.joboffer.context.properties.InternalMessageProperties;
-import com.oxygensend.joboffer.context.properties.JobOffersProperties;
-import com.oxygensend.joboffer.context.properties.MailMessageProperties;
-import com.oxygensend.joboffer.context.properties.NotificationsProperties;
+import com.oxygensend.joboffer.application.properties.InternalMessageProperties;
+import com.oxygensend.joboffer.application.properties.JobOffersProperties;
+import com.oxygensend.joboffer.application.properties.MailMessageProperties;
+import com.oxygensend.joboffer.application.properties.NotificationsProperties;
 import com.oxygensend.joboffer.domain.event.Topics;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

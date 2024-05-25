@@ -1,7 +1,7 @@
 package com.oxygensend.joboffer.infrastructure.kafka;
 
-import com.oxygensend.joboffer.context.properties.JobOffersProperties;
-import com.oxygensend.joboffer.context.notifications.NotificationEvent;
+import com.oxygensend.joboffer.application.properties.JobOffersProperties;
+import com.oxygensend.joboffer.application.notifications.NotificationEvent;
 import com.oxygensend.joboffer.domain.event.DomainEvent;
 import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import java.util.HashMap;

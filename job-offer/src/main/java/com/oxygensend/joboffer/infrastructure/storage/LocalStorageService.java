@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.storage;
 
-import com.oxygensend.joboffer.context.storage.StorageService;
+import com.oxygensend.joboffer.application.storage.StorageService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;

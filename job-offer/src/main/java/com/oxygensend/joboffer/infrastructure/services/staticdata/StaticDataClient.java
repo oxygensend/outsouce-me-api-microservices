@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.infrastructure.services.staticdata;
 
-import com.oxygensend.joboffer.context.technology.dto.TechnologyDto;
+import com.oxygensend.joboffer.application.technology.dto.TechnologyDto;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 

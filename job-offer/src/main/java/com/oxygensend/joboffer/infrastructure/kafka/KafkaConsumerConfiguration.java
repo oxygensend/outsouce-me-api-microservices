@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.infrastructure.kafka;
 
 import com.oxygensend.commons_jdk.exception.ApiException;
-import com.oxygensend.joboffer.context.user.event.UserDetailsEvent;
-import com.oxygensend.joboffer.context.user.event.UserOpinionsDetailsEvent;
+import com.oxygensend.joboffer.application.user.event.UserDetailsEvent;
+import com.oxygensend.joboffer.application.user.event.UserOpinionsDetailsEvent;
 import com.oxygensend.joboffer.domain.exception.ServiceUnavailableException;
 import java.util.HashMap;
 import java.util.Map;

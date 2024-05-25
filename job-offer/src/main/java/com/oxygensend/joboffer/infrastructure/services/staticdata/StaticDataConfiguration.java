@@ -1,7 +1,7 @@
 package com.oxygensend.joboffer.infrastructure.services.staticdata;
 
 import com.oxygensend.commons_jdk.feign.ClientFactory;
-import com.oxygensend.joboffer.context.technology.TechnologyRepository;
+import com.oxygensend.joboffer.application.technology.TechnologyRepository;
 import com.oxygensend.joboffer.infrastructure.services.ServiceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
