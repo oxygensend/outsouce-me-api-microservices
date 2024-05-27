@@ -9,4 +9,8 @@ public interface UniversityRepository {
     List<University> findAll();
 
     boolean existsByName(String name);
+
+    void saveAll(List<University> universities);
+
+    long count();
 }

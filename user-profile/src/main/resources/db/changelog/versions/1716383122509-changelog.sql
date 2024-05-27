@@ -3,8 +3,6 @@
 -- changeset oxygensend:1716383122509-3
 CREATE UNIQUE INDEX company_name_idx ON company (name);
 
--- changeset oxygensend:1716383122509-4
-CREATE INDEX displayOrder_idx ON user (display_order);
 
 -- changeset oxygensend:1716383122509-5
 CREATE INDEX email_idx ON user (email);

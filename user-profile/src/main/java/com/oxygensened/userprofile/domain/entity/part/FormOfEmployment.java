@@ -10,5 +10,7 @@ public enum FormOfEmployment {
     VOLUNTEER,
     PER_DIEM,
     TEMPORARY,
-    OTHER
+    OTHER;
+
+
 }

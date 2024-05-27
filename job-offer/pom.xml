@@ -19,6 +19,7 @@
         <validation-api.version>3.0.2</validation-api.version>
         <slugify.version>3.0.6</slugify.version>
         <javassist.version>3.24.0-GA</javassist.version>
+        <springfixtures.version>1.0.0-SNAPSHOT</springfixtures.version>
     </properties>
 
 
@@ -94,6 +95,11 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oxygensend</groupId>
+            <artifactId>spring-fixtures</artifactId>
+            <version>${springfixtures.version}</version>
         </dependency>
     </dependencies>
     <build>

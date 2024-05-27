@@ -12,4 +12,8 @@ public interface LanguageRepository {
     Language save(Language language);
 
     void delete(Language language);
+
+    void saveAll(List<Language> languages);
+
+    long count();
 }

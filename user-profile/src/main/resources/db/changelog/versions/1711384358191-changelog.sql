@@ -122,6 +122,7 @@ CREATE TABLE user
     updated_at          datetime NULL,
     technologies        VARCHAR(255) NULL,
     address_id          BIGINT       NOT NULL,
+    external_id         VARCHAR(255) NOT NULL,
     CONSTRAINT pk_user PRIMARY KEY (id)
 );
 

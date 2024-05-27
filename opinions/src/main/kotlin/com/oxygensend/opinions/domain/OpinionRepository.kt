@@ -11,4 +11,6 @@ interface OpinionRepository {
     fun delete(opinion: Opinion)
 
     fun existsByAuthorAndReceiver(author: String, receiver: String): Boolean
+    fun count(): Long
+    fun saveAll(opinions: List<Opinion>)
 }

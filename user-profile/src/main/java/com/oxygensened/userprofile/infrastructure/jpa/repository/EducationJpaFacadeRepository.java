@@ -33,4 +33,14 @@ class EducationJpaFacadeRepository implements EducationRepository {
     public void delete(Education education) {
         educationJpaRepository.delete(education);
     }
+
+    @Override
+    public void saveAll(List<Education> educations) {
+        educationJpaRepository.saveAll(educations);
+    }
+
+    @Override
+    public long count() {
+        return educationJpaRepository.count();
+    }
 }

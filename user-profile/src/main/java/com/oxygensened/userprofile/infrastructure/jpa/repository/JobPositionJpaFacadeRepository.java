@@ -34,4 +34,14 @@ class JobPositionJpaFacadeRepository implements JobPositionRepository {
     public List<JobPosition> findAllByIndividualId(Long userId) {
         return jobPositionJpaRepository.findAllByIndividualIdOrderByStartDateDesc(userId);
     }
+
+    @Override
+    public void saveAll(List<JobPosition> jobPositions) {
+        jobPositionJpaRepository.saveAll(jobPositions);
+    }
+
+    @Override
+    public long count() {
+        return jobPositionJpaRepository.count();
+    }
 }

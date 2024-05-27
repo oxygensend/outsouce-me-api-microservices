@@ -28,5 +28,10 @@ public interface JobOfferRepository {
     List<JobOffer> findAll();
 
     Page<JobOfferSearchResult> search(String query, Pageable pageable);
+
     void addRedirect(String slug);
+
+    long count();
+
+    void saveAll(Iterable<JobOffer> jobOffers);
 }

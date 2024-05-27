@@ -8,4 +8,5 @@ interface AddressJpaRepository extends JpaRepository<Address, Long> {
     Optional<Address> findByPostCode(String postCode);
 
     Optional<Address> findByPostCodeAndCity(String postCode, String city);
+
 }

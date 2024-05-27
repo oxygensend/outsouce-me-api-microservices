@@ -16,6 +16,7 @@
     <properties>
         <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
         <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
+        <springfixtures.version>1.0.0-SNAPSHOT</springfixtures.version>
     </properties>
 
     <dependencies>
@@ -93,6 +94,11 @@
             <artifactId>mockito-kotlin</artifactId>
             <version>${mockito-kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oxygensend</groupId>
+            <artifactId>spring-fixtures</artifactId>
+            <version>${springfixtures.version}</version>
         </dependency>
 
         <dependency>

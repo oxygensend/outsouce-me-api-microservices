@@ -29,4 +29,14 @@ class UniversityJpaFacadeRepository implements UniversityRepository {
     public boolean existsByName(String name) {
         return universityJpaRepository.existsByName(name);
     }
+
+    @Override
+    public void saveAll(List<University> universities) {
+        universityJpaRepository.saveAll(universities);
+    }
+
+    @Override
+    public long count() {
+        return universityJpaRepository.count();
+    }
 }

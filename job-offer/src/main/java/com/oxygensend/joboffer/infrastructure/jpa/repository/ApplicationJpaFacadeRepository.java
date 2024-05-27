@@ -1,10 +1,10 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
-import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.domain.entity.Application;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.User;
 import com.oxygensend.joboffer.domain.repository.ApplicationRepository;
+import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -40,5 +40,15 @@ final class ApplicationJpaFacadeRepository implements ApplicationRepository {
     public Page<Application> findAll(ApplicationFilter filter, Pageable pageable) {
         var specification = ApplicationSpecifications.getPredicateForApplicationQuery(filter);
         return JpaUtils.findPageable(entityManager, pageable, Application.class, specification);
+    }
+
+    @Override
+    public long count() {
+        return applicationJpaRepository.count();
+    }
+
+    @Override
+    public void saveAll(Iterable<Application> applications) {
+        applicationJpaRepository.saveAll(applications);
     }
 }

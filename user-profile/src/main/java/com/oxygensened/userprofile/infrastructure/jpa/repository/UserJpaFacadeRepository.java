@@ -101,6 +101,14 @@ class UserJpaFacadeRepository implements UserRepository {
         return userJpaRepository.findAllDevelopers();
     }
 
+    @Override
+    public void saveAll(List<User> users) {
+        userJpaRepository.saveAll(users);
+    }
 
+    @Override
+    public long count() {
+        return userJpaRepository.count();
+    }
 
 }

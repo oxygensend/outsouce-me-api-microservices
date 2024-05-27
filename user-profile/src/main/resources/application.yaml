@@ -94,4 +94,4 @@ management:
     web:
       base-path: /manage
       exposure:
-        include: "health,info
+        include: "health,info"

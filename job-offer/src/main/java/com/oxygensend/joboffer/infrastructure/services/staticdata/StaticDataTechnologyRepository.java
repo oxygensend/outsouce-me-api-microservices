@@ -17,4 +17,11 @@ public class StaticDataTechnologyRepository implements TechnologyRepository {
                                .map(TechnologyDto::name)
                                .toList();
     }
+
+    @Override
+    public List<String> getTechnologies() {
+        return staticDataClient.getTechnologies().stream()
+                               .map(TechnologyDto::name)
+                               .toList();
+    }
 }

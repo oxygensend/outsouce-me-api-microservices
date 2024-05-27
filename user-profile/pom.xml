@@ -18,6 +18,8 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>3.0.2</validation-api.version>
         <slugify.version>3.0.6</slugify.version>
+        <springfixtures.version>1.0.0-SNAPSHOT</springfixtures.version>
+        <jackson-nullable.version>0.2.6</jackson-nullable.version>
     </properties>
 
     <dependencies>
@@ -97,12 +99,21 @@
             <artifactId>slugify</artifactId>
             <version>${slugify.version}</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.oxygensend</groupId>
+            <artifactId>spring-fixtures</artifactId>
+            <version>${springfixtures.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
-            <version>0.2.6</version>
+            <version>${jackson-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.13.11</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

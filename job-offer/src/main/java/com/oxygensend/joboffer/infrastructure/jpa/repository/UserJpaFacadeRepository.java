@@ -2,6 +2,7 @@ package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
 import com.oxygensend.joboffer.domain.entity.User;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -26,5 +27,15 @@ final class UserJpaFacadeRepository implements UserRepository {
     @Override
     public User save(User user) {
         return userJpaRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAllPrincipals() {
+        return userJpaRepository.findAllPrincipals();
+    }
+
+    @Override
+    public List<User> findAllDevelopers() {
+        return userJpaRepository.findAllDevelopers();
     }
 }

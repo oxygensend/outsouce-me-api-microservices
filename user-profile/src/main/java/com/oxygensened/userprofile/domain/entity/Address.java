@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
+@JsonIgnoreProperties(value = {"id"})
 @Table(indexes = {
         @Index(name = "postCode_city_idx", columnList = "post_code,city", unique = true)
 })
@@ -79,5 +82,23 @@ public class Address implements Serializable {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(city, address.city) && Objects.equals(postCode, address.postCode) && Objects.equals(lon, address.lon) && Objects.equals(lat, address.lat);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, city, postCode, lon, lat);
     }
 }

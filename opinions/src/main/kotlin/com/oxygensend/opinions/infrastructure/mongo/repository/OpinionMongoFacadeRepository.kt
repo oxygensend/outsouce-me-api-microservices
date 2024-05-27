@@ -19,4 +19,9 @@ internal class OpinionMongoFacadeRepository(
 
     override fun existsByAuthorAndReceiver(author: String, receiver: String): Boolean = opinionMongoRepository.existsByAuthorAndReceiver(author, receiver)
 
+    override fun count(): Long = opinionMongoRepository.count()
+
+    override fun saveAll(opinions: List<Opinion>) {
+        opinionMongoRepository.saveAll(opinions)
+    }
 }

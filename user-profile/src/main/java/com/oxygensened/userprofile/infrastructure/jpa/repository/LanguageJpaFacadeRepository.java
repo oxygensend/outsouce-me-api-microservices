@@ -33,4 +33,14 @@ class LanguageJpaFacadeRepository implements LanguageRepository {
     public void delete(Language language) {
         languageJpaRepository.delete(language);
     }
+
+    @Override
+    public void saveAll(List<Language> languages) {
+        languageJpaRepository.saveAll(languages);
+    }
+
+    @Override
+    public long count() {
+        return languageJpaRepository.count();
+    }
 }

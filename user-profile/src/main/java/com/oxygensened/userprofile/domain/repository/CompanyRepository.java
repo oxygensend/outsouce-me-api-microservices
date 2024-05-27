@@ -11,4 +11,8 @@ public interface CompanyRepository {
     Optional<Company> findByName(String name);
 
     List<Company> findAll();
+
+    void saveAll(List<Company> companies);
+
+    long count();
 }

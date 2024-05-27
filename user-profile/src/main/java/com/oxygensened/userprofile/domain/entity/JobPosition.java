@@ -25,7 +25,7 @@ public class JobPosition {
     private Long id;
     @Column(nullable = false)
     private FormOfEmployment formOfEmployment;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private User individual;
     @Column(nullable = false)
     private String name;
@@ -33,7 +33,7 @@ public class JobPosition {
     private String description;
     @Column(nullable = false)
     private boolean active;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Company company;
     @Column(nullable = false)
     private LocalDate startDate;

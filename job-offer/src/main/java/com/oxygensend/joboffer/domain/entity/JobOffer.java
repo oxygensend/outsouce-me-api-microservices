@@ -48,7 +48,7 @@ public class JobOffer implements Serializable {
     private String name;
     @Column(nullable = false, length = 1028)
     private String description;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Address address;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

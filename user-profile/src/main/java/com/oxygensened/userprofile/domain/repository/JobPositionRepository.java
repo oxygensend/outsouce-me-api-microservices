@@ -13,4 +13,8 @@ public interface JobPositionRepository {
     Optional<JobPosition> findByIdAndIndividualId(Long id, Long userId);
 
     List<JobPosition> findAllByIndividualId(Long userId);
+
+    void saveAll(List<JobPosition> jobPositions);
+
+    long count();
 }

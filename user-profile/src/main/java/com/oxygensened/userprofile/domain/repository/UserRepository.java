@@ -28,4 +28,8 @@ public interface UserRepository {
     List<User> findAll();
 
     List<User> findAllDevelopers();
+
+    void saveAll(List<User> users);
+
+    long count();
 }

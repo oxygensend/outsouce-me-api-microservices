@@ -16,10 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,6 @@ import java.util.Set;
         @Index(name = "externalId_idx", columnList = "external_id"),
         @Index(name = "popularityOrder_idx", columnList = "popularityOrder DESC"),
         @Index(name = "createdAt_idx", columnList = "createdAt DESC"),
-        @Index(name = "displayOrder_idx", columnList = "displayOrder"),
         @Index(name = "accountType_lookingForJob_popular_idx", columnList = "accountType, lookingForJob, popularityOrder"),
         @Index(name = "accountType_lookingForJob_newest_idx", columnList = "accountType, lookingForJob, createdAt"),
 })
@@ -72,7 +73,7 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
     @Convert(converter = StringSetConverter.class)
     private Set<String> technologies = new HashSet<>();
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn
     private Address address;
 
@@ -90,8 +91,11 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private double opinionsRate = 0;
+
     @Column(nullable = false)
     private int opinionsCount = 0;
+
+    @Transient
     private Integer displayOrder;
 
 
@@ -380,12 +384,39 @@ public class User implements Serializable {
     }
 
     public Map<String, Object> toMap() {
-        return Map.of("externalId", externalId,
-                      "email", email,
-                      "name", name,
-                      "surname", surname,
-                      "accountType", accountType,
-                      "slug", slug);
+        Map<String, Object> map = new HashMap<>();
+        if (externalId != null) {
+            map.put("externalId", externalId);
+        }
+        if (email != null) {
+            map.put("email", email);
+        }
+        if (name != null) {
+            map.put("name", name);
+        }
+        if (surname != null) {
+            map.put("surname", surname);
+        }
+        if (accountType != null) {
+            map.put("accountType", accountType);
+        }
+        if (slug != null) {
+            map.put("slug", slug);
+        }
+        if (address != null) {
+            map.put("address", address);
+        }
+        if (experience != null) {
+            map.put("experience", experience);
+        }
+        if (technologies != null) {
+            map.put("technologies", technologies);
+        }
+        if (activeJobPosition != null) {
+            map.put("activeJobPosition", activeJobPosition);
+        }
+
+        return map;
     }
 
     public Integer displayOrder() {

@@ -16,4 +16,8 @@ public interface ApplicationRepository {
     Application save(Application application);
 
     Page<Application> findAll(ApplicationFilter filter, Pageable pageable);
+
+    long count();
+
+    void saveAll(Iterable<Application> applications);
 }

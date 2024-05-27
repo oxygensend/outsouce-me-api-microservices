@@ -29,4 +29,14 @@ class CompanyJpaFacadeRepository implements CompanyRepository {
     public List<Company> findAll() {
         return companyJpaRepository.findAll();
     }
+
+    @Override
+    public void saveAll(List<Company> companies) {
+        companyJpaRepository.saveAll(companies);
+    }
+
+    @Override
+    public long count() {
+        return companyJpaRepository.count();
+    }
 }

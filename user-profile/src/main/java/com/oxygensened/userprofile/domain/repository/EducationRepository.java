@@ -13,4 +13,8 @@ public interface EducationRepository {
 
     void delete(Education education);
 
+    void saveAll(List<Education> educations);
+
+    long count();
+
 }

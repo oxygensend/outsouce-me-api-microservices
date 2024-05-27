@@ -6,4 +6,6 @@ interface AddressRepository {
     fun save(address: Address): Address
     fun findByCity(city: String): Address?
     fun saveBatch(addresses: List<Address>)
+    fun count(): Long
+    fun saveAll(addresses: List<Address>)
 }

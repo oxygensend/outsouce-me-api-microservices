@@ -112,4 +112,14 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
     public void addRedirect(String slug) {
         jobOfferJpaRepository.addRedirect(slug);
     }
+
+    @Override
+    public long count() {
+        return jobOfferJpaRepository.count();
+    }
+
+    @Override
+    public void saveAll(Iterable<JobOffer> jobOffers) {
+        jobOfferJpaRepository.saveAll(jobOffers);
+    }
 }

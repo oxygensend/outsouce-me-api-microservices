@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 final class UserIdGeneratorImpl implements UserIdGenerator {
     @Override
     public long generate() {
-        var secureRandom = new SecureRandom();
+        var secureRandom = new SecureRandom(new byte[] {100});
         return Math.abs(secureRandom.nextLong());
     }
 }

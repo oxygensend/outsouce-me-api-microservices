@@ -22,6 +22,6 @@ public class CompanyService {
     }
 
     public Company getCompany(String name) {
-        return companyRepository.findByName(name).orElse(new Company(name));
+        return companyRepository.findByName(name).orElseGet(() -> companyRepository.save(new Company(name)));
     }
 }

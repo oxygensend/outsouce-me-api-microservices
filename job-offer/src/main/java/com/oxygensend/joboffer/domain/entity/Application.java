@@ -29,7 +29,7 @@ public class Application implements Serializable {
     private Long id;
     @ManyToOne
     private User user;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private JobOffer jobOffer;
     @Convert(converter = ApplicationStatusConverter.class)
     private ApplicationStatus status = ApplicationStatus.PENDING;
@@ -47,6 +47,14 @@ public class Application implements Serializable {
         this.user = user;
         this.jobOffer = jobOffer;
         this.description = description;
+    }
+
+    public Application(User user, JobOffer jobOffer, ApplicationStatus status, String description, boolean deleted) {
+        this.user = user;
+        this.jobOffer = jobOffer;
+        this.status = status;
+        this.description = description;
+        this.deleted = deleted;
     }
 
     public Long id() {
