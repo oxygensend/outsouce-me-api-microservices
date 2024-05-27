@@ -8,4 +8,5 @@ public interface StaticDataClient {
 
     @GetMapping("/api/v1/static-data/technologies")
     List<TechnologyDto> getTechnologies();
+
 }

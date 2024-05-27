@@ -7,6 +7,7 @@ import com.oxygensend.opinions.domain.OpinionRepository
 import com.oxygensend.opinions.domain.User
 import com.oxygensend.opinions.domain.UserRepository
 import com.oxygensend.springfixtures.Fixture
+import com.oxygensend.springfixtures.FixturesFakerProvider
 import org.bson.types.ObjectId
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
@@ -18,12 +19,11 @@ import kotlin.jvm.optionals.getOrNull
 class OpinionFixture(
     private val opinionRepository: OpinionRepository,
     private val userRepository: UserRepository,
-    private val applicationEventPublisher: ApplicationEventPublisher
+    private val applicationEventPublisher: ApplicationEventPublisher,
+    fakerProvider: FixturesFakerProvider
 ) : Fixture {
-    companion object {
-        private val RANDOM: Random = Random(100)
-        private val FAKER: Faker = Faker.instance(Locale.UK, RANDOM);
-    }
+    private val random: Random = fakerProvider.random()
+    private val faker: Faker = fakerProvider.faker()
 
 
     override fun load() {
@@ -31,10 +31,10 @@ class OpinionFixture(
         val opinions = mutableListOf<Opinion>()
         users.indices.forEach { i ->
             val receiver = users[i];
-            (0..RANDOM.nextInt(15)).forEach { _ ->
+            (0..random.nextInt(15)).forEach { _ ->
                 val author = getAuthor(receiver, users);
                 author?.let {
-                    opinions.add(Opinion(ObjectId(), author.id, receiver.id, RANDOM.nextInt(0, 5), FAKER.lorem().characters(0, 100)))
+                    opinions.add(Opinion(ObjectId(), author.id, receiver.id, random.nextInt(0, 5), faker.lorem().characters(0, 100)))
                 }
             }
 
@@ -45,7 +45,7 @@ class OpinionFixture(
     }
 
     private fun getAuthor(recipient: User, users: List<User>): User? {
-        return Stream.generate { users[RANDOM.nextInt(users.size - 1)] }
+        return Stream.generate { users[random.nextInt(users.size - 1)] }
             .filter { it.id != recipient.id }
             .findFirst()
             .getOrNull()

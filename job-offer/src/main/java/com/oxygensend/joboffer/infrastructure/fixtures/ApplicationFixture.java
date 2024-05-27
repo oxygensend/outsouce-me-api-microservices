@@ -9,22 +9,24 @@ import com.oxygensend.joboffer.domain.repository.ApplicationRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.springfixtures.Fixture;
+import com.oxygensend.springfixtures.FixturesFakerProvider;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 
 @Component
 class ApplicationFixture implements Fixture {
 
-    private final static Random RANDOM = new Random(100);
-    private final static Faker FAKER = Faker.instance(Locale.UK, RANDOM);
+    private final Faker faker;
+    private final Random random;
     private final ApplicationRepository applicationRepository;
     private final JobOfferRepository jobOfferRepository;
     private final UserRepository userRepository;
 
-    ApplicationFixture(ApplicationRepository applicationRepository, JobOfferRepository jobOfferRepository, UserRepository userRepository) {
+    ApplicationFixture(FixturesFakerProvider fakerProvider, ApplicationRepository applicationRepository, JobOfferRepository jobOfferRepository, UserRepository userRepository) {
+        this.faker = fakerProvider.faker();
+        this.random = fakerProvider.random();
         this.applicationRepository = applicationRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.userRepository = userRepository;
@@ -41,13 +43,13 @@ class ApplicationFixture implements Fixture {
         List<User> users = userRepository.findAllDevelopers();
         List<Application> applications = new ArrayList<>();
         for (var jobOffer : jobOffers) {
-            for (int i = 0; i < RANDOM.nextInt(0, 8); i++) {
-                var user = users.get(RANDOM.nextInt(users.size() - 1));
+            for (int i = 0; i < random.nextInt(0, 8); i++) {
+                var user = users.get(random.nextInt(users.size() - 1));
                 applications.add(new Application(user,
                                                  jobOffer,
-                                                 ApplicationStatus.values()[RANDOM.nextInt(ApplicationStatus.values().length - 1)],
-                                                 FAKER.lorem().characters(0, 255),
-                                                 RANDOM.nextDouble() < 0.3));
+                                                 ApplicationStatus.values()[random.nextInt(ApplicationStatus.values().length - 1)],
+                                                 faker.lorem().characters(0, 255),
+                                                 random.nextDouble() < 0.3));
                 jobOffer.increaseNumberOfApplications();
             }
         }

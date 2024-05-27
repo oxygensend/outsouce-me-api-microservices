@@ -2,6 +2,7 @@ package com.oxygensend.staticdata.infrastructure.fixtures
 
 import com.github.javafaker.Faker
 import com.oxygensend.springfixtures.Fixture
+import com.oxygensend.springfixtures.FixturesFakerProvider
 import com.oxygensend.staticdata.domain.Address
 import com.oxygensend.staticdata.domain.AddressRepository
 import org.bson.types.ObjectId
@@ -10,20 +11,21 @@ import java.util.*
 import java.util.stream.Stream
 
 @Component
-class AddressFixture(private val addressRepository: AddressRepository) : Fixture {
+class AddressFixture(
+    private val addressRepository: AddressRepository,
+    fakerProvider: FixturesFakerProvider
+) : Fixture {
 
-    companion object {
-        private val RANDOM: Random = Random(100)
-        private val FAKER: Faker = Faker.instance(Locale.UK, RANDOM)
-    }
+    private val random: Random = fakerProvider.random()
+    private val faker: Faker = fakerProvider.faker()
 
     override fun load() {
         val addresses: List<Address> = Stream.generate {
             val address = Address(ObjectId().toHexString())
-            address.city = FAKER.address().cityName()
-            address.lat = FAKER.address().latitude().toDouble()
-            address.lon = FAKER.address().longitude().toDouble()
-            address.postalCodes = setOf(FAKER.address().zipCode())
+            address.city = faker.address().cityName()
+            address.lat = faker.address().latitude().toDouble()
+            address.lon = faker.address().longitude().toDouble()
+            address.postalCodes = setOf(faker.address().zipCode())
             return@generate address
         }
             .distinct()
