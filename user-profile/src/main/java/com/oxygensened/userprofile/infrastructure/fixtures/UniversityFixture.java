@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
-@Component
 class UniversityFixture implements Fixture {
 
     public final static int SIZE = 100;

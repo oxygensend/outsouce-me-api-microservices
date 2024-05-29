@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 
-@Component
 class ApplicationFixture implements Fixture {
 
     private final Faker faker;

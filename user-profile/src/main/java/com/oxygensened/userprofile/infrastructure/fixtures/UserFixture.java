@@ -22,9 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.springframework.stereotype.Component;
 
-@Component
 class UserFixture implements Fixture {
     public final static int SIZE = 3000;
     private final Random random;

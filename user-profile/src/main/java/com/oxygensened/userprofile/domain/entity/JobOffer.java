@@ -2,6 +2,7 @@ package com.oxygensened.userprofile.domain.entity;
 
 import com.oxygensened.userprofile.domain.entity.part.Experience;
 import com.oxygensened.userprofile.infrastructure.jpa.converter.StringSetConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +21,7 @@ public class JobOffer {
     @Convert(converter = StringSetConverter.class)
     private Set<String> technologies = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Address address;
 
     public JobOffer(Long id, User user, Experience experience, Set<String> technologies, Address address) {

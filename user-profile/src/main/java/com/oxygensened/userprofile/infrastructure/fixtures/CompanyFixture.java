@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
-@Component
 class CompanyFixture implements Fixture {
     public final static int SIZE = 500;
     private final Faker faker;

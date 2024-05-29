@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Component;
 
-@Component
 class JobOfferFixture implements Fixture {
 
     public final static int SIZE = 10000;

@@ -15,7 +15,6 @@ import java.util.*
 import java.util.stream.Stream
 import kotlin.jvm.optionals.getOrNull
 
-@Component
 class OpinionFixture(
     private val opinionRepository: OpinionRepository,
     private val userRepository: UserRepository,

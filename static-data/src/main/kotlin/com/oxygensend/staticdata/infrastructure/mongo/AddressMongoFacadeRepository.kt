@@ -17,6 +17,10 @@ internal class AddressMongoFacadeRepository(
         return mongoTemplate.find(Query(), Address::class.java)
     }
 
+    override fun findAll(): List<Address> {
+        return mongoTemplate.find(Query(), Address::class.java)
+    }
+
     override fun save(address: Address): Address = addressMongoRepository.save(address)
     override fun findByCity(city: String): Address? = addressMongoRepository.findByCity(city)
     override fun saveBatch(addresses: List<Address>) {

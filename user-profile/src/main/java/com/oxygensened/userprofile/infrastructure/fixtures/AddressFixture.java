@@ -1,32 +1,36 @@
 package com.oxygensened.userprofile.infrastructure.fixtures;
 
-import com.github.javafaker.Faker;
 import com.oxygensend.springfixtures.Fixture;
 import com.oxygensend.springfixtures.FixtureType;
-import com.oxygensend.springfixtures.FixturesFakerProvider;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
+import com.oxygensened.userprofile.infrastructure.services.staticdata.StaticDataClient;
+import com.oxygensened.userprofile.infrastructure.services.staticdata.dto.AddressDto;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
-@Component
 class AddressFixture implements Fixture {
-    public final static int SIZE = 400;
-    private final Faker faker;
+    public final static int SIZE = 500;
     private final AddressRepository addressRepository;
+    private final StaticDataClient staticDataClient;
 
-    AddressFixture(AddressRepository addressRepository, FixturesFakerProvider fakerProvider) {
+    AddressFixture(AddressRepository addressRepository, StaticDataClient staticDataClient) {
         this.addressRepository = addressRepository;
-        this.faker = fakerProvider.faker();
+        this.staticDataClient = staticDataClient;
     }
 
     @Override
     public void load() {
-        List<Address> addresses = Stream.generate(() -> new Address(faker.address().cityName(), faker.address().zipCode(), faker.address().longitude(), faker.address().latitude()))
-                                        .distinct()
-                                        .limit(SIZE)
-                                        .toList();
+        List<Address> addresses = new ArrayList<>();
+        List<AddressDto> importedAddresses = staticDataClient.getAddresses();
+        Collections.shuffle(importedAddresses);
+
+        for (int i = 0; i < SIZE; i++) {
+            var address = importedAddresses.get(i);
+            addresses.add(new Address(address.city(), address.postalCodes().getFirst(), address.lat(), address.lon()));
+        }
 
         addressRepository.saveAll(addresses);
     }

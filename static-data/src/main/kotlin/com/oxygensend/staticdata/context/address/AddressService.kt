@@ -30,11 +30,14 @@ class AddressService(
 
         search?.let {
             return addresses.filter { ad -> ad.postalCodes.any { it.startsWith(search) } }
-                .map { address -> AddressView.from(address) }
+                .map { AddressView.from(it) }
         }
 
         return addresses.map { AddressView.from(it) }
     }
+
+    fun findAllAddressesWithPostCodes(): List<AddressWithPostalCodesView> = addressRepository.findAll()
+        .map { AddressWithPostalCodesView.from(it) }
 
     fun forceStop() {
         job?.cancel("DD");
@@ -64,7 +67,7 @@ class AddressService(
                     val address = updateAddress(dto)
                     batch.add(address)
                     batchCount++
-                    if (batchCount % 10 == 0) {
+                    if (batchCount % 400 == 0) {
                         addressRepository.saveBatch(batch)
                         logger.info("$batchCount/$addressesCount elements saved into database")
                         batch.clear()
@@ -81,7 +84,13 @@ class AddressService(
     }
 
     private fun updateAddress(dto: ParsedAddressDto): Address {
-        val address = addressRepository.findByCity(dto.city) ?: Address(id = ObjectId().toHexString())
+        var address = addressRepository.findByCity(dto.city)
+        if (address != null) {
+            return address
+        }
+
+        address = Address(id = ObjectId().toHexString())
+
         address.city = dto.city
         address.postalCodes = dto.postalCodes
         val cords = addressDetailsRepository.getCoordinates(address)

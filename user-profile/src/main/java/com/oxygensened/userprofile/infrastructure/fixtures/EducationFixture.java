@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 
-@Component
 class EducationFixture implements Fixture {
 
     private final static List<String> TITLES = List.of("Magister", "Magister inż.", "Inżynier", "Professor", "Dr inż", "Dr", "Doktor hab", "Licencjat");
