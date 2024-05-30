@@ -6,6 +6,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "storage")
-record StorageProperties(@NotEmpty String attachmentsLocation) {
+public record StorageProperties(@NotEmpty String attachmentsLocation) {
 
 }

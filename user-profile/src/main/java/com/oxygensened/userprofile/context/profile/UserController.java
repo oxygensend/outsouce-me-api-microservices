@@ -83,7 +83,7 @@ class UserController {
                                 .build();
 
         var page = userService.getPaginatedUsers(filters, pageable);
-        return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int)page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
     }
 
     @PostMapping(value = "/{id}/upload-thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

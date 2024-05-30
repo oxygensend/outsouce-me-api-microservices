@@ -16,7 +16,7 @@ eureka:
   client:
     enabled: false
     service-url:
-      defaultZone: ${EUREKA_URI}
+      defaultZone: ${EUREKA_URL}
 
 services:
   auth:
@@ -51,9 +51,6 @@ kafka:
 user-profile:
   topics:
     USER_DATA: outsource-me-api-user-data
-  storage:
-    rootLocation: user-profile/storage
-    thumbnailDir: thumbnails
   thumbnailServerUrl: http://localhost:8080/users/thumbnails
   plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
   developers-popularity-rate-recalculation-cron: 0 0 0 * * *
@@ -71,4 +68,9 @@ user-profile:
       body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów.</br> Dziękujemy że jestes z nami. </br> Ekipa Outsource me"
     welcome-message-internal:
       body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów."
+
+
+storage:
+  rootLocation: storage
+  thumbnailDir: thumbnails
 

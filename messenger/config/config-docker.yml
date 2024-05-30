@@ -19,7 +19,7 @@ eureka:
   client:
     enabled: true
     service-url:
-      defaultZone: ${EUREKA_URI}
+      defaultZone: ${EUREKA_URL}
 
 
 services:

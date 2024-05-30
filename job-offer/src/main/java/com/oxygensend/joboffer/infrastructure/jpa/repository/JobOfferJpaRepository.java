@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,7 +21,7 @@ interface JobOfferJpaRepository extends JpaRepository<JobOffer, Long> {
     @Query("SELECT j FROM JobOffer j JOIN FETCH j.address JOIN FETCH j.user WHERE j.archived = false ")
     List<JobOffer> findAll();
 
-
+    @Modifying
     @Query("UPDATE JobOffer j SET j.redirectCount = j.redirectCount + 1 WHERE j.slug = :slug")
     void addRedirect(String slug);
 

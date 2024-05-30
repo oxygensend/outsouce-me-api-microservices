@@ -2,7 +2,7 @@ eureka:
   client:
     enabled: false
     service-url:
-      defaultZone: ${EUREKA_URI}
+      defaultZone: ${EUREKA_URL}
 
 
 spring:
@@ -15,3 +15,8 @@ static-data:
   open-street-map-url: https://nominatim.openstreetmap.org/search?format=json
   cache:
     stat-cache-ttl: 6h
+
+
+storage:
+  root-location: storage
+  about-us-image-dir: about-us

@@ -32,6 +32,10 @@ final class LocalAttachmentService implements AttachmentService {
 
     public Resource downloadAttachment(Long id) {
         Attachment attachment = attachmentRepository.findById(id).orElseThrow(AttachmentNotFound::new);
-        return storageService.load(attachmentLocation + "/" + attachment.name());
+        try {
+            return storageService.load(attachmentLocation + "/" + attachment.name());
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

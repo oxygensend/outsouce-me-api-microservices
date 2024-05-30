@@ -20,7 +20,7 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
     public final SalaryRangeView salaryRange;
     public final AddressView address;
     public final LocalDateTime createdAt;
-    public final LocalDateTime validto;
+    public final LocalDateTime validTo;
 
     @JsonCreator
     public JobOfferDetailsView(@JsonProperty("id") Long id, @JsonProperty("slug") String slug, @JsonProperty("name") String name,
@@ -40,7 +40,7 @@ public class JobOfferDetailsView extends JobOfferWithUserView {
         this.salaryRange = salaryRange;
         this.address = address;
         this.createdAt = createdAt;
-        this.validto = validTo;
+        this.validTo = validTo;
     }
 
 

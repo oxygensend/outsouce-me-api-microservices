@@ -57,7 +57,7 @@ public class ApplicationController {
         return applicationService.getApplicationInfo(id);
     }
 
-    @Cacheable(value = "applications-users", key = "#userId-#sort-#dir-#pageable.pageNumber-#pageable.pageSize")
+//    @Cacheable(value = "applications-users", key = "#userId-#sort-#dir-#pageable.pageNumber-#pageable.pageSize")
     @GetMapping
     public PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
                                                             @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,

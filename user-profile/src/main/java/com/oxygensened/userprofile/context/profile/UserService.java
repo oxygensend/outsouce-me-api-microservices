@@ -135,7 +135,7 @@ public class UserService {
             page = userRepository.findAll(pageable, filter)
                                  .map(userViewFactory::createDeveloper);
         }
-        return new PagedListView<>(page.getContent(), page.getNumberOfElements(), page.getNumber(), page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
     }
 
 

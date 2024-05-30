@@ -18,7 +18,7 @@ spring:
 
 eureka:
   client:
-    enabled: false
+    enabled: true
 
 
 services:
@@ -75,7 +75,7 @@ job-offers:
       body: "Oferta %s na którą zaaplikowałeś właśnie wygasła. Oczekuj na mailwy kontakt od zleceniodawcy. Dziękujemy za korzystanie z naszej platformy i życzymy powodzenia w dalszym poszukiwaniu zleceń"
 
 storage:
-  root-location: storage
+  root-location: job-offer/storage
   attachments-location: attachments
 
 fixtures:
