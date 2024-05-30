@@ -21,3 +21,7 @@ kafka:
 opinions:
   topics:
     user-opinions-data: outsource-me-api-user-opinions-details
+
+
+fixtures:
+  enabled: true

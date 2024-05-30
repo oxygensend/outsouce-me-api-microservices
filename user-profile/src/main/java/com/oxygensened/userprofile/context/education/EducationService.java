@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.context.education;
 
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensened.userprofile.context.education.dto.request.CreateEducationRequest;
 import com.oxygensened.userprofile.context.education.dto.request.UpdateEducationRequest;
 import com.oxygensened.userprofile.context.education.dto.view.EducationView;

@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.context.profile;
 
-import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commonspring.PagedListView;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;

@@ -1,7 +1,7 @@
 package com.oxygensend.messenger;
 
-import com.oxygensend.commons_jdk.exception.ExceptionConfiguration;
-import com.oxygensend.commons_jdk.request_context.RequestContextConfiguration;
+import com.oxygensend.commonspring.exception.ExceptionConfiguration;
+import com.oxygensend.commonspring.request_context.RequestContextConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

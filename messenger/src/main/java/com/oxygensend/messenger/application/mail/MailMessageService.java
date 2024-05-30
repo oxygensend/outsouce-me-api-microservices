@@ -1,7 +1,7 @@
 package com.oxygensend.messenger.application.mail;
 
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensend.messenger.application.mail.dto.MailMessageRequest;
 import com.oxygensend.messenger.application.mail.dto.SendMailCommand;
 import com.oxygensend.messenger.application.notifications.NotificationsService;

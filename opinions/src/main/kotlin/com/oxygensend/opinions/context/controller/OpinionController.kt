@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.context.controller
 
-import com.oxygensend.commons_jdk.PagedListView
+import com.oxygensend.commonspring.PagedListView
 import com.oxygensend.opinions.context.request.AddCommentRequest
 import com.oxygensend.opinions.context.request.CreateOpinionRequest
 import com.oxygensend.opinions.context.request.LikeRequest

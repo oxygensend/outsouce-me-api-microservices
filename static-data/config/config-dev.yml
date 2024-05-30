@@ -15,3 +15,6 @@ static-data:
   open-street-map-url: https://nominatim.openstreetmap.org/search?format=json
   cache:
     stat-cache-ttl: 6h
+
+fixtures:
+  enabled: true

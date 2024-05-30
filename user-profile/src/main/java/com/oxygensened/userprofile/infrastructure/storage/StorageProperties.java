@@ -5,8 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "user-profile.storage")
-record StorageProperties(@NotEmpty String rootLocation,
-                         @NotEmpty String thumbnailDir) {
+@ConfigurationProperties(prefix = "storage")
+record StorageProperties(@NotEmpty String thumbnailDir) {
 
 }

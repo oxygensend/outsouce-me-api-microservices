@@ -1,7 +1,7 @@
 package com.oxygensend.opinions
 
-import com.oxygensend.commons_jdk.exception.ExceptionConfiguration
-import com.oxygensend.commons_jdk.request_context.RequestContextConfiguration
+import com.oxygensend.commonspring.exception.ExceptionConfiguration
+import com.oxygensend.commonspring.request_context.RequestContextConfiguration
 import io.swagger.v3.oas.models.media.StringSchema
 import org.bson.types.ObjectId
 import org.springdoc.core.utils.SpringDocUtils

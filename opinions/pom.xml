@@ -14,7 +14,7 @@
     <description>Outsource me opinions microservice</description>
 
     <properties>
-        <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
+        <commons-spring.version>1.0.1-SNAPSHOT</commons-spring.version>
         <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
         <springfixtures.version>1.0.0-SNAPSHOT</springfixtures.version>
     </properties>
@@ -64,8 +64,8 @@
         </dependency>
         <dependency>
             <groupId>com.oxygensend</groupId>
-            <artifactId>commons-jdk</artifactId>
-            <version>${commons-jdk.version}</version>
+            <artifactId>commons-spring</artifactId>
+            <version>${commons-spring.version}</version>
         </dependency>
 
         <dependency>

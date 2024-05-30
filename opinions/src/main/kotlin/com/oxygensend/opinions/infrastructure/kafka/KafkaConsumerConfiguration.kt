@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.infrastructure.kafka
 
-import com.oxygensend.commons_jdk.exception.ApiException
+import com.oxygensend.commonspring.exception.ApiException
 import com.oxygensend.opinions.context.event.UserDetailsDataEvent
 import com.oxygensend.opinions.domain.exception.ServiceUnavailableException
 import org.apache.kafka.clients.CommonClientConfigs

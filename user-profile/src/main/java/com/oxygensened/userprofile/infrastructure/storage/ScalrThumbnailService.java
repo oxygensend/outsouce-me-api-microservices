@@ -1,7 +1,8 @@
 package com.oxygensened.userprofile.infrastructure.storage;
 
 import com.luciad.imageio.webp.WebPWriteParam;
-import com.oxygensened.userprofile.context.storage.StorageService;
+import com.oxygensend.commonspring.storage.StorageException;
+import com.oxygensend.commonspring.storage.StorageService;
 import com.oxygensened.userprofile.context.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
 import com.oxygensened.userprofile.domain.exception.ThumbnailNotFoundException;

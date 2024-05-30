@@ -1,6 +1,6 @@
 package com.oxygensend.joboffer.application.job_offer;
 
-import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.joboffer.application.job_offer.dto.request.CreateJobOfferRequest;
 import com.oxygensend.joboffer.application.job_offer.dto.request.UpdateJobOfferRequest;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferDetailsView;

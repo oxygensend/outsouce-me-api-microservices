@@ -1,7 +1,7 @@
 package com.oxygensened.userprofile.context.technology;
 
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensened.userprofile.context.technology.dto.AddTechnologiesRequest;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyRequest;
 import com.oxygensened.userprofile.context.technology.dto.TechnologyView;

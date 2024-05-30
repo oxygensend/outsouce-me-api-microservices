@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.application.application;
 
-import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.PagedListView;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensend.joboffer.application.application.dto.CreateApplicationCommand;
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationInfoView;
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationListView;

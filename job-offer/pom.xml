@@ -15,7 +15,7 @@
     <description>Outsource me API service for job offer management</description>
 
     <properties>
-        <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
+        <commons-spring.version>1.0.1-SNAPSHOT</commons-spring.version>
         <validation-api.version>3.0.2</validation-api.version>
         <slugify.version>3.0.6</slugify.version>
         <javassist.version>3.24.0-GA</javassist.version>
@@ -83,8 +83,8 @@
         </dependency>
         <dependency>
             <groupId>com.oxygensend</groupId>
-            <artifactId>commons-jdk</artifactId>
-            <version>${commons-jdk.version}</version>
+            <artifactId>commons-spring</artifactId>
+            <version>${commons-spring.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.slugify</groupId>

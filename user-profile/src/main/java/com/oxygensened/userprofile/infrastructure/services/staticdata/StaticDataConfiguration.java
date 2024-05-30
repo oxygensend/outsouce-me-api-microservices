@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.services.staticdata;
 
-import com.oxygensend.commons_jdk.feign.ClientFactory;
+import com.oxygensend.commonspring.feign.ClientFactory;
 import com.oxygensened.userprofile.context.technology.TechnologyRepository;
 import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

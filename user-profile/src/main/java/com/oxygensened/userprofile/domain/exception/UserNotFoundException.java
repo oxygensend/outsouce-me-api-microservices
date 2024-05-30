@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.domain.exception;
 
-import com.oxygensend.commons_jdk.exception.ApiException;
+import com.oxygensend.commonspring.exception.ApiException;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

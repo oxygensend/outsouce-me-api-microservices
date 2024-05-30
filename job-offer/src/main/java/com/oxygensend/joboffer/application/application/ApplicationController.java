@@ -1,7 +1,7 @@
 package com.oxygensend.joboffer.application.application;
 
-import com.oxygensend.commons_jdk.DefaultView;
-import com.oxygensend.commons_jdk.PagedListView;
+import com.oxygensend.commonspring.DefaultView;
+import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.joboffer.application.application.dto.CreateApplicationCommand;
 import com.oxygensend.joboffer.application.application.dto.request.ChangeStatusRequest;
 import com.oxygensend.joboffer.application.application.dto.request.CreateApplicationRequest;

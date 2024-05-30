@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.kafka;
 
-import com.oxygensend.commons_jdk.exception.ApiException;
+import com.oxygensend.commonspring.exception.ApiException;
 import com.oxygensened.userprofile.context.auth.event.UserRegisteredEvent;
 import com.oxygensened.userprofile.infrastructure.services.joboffers.JobOfferDataEvent;
 import com.oxygensened.userprofile.infrastructure.services.opinions.UserOpinionsDetailsEvent;

@@ -14,7 +14,7 @@
     <description>Outsource me static data microservice</description>
 
     <properties>
-        <commons-jdk.version>1.0.1-SNAPSHOT</commons-jdk.version>
+        <commons-spring.version>1.0.1-SNAPSHOT</commons-spring.version>
         <caffeine.version>3.1.8</caffeine.version>
     </properties>
     <dependencies>
@@ -44,8 +44,8 @@
         </dependency>
         <dependency>
             <groupId>com.oxygensend</groupId>
-            <artifactId>commons-jdk</artifactId>
-            <version>${commons-jdk.version}</version>
+            <artifactId>commons-spring</artifactId>
+            <version>${commons-spring.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>

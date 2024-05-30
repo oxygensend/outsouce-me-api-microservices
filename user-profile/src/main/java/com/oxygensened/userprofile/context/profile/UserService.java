@@ -1,9 +1,9 @@
 package com.oxygensened.userprofile.context.profile;
 
-import com.oxygensend.commons_jdk.PagedListView;
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
-import com.oxygensend.commons_jdk.exception.UnauthorizedException;
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.PagedListView;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
+import com.oxygensend.commonspring.exception.UnauthorizedException;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;

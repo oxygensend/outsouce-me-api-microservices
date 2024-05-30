@@ -1,11 +1,11 @@
 package com.oxygensened.userprofile.context.language;
 
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensened.userprofile.context.language.dto.request.CreateLanguageRequest;
 import com.oxygensened.userprofile.context.language.dto.request.UpdateLanguageRequest;
 import com.oxygensened.userprofile.context.language.dto.view.LanguageView;
 import com.oxygensened.userprofile.domain.entity.Language;
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensened.userprofile.domain.exception.LanguageNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.LanguageRepository;

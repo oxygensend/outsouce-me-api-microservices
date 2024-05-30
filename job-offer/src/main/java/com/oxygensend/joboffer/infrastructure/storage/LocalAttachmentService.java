@@ -1,8 +1,8 @@
 package com.oxygensend.joboffer.infrastructure.storage;
 
+import com.oxygensend.commonspring.storage.StorageService;
 import com.oxygensend.joboffer.application.attachment.AttachmentService;
 import com.oxygensend.joboffer.application.attachment.CreateAttachmentCommand;
-import com.oxygensend.joboffer.application.storage.StorageService;
 import com.oxygensend.joboffer.domain.entity.Attachment;
 import com.oxygensend.joboffer.domain.exception.AttachmentNotFound;
 import com.oxygensend.joboffer.domain.repository.AttachmentRepository;

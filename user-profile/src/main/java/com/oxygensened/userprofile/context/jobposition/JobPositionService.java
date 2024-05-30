@@ -1,12 +1,12 @@
 package com.oxygensened.userprofile.context.jobposition;
 
-import com.oxygensend.commons_jdk.request_context.RequestContext;
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensened.userprofile.context.company.CompanyService;
 import com.oxygensened.userprofile.context.jobposition.dto.request.CreateJobPositionRequest;
 import com.oxygensened.userprofile.context.jobposition.dto.request.UpdateJobPositionRequest;
 import com.oxygensened.userprofile.context.jobposition.dto.view.JobPositionView;
 import com.oxygensened.userprofile.domain.entity.JobPosition;
-import com.oxygensend.commons_jdk.exception.AccessDeniedException;
+import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensened.userprofile.domain.exception.JobPositionNotFoundException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.JobPositionRepository;

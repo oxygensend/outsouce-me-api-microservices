@@ -1,8 +1,8 @@
 package com.oxygensend.staticdata.context
 
-import com.oxygensend.commons_jdk.exception.AccessDeniedException
-import com.oxygensend.commons_jdk.exception.UnauthorizedException
-import com.oxygensend.commons_jdk.request_context.RequestContext
+import com.oxygensend.commonspring.exception.AccessDeniedException
+import com.oxygensend.commonspring.exception.UnauthorizedException
+import com.oxygensend.commonspring.request_context.RequestContext
 import org.springframework.stereotype.Component
 
 @Component

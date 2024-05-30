@@ -1,8 +1,8 @@
 package com.oxygensend.opinions.context.service
 
-import com.oxygensend.commons_jdk.PagedListView
-import com.oxygensend.commons_jdk.exception.AccessDeniedException
-import com.oxygensend.commons_jdk.request_context.RequestContext
+import com.oxygensend.commonspring.PagedListView
+import com.oxygensend.commonspring.exception.AccessDeniedException
+import com.oxygensend.commonspring.request_context.RequestContext
 import com.oxygensend.opinions.context.command.AddCommentCommand
 import com.oxygensend.opinions.context.command.CreateOpinionCommand
 import com.oxygensend.opinions.context.command.UpdateOpinionCommand
