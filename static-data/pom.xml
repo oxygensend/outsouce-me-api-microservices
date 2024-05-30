@@ -52,6 +52,11 @@
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.gotson</groupId>
+            <artifactId>webp-imageio</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>

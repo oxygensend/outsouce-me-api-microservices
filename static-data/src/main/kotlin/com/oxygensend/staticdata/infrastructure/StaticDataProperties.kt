@@ -14,7 +14,8 @@ data class StaticDataProperties(
     @field:NotNull val technologyCsvFile: File?,
     @field:NotEmpty val postalCodeDataUrl: String?,
     @field:NotEmpty val openStreetMapUrl: String?,
-    @field:NotNull @field:Valid val cache: CacheProperties?
+    @field:NotNull @field:Valid val cache: CacheProperties?,
+    @field:NotNull val aboutUsImageServerUrl: String?
 ) {
     data class CacheProperties(
         @field:NotNull val statCacheTtl: Duration,
