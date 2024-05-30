@@ -43,7 +43,7 @@ spring:
           predicates:
             - Path=/job-offers/**, /applications/**, /attachments/**, /users/*/job-offers
           filters:
-            - RewritePath=/job-offers/(?<segment>.*),/api/v1/job-offers/$\{segment}
+            - RewritePath=/job-offers(?<segment>.*),/api/v1/job-offers$\{segment}
             - RewritePath=/attachments/(?<segment>.*),/api/v1/attachments/$\{segment}
             - RewritePath=/applications(?<segment>.*),/api/v1/applications$\{segment}
             - RewritePath=/users/(?<userId>.*)/job-offers, /api/v1/job-offers/users/$\{userId}/job-offers
