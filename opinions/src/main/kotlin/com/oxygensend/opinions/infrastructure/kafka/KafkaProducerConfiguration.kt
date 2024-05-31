@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.infrastructure.kafka
 
-import com.oxygensend.opinions.context.OpinionsProperties
+import com.oxygensend.opinions.application.OpinionsProperties
 import com.oxygensend.opinions.domain.event.DomainEvent
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.admin.AdminClient

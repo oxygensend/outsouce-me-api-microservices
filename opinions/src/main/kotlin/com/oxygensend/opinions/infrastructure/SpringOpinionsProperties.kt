@@ -1,6 +1,6 @@
 package com.oxygensend.opinions.infrastructure
 
-import com.oxygensend.opinions.context.OpinionsProperties
+import com.oxygensend.opinions.application.OpinionsProperties
 import com.oxygensend.opinions.domain.event.Topics
 import jakarta.validation.constraints.NotNull
 import org.springframework.boot.context.properties.ConfigurationProperties

@@ -1,7 +1,7 @@
 package com.oxygensend.opinions.infrastructure.fixtures
 
 import com.github.javafaker.Faker
-import com.oxygensend.opinions.context.event.OpinionDetailsRecalculateEvent
+import com.oxygensend.opinions.application.event.OpinionDetailsRecalculateEvent
 import com.oxygensend.opinions.domain.Opinion
 import com.oxygensend.opinions.domain.OpinionRepository
 import com.oxygensend.opinions.domain.User
@@ -10,7 +10,6 @@ import com.oxygensend.springfixtures.Fixture
 import com.oxygensend.springfixtures.FixturesFakerProvider
 import org.bson.types.ObjectId
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.stereotype.Component
 import java.util.*
 import java.util.stream.Stream
 import kotlin.jvm.optionals.getOrNull
