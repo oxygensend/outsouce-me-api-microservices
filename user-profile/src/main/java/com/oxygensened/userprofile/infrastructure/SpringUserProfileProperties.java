@@ -21,7 +21,8 @@ record SpringUserProfileProperties(String serviceId,
                                    @NotEmpty String developersPopularityRateRecalculationCron,
                                    @NotEmpty String emailVerificationFrontendUrl,
                                    @NotEmpty String passwordResetFrontendUrl,
-                                   @Valid SpringNotificationProperties notifications
+                                   @Valid SpringNotificationProperties notifications,
+                                   @NotEmpty String defaultThumbnail
 ) implements UserProfileProperties {
     private final static Integer TOPICS_SIZE = 1;
 

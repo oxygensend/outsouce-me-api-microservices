@@ -53,6 +53,7 @@ user-profile:
   topics:
     USER_DATA: outsource-me-api-user-data
   thumbnailServerUrl: http://localhost:8080/users/thumbnails
+  defaultThumbnail: user_placeholder.webp
   plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
   developers-popularity-rate-recalculation-cron: 0 0 0 * * *
   password-reset-frontend-url: http://localhost:3000/odzyskiwanie-hasla
@@ -72,7 +73,7 @@ user-profile:
 
 
 storage:
-  rootLocation: storage
+  rootLocation: user-profile/storage
   thumbnailDir: thumbnails
 
 fixtures:

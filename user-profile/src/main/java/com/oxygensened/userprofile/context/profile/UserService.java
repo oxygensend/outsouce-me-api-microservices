@@ -8,6 +8,7 @@ import com.oxygensened.userprofile.context.profile.dto.AddressDto;
 import com.oxygensened.userprofile.context.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.context.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.context.profile.dto.view.UserView;
+import com.oxygensened.userprofile.context.properties.UserProfileProperties;
 import com.oxygensened.userprofile.context.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.context.storage.ThumbnailService;
 import com.oxygensened.userprofile.context.utils.JsonNullableWrapper;
@@ -43,15 +44,18 @@ public class UserService {
     private final RequestContext requestContext;
     private final DevelopersForYou developersForYou;
     private final UserViewFactory userViewFactory;
+    private final UserProfileProperties userProfileProperties;
 
     public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
-                       RequestContext requestContext, DevelopersForYou developersForYou, UserViewFactory userViewFactory) {
+                       RequestContext requestContext, DevelopersForYou developersForYou, UserViewFactory userViewFactory,
+                       UserProfileProperties userProfileProperties) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
         this.requestContext = requestContext;
         this.developersForYou = developersForYou;
         this.userViewFactory = userViewFactory;
+        this.userProfileProperties = userProfileProperties;
     }
 
     public UserView getUser(Long id) {
@@ -110,7 +114,7 @@ public class UserService {
     public Resource loadThumbnailByUserId(Long id) {
         return userRepository.getThumbnail(id)
                              .map(thumbnailService::load)
-                             .orElseThrow(() -> UserNotFoundException.withId(id));
+                             .orElseGet(() -> thumbnailService.load(userProfileProperties.defaultThumbnail()));
     }
 
     public PagedListView<UserSearchResult> search(String query, Pageable pageable) {

@@ -1,6 +1,5 @@
 package com.oxygensened.userprofile.context.properties;
 
-import com.oxygensened.userprofile.context.properties.NotificationsProperties;
 import com.oxygensened.userprofile.domain.event.Topics;
 import java.util.Map;
 
@@ -20,4 +19,6 @@ public interface UserProfileProperties {
     String passwordResetFrontendUrl();
 
     NotificationsProperties notifications();
+
+    String defaultThumbnail();
 }
