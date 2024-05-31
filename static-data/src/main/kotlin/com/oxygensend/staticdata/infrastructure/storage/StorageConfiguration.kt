@@ -1,7 +1,7 @@
 package com.oxygensend.staticdata.infrastructure.storage
 
 import com.oxygensend.commonspring.storage.StorageService
-import com.oxygensend.staticdata.context.storage.ImageService
+import com.oxygensend.staticdata.application.storage.ImageService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

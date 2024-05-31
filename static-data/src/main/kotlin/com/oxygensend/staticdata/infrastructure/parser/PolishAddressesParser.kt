@@ -1,7 +1,7 @@
 package com.oxygensend.staticdata.infrastructure.parser
 
-import com.oxygensend.staticdata.context.address.parser.AddressParser
-import com.oxygensend.staticdata.context.address.parser.ParsedAddressDto
+import com.oxygensend.staticdata.application.address.parser.AddressParser
+import com.oxygensend.staticdata.application.address.parser.ParsedAddressDto
 import java.net.URI
 import java.util.zip.ZipInputStream
 

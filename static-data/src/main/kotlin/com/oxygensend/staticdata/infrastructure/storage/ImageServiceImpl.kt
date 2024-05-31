@@ -3,8 +3,8 @@ package com.oxygensend.staticdata.infrastructure.storage
 import com.luciad.imageio.webp.WebPWriteParam
 import com.oxygensend.commonspring.storage.StorageException
 import com.oxygensend.commonspring.storage.StorageService
-import com.oxygensend.staticdata.context.storage.ImageOptions
-import com.oxygensend.staticdata.context.storage.ImageService
+import com.oxygensend.staticdata.application.storage.ImageOptions
+import com.oxygensend.staticdata.application.storage.ImageService
 import com.oxygensend.staticdata.domain.exception.ResourceNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.Resource
