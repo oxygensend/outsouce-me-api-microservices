@@ -23,7 +23,9 @@ spring:
     redis:
       host: localhost
       port: 6379
-
+    web:
+      pageable:
+        one-indexed-parameters: true
 #
 eureka:
   client:
@@ -74,10 +76,6 @@ job-offers:
   elasticsearch:
     boostrap-type: none
 
-logging:
-  level:
-    org.hibernate.orm.jdbc.bind: trace
-
 management:
   health:
     defaults:
@@ -96,6 +94,8 @@ management:
         include: "health,info"
 
 logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
   logback:
     rollingpolicy:
       max-history: 5

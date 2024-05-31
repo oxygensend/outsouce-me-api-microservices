@@ -20,6 +20,10 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
     #    driver-class-name: com.mysql.cj.jdbc.DriveR
     enabled: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
 
 eureka:

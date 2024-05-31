@@ -7,6 +7,9 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
+    web:
+      pageable:
+        one-indexed-parameters: true
 server:
   port: 7777
 
