@@ -31,6 +31,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.oxygensened.userprofile.context.utils.Patch.updateIfPresent;
@@ -140,6 +141,11 @@ public class UserService {
                                  .map(userViewFactory::createDeveloper);
         }
         return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
+    }
+
+    @Transactional
+    public void addRedirect(Long id) {
+        userRepository.addRedirect(id);
     }
 
 

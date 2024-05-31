@@ -32,4 +32,5 @@ public interface UserRepository {
     void saveAll(List<User> users);
 
     long count();
+    void addRedirect(Long id);
 }

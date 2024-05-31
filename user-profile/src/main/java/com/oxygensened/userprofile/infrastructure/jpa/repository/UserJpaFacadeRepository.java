@@ -111,4 +111,9 @@ class UserJpaFacadeRepository implements UserRepository {
         return userJpaRepository.count();
     }
 
+    @Override
+    public void addRedirect(Long id) {
+        userJpaRepository.addRedirect(id);
+    }
+
 }
