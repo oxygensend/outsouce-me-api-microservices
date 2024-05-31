@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.kafka;
 
-import com.oxygensened.userprofile.context.properties.UserProfileProperties;
+import com.oxygensened.userprofile.application.properties.UserProfileProperties;
 import com.oxygensened.userprofile.domain.event.DomainEvent;
 import com.oxygensened.userprofile.domain.event.DomainEventPublisher;
 import org.springframework.kafka.core.KafkaTemplate;

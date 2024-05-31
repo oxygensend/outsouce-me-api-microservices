@@ -23,7 +23,6 @@ public class CacheConfiguration {
         this.objectMapper = objectMapper;
     }
 
-    @Qualifier("forYouCache")
     @Bean
     public CacheManager forYouCacheManager(RedisConnectionFactory redisConnectionFactory) {
         return RedisCacheManager.RedisCacheManagerBuilder

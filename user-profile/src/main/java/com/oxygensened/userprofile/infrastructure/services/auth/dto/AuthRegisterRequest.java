@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.services.auth.dto;
 
-import com.oxygensened.userprofile.context.auth.dto.RegisterUserCommand;
+import com.oxygensened.userprofile.application.auth.dto.RegisterUserCommand;
 import java.util.Set;
 
 public record AuthRegisterRequest(String identity,

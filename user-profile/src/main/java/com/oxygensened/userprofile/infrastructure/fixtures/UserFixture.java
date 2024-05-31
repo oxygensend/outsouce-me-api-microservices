@@ -3,7 +3,7 @@ package com.oxygensened.userprofile.infrastructure.fixtures;
 import com.github.javafaker.Faker;
 import com.oxygensend.springfixtures.Fixture;
 import com.oxygensend.springfixtures.FixturesFakerProvider;
-import com.oxygensened.userprofile.context.technology.TechnologyRepository;
+import com.oxygensened.userprofile.application.technology.TechnologyRepository;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;

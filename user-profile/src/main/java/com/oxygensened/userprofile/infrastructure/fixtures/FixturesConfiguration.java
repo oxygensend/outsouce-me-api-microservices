@@ -2,7 +2,7 @@ package com.oxygensened.userprofile.infrastructure.fixtures;
 
 import com.oxygensend.springfixtures.Fixture;
 import com.oxygensend.springfixtures.FixturesFakerProvider;
-import com.oxygensened.userprofile.context.technology.TechnologyRepository;
+import com.oxygensened.userprofile.application.technology.TechnologyRepository;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
 import com.oxygensened.userprofile.domain.repository.CompanyRepository;
 import com.oxygensened.userprofile.domain.repository.EducationRepository;
@@ -16,7 +16,6 @@ import com.oxygensened.userprofile.infrastructure.services.staticdata.StaticData
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 
 @ConditionalOnProperty(name = "fixtures.enabled", havingValue = "true")
 public class FixturesConfiguration {

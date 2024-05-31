@@ -1,6 +1,6 @@
 package com.oxygensened.userprofile.infrastructure.elasticsearch;
 
-import com.oxygensened.userprofile.context.properties.UserProfileProperties;
+import com.oxygensened.userprofile.application.properties.UserProfileProperties;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

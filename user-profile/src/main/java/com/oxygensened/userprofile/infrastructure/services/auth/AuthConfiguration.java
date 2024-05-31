@@ -2,7 +2,7 @@ package com.oxygensened.userprofile.infrastructure.services.auth;
 
 import com.oxygensend.commonspring.feign.ClientFactory;
 import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
-import com.oxygensened.userprofile.context.auth.AuthRepository;
+import com.oxygensened.userprofile.application.auth.AuthRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,10 +1,10 @@
 package com.oxygensened.userprofile.infrastructure.services.notifications;
 
-import com.oxygensened.userprofile.context.notifications.InternalMessage;
-import com.oxygensened.userprofile.context.properties.UserProfileProperties;
-import com.oxygensened.userprofile.context.notifications.Mail;
-import com.oxygensened.userprofile.context.notifications.NotificationEvent;
-import com.oxygensened.userprofile.context.notifications.NotificationsRepository;
+import com.oxygensened.userprofile.application.notifications.InternalMessage;
+import com.oxygensened.userprofile.application.properties.UserProfileProperties;
+import com.oxygensened.userprofile.application.notifications.Mail;
+import com.oxygensened.userprofile.application.notifications.NotificationEvent;
+import com.oxygensened.userprofile.application.notifications.NotificationsRepository;
 import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
 import java.util.UUID;
 import org.apache.kafka.clients.producer.ProducerRecord;

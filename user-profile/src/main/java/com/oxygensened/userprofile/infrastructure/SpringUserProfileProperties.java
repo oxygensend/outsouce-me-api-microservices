@@ -1,9 +1,9 @@
 package com.oxygensened.userprofile.infrastructure;
 
-import com.oxygensened.userprofile.context.properties.InternalMessageProperties;
-import com.oxygensened.userprofile.context.properties.MailMessageProperties;
-import com.oxygensened.userprofile.context.properties.NotificationsProperties;
-import com.oxygensened.userprofile.context.properties.UserProfileProperties;
+import com.oxygensened.userprofile.application.properties.InternalMessageProperties;
+import com.oxygensened.userprofile.application.properties.MailMessageProperties;
+import com.oxygensened.userprofile.application.properties.NotificationsProperties;
+import com.oxygensened.userprofile.application.properties.UserProfileProperties;
 import com.oxygensened.userprofile.domain.event.Topics;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
