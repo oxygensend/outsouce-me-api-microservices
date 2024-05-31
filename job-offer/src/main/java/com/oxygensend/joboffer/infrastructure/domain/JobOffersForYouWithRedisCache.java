@@ -7,10 +7,10 @@ import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.service.JobOfferOrderService;
 import com.oxygensend.joboffer.domain.service.JobOffersForYou;
-import com.oxygensend.joboffer.infrastructure.redis.CacheNotAvailableException;
+import com.oxygensend.joboffer.infrastructure.cache.CacheNotAvailableException;
+import com.oxygensend.joboffer.infrastructure.cache.qualifiers.ForYouCache;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ final class JobOffersForYouWithRedisCache implements JobOffersForYou {
     private final CacheManager cacheManager;
 
     JobOffersForYouWithRedisCache(JobOfferOrderService jobOfferOrderService, JobOfferRepository jobOfferRepository, UserRepository userRepository,
-                                  @Qualifier("forYouCache") CacheManager cacheManager) {
+                                  @ForYouCache CacheManager cacheManager) {
         this.jobOfferOrderService = jobOfferOrderService;
         this.jobOfferRepository = jobOfferRepository;
         this.userRepository = userRepository;

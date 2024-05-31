@@ -75,6 +75,10 @@ kafka:
 job-offers:
   elasticsearch:
     boostrap-type: none
+  cache:
+    for-you-cache-ttl: 1h
+    global-cache-ttl: 1h
+    job-offers-cache-ttl: 1h
 
 management:
   health:

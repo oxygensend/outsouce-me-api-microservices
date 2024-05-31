@@ -78,6 +78,11 @@ job-offers:
     job-offer-expired-email-to-applier:
       subject: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
       body: "Oferta %s na którą zaaplikowałeś właśnie wygasła. Oczekuj na mailwy kontakt od zleceniodawcy. Dziękujemy za korzystanie z naszej platformy i życzymy powodzenia w dalszym poszukiwaniu zleceń"
+  cache:
+    for-you-cache-ttl: 3h
+    global-cache-ttl: 12h
+    job-offers-cache-ttl: 1h
+
 
 storage:
   root-location: storage

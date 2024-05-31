@@ -112,7 +112,7 @@ class JobOfferOrderServiceImpl implements JobOfferOrderService {
             return new Random().nextInt(1000, 10000);
         } else {
             double baseRate = new Random().nextInt(100, 1000);
-            if (user.latitude() != null && user.longitude() != null) {
+            if (user.latitude() != null && user.longitude() != null && jobOfferAddress.lat() != null && jobOfferAddress.lon() != null) {
                 double distance = DistanceCalculator.calculateDistanceBasedOnVincentyFormula(
                         user.latitude(), user.longitude(),
                         jobOfferAddress.lat(), jobOfferAddress.lon());

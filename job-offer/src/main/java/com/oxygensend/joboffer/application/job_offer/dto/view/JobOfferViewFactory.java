@@ -97,8 +97,6 @@ public class JobOfferViewFactory {
         return new JobOfferInfoView(jobOffer.id(),
                                     jobOffer.slug(),
                                     jobOffer.name(),
-                                    jobOffer.description(),
-                                    jobOffer.shortDescription(),
                                     jobOffer.numberOfApplications(),
                                     jobOffer.validTo() != null ? jobOffer.validTo().toLocalDate() : null,
                                     jobOffer.archived());

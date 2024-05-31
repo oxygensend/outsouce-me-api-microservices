@@ -1,4 +1,4 @@
-package com.oxygensend.joboffer.infrastructure.redis;
+package com.oxygensend.joboffer.infrastructure.cache;
 
 public class CacheNotAvailableException extends RuntimeException{
     public CacheNotAvailableException(String cache){

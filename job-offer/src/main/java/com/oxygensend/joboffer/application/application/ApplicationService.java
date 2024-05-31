@@ -10,6 +10,8 @@ import com.oxygensend.joboffer.application.application.dto.view.ApplicationView;
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationViewFactory;
 import com.oxygensend.joboffer.application.attachment.AttachmentService;
 import com.oxygensend.joboffer.application.attachment.CreateAttachmentCommand;
+import com.oxygensend.joboffer.application.cache.CacheData;
+import com.oxygensend.joboffer.application.cache.event.ClearCacheEvent;
 import com.oxygensend.joboffer.application.notifications.NotificationsService;
 import com.oxygensend.joboffer.domain.entity.Application;
 import com.oxygensend.joboffer.domain.entity.part.ApplicationStatus;
@@ -24,6 +26,7 @@ import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,9 +40,10 @@ public class ApplicationService {
     private final ApplicationViewFactory applicationViewFactory;
     private final NotificationsService notificationsService;
     private final RequestContext requestContext;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     ApplicationService(UserRepository userRepository, JobOfferRepository jobOfferRepository, ApplicationRepository applicationRepository,
-                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory, NotificationsService notificationsService, RequestContext requestContext) {
+                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory, NotificationsService notificationsService, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.applicationRepository = applicationRepository;
@@ -47,6 +51,7 @@ public class ApplicationService {
         this.applicationViewFactory = applicationViewFactory;
         this.notificationsService = notificationsService;
         this.requestContext = requestContext;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void createApplication(CreateApplicationCommand command) {
@@ -79,6 +84,7 @@ public class ApplicationService {
         application.setDeleted(true);
 
         applicationRepository.save(application);
+        applicationEventPublisher.publishEvent(new ClearCacheEvent(CacheData.APPLICATION_CACHE, id.toString(), application.user().id()));
     }
 
     public void changeStatus(Long id, ApplicationStatus status) {

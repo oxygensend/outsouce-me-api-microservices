@@ -9,6 +9,7 @@ import com.oxygensend.joboffer.application.application.dto.view.ApplicationInfoV
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationListView;
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationStatusView;
 import com.oxygensend.joboffer.application.application.dto.view.ApplicationView;
+import com.oxygensend.joboffer.application.cache.CacheData;
 import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.domain.repository.filter.ApplicationSort;
 import com.oxygensend.joboffer.domain.repository.filter.SortDirection;
@@ -43,21 +44,21 @@ public class ApplicationController {
         this.applicationService = applicationService;
     }
 
-    @Cacheable(value = "applications", key = "#id")
+    @Cacheable(value = CacheData.APPLICATION_CACHE, key = CacheData.APPLICATION_KEY)
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ApplicationView get(@PathVariable Long id) {
         return applicationService.getApplication(id);
     }
 
-    @Cacheable(value = "applications", key = "#id + '-info'")
+    @Cacheable(value = CacheData.APPLICATION_CACHE, key = CacheData.APPLICATION_INFO_KEY)
     @GetMapping("/{id}/info")
     @ResponseStatus(HttpStatus.OK)
     public ApplicationInfoView getInfo(@PathVariable Long id) {
         return applicationService.getApplicationInfo(id);
     }
 
-//    @Cacheable(value = "applications-users", key = "#userId-#sort-#dir-#pageable.pageNumber-#pageable.pageSize")
+    @Cacheable(value = CacheData.APPLICATION_CACHE, key = CacheData.USERS_APPLICATIONS)
     @GetMapping
     public PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
                                                             @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,

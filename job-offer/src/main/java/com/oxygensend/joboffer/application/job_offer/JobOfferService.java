@@ -4,6 +4,8 @@ import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.exception.UnauthorizedException;
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensend.joboffer.application.cache.event.ClearCacheEvent;
+import com.oxygensend.joboffer.application.cache.event.ClearDetailsCacheEvent;
 import com.oxygensend.joboffer.application.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.application.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.application.job_offer.dto.command.CreateJobOfferCommand;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,8 +54,9 @@ public class JobOfferService {
     private final RequestContext requestContext;
     private final JobOffersForYou jobOffersForYou;
     private final NotificationsService notificationsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou, NotificationsService notificationsService) {
+    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou, NotificationsService notificationsService, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.jobOfferViewFactory = jobOfferViewFactory;
@@ -60,6 +64,7 @@ public class JobOfferService {
         this.requestContext = requestContext;
         this.jobOffersForYou = jobOffersForYou;
         this.notificationsService = notificationsService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional
@@ -117,6 +122,7 @@ public class JobOfferService {
         jobOffer.setArchived(true);
         jobOfferRepository.save(jobOffer);
         notificationsService.sendJobOfferExpiredNotifications(jobOffer);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.jobOffer(slug, jobOffer.user().id()));
     }
 
     public JobOfferDetailsView updateJobOffer(String slug, UpdateJobOfferRequest request) {
@@ -139,6 +145,7 @@ public class JobOfferService {
         jobOffer.setUpdatedAt(jobOffer.updatedAt());
 
         jobOffer = jobOfferRepository.save(jobOffer);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.jobOffer(slug, jobOffer.user().id()));
         return jobOfferViewFactory.create(jobOffer);
     }
 

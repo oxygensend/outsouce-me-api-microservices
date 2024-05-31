@@ -1,5 +1,7 @@
 package com.oxygensend.joboffer.application.job_offer;
 
+import com.oxygensend.joboffer.application.cache.event.ClearDetailsCacheEvent;
+import com.oxygensend.joboffer.application.cache.event.ClearListCacheEvent;
 import com.oxygensend.joboffer.application.notifications.NotificationsService;
 import com.oxygensend.joboffer.application.technology.TechnologyRepository;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
@@ -11,6 +13,7 @@ import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,21 +27,25 @@ public class JobOfferAdminService {
     private final TechnologyRepository technologyRepository;
     private final JobOfferOrderService jobOfferOrderService;
     private final NotificationsService notificationsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager, TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService, NotificationsService notificationsService) {
+    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager, TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService, NotificationsService notificationsService, ApplicationEventPublisher applicationEventPublisher) {
         this.jobOfferRepository = jobOfferRepository;
         this.entityManager = entityManager;
         this.technologyRepository = technologyRepository;
         this.jobOfferOrderService = jobOfferOrderService;
         this.notificationsService = notificationsService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void archiveExpiredJobOffers() {
         jobOfferRepository.findExpiredJobOffers().forEach(jobOffer -> {
             jobOffer.setArchived(true);
             notificationsService.sendJobOfferExpiredNotifications(jobOffer);
+            applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.jobOfferCache(jobOffer.slug()));
         });
 
+        applicationEventPublisher.publishEvent(ClearListCacheEvent.JOB_OFFER);
         entityManager.flush();
     }
 
@@ -63,6 +70,7 @@ public class JobOfferAdminService {
         }
 
         var finishTime = Instant.now();
+        applicationEventPublisher.publishEvent(ClearListCacheEvent.JOB_OFFER);
         LOGGER.info("Finished updating job offer popularity rate in %d ms".formatted(Duration.between(startTime, finishTime).toMillis()));
     }
 }
