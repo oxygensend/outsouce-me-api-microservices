@@ -34,3 +34,5 @@ build/
 .mvn
 mvnw.cmd
 mvnw
+
+log/*

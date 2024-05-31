@@ -76,6 +76,10 @@ user-profile:
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
+  logback:
+    rollingpolicy:
+      max-history: 5
+    compression-type: zip
 
 
 
@@ -95,3 +99,5 @@ management:
       base-path: /manage
       exposure:
         include: "health,info"
+
+

@@ -134,3 +134,10 @@ management:
 
 route-logging:
   enabled: true
+
+
+logging:
+  logback:
+    rollingpolicy:
+      max-history: 5
+    compression-type: zip
