@@ -134,6 +134,8 @@ management:
 
 route-logging:
   enabled: true
+correlation-id-filter:
+  enabled: true
 
 
 logging:
