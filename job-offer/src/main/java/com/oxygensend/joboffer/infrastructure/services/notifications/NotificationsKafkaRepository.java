@@ -1,6 +1,7 @@
 package com.oxygensend.joboffer.infrastructure.services.notifications;
 
 
+import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensend.joboffer.application.properties.JobOffersProperties;
 import com.oxygensend.joboffer.application.notifications.InternalMessage;
 import com.oxygensend.joboffer.application.notifications.Mail;
@@ -18,12 +19,14 @@ final class NotificationsKafkaRepository implements NotificationsRepository {
     private final KafkaTemplate<String, NotificationEvent> notificationsKafkaTemplate;
     private final String login;
     private final String serviceId;
+    private final RequestContext requestContext;
 
     NotificationsKafkaRepository(KafkaTemplate<String, NotificationEvent> notificationsKafkaTemplate, JobOffersProperties jobOffersProperties,
-                                 ServiceProperties serviceProperties) {
+                                 ServiceProperties serviceProperties, RequestContext requestContext) {
         this.notificationsKafkaTemplate = notificationsKafkaTemplate;
         this.serviceId = jobOffersProperties.serviceId();
         this.login = serviceProperties.notifications().login();
+        this.requestContext = requestContext;
     }
 
 
@@ -42,6 +45,7 @@ final class NotificationsKafkaRepository implements NotificationsRepository {
         headers.add("type", message.getClass().getSimpleName().getBytes());
         headers.add("serviceId", serviceId.getBytes());
         headers.add("login", login.getBytes());
+        headers.add("requestId", requestContext.requestId().getBytes());
         ProducerRecord<String, NotificationEvent> record = new ProducerRecord<>(notificationsKafkaTemplate.getDefaultTopic(),
                                                                                 null, UUID.randomUUID().toString(), message, headers);
         notificationsKafkaTemplate.send(record);
