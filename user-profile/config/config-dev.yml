@@ -11,10 +11,14 @@ spring:
     url: jdbc:mysql://localhost:3308/user_profile
     user: root
     password: 12345
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 eureka:
   client:
-    enabled: true
+    enabled: false
     service-url:
       defaultZone: http://localhost:8761/eureka
 
@@ -70,7 +74,10 @@ user-profile:
       body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów.</br> Dziękujemy że jestes z nami. </br> Ekipa Outsource me"
     welcome-message-internal:
       body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów."
-
+  cache:
+    developers-cache-ttl: 1h
+    for-you-cache-ttl: 3h
+    global-cache-ttl: 12h
 
 storage:
   rootLocation: user-profile/storage

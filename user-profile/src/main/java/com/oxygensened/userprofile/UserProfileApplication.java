@@ -6,7 +6,9 @@ import com.oxygensend.commonspring.request_context.RequestContextConfiguration;
 import com.oxygensend.commonspring.storage.StorageConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Import( {CommonFeignConfiguration.class, ExceptionConfiguration.class, RequestContextConfiguration.class, StorageConfiguration.class})
 @SpringBootApplication

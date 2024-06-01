@@ -5,10 +5,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestClient;
 
+
+@EnableScheduling
+@EnableCaching
 @EnableConfigurationProperties( {SpringUserProfileProperties.class})
 //@EnableJpaRepositories(basePackages = "com.oxygensend.userprofile.infrastructure.jpa.repository")
 @Configuration

@@ -2,6 +2,7 @@ package com.oxygensened.userprofile.application.technology;
 
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensened.userprofile.application.cache.event.ClearDetailsCacheEvent;
 import com.oxygensened.userprofile.application.technology.dto.AddTechnologiesRequest;
 import com.oxygensened.userprofile.application.technology.dto.TechnologyRequest;
 import com.oxygensened.userprofile.application.technology.dto.TechnologyView;
@@ -10,6 +11,7 @@ import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.service.DomainUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,11 +20,13 @@ public class TechnologyService {
     private final UserRepository userRepository;
     private final DomainUserService domainUserService;
     private final RequestContext requestContext;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public TechnologyService(UserRepository userRepository, DomainUserService domainUserService, RequestContext requestContext) {
+    public TechnologyService(UserRepository userRepository, DomainUserService domainUserService, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.domainUserService = domainUserService;
         this.requestContext = requestContext;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public TechnologyView addTechnology(Long userId, TechnologyRequest request) {
@@ -36,6 +40,7 @@ public class TechnologyService {
 
         domainUserService.addTechnology(user, request.name());
         userRepository.save(user);
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.user(userId));
 
         return new TechnologyView(request.name());
     }
@@ -51,6 +56,7 @@ public class TechnologyService {
 
         domainUserService.deleteTechnology(user, name);
         userRepository.save(user);
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.user(userId));
     }
 
     public void addTechnologies(Long userId, AddTechnologiesRequest request) {
@@ -64,5 +70,6 @@ public class TechnologyService {
 
         request.technologies().forEach(technology -> domainUserService.addTechnology(user, technology));
         userRepository.save(user);
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.user(userId));
     }
 }

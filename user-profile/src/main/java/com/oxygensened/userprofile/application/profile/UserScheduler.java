@@ -12,7 +12,7 @@ final class UserScheduler {
         this.userAdminService = userAdminService;
     }
 
-    @Scheduled(cron = "user-profile.developers-popularity-rate-recalculation-cron")
+    @Scheduled(cron = "${user-profile.developers-popularity-rate-recalculation-cron}")
     void scheduleDevelopersPopularityRateRecalculation() {
         userAdminService.updateDevelopersPopularityRate();
     }

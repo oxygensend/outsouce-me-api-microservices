@@ -1,10 +1,12 @@
 package com.oxygensened.userprofile.application.language;
 
+import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.language.dto.request.CreateLanguageRequest;
-import com.oxygensened.userprofile.application.language.dto.view.LanguageView;
 import com.oxygensened.userprofile.application.language.dto.request.UpdateLanguageRequest;
+import com.oxygensened.userprofile.application.language.dto.view.LanguageView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,12 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
-public class LanguageController {
+class LanguageController {
 
     private final LanguageService languageService;
 
     public LanguageController(LanguageService languageService) {
         this.languageService = languageService;
+    }
+
+    @Cacheable(value = CacheData.LANGUAGE_CACHE, key = "#userId")
+    @GetMapping("/{userId}/languages")
+    public List<LanguageView> list(@PathVariable Long userId) {
+        return languageService.getLanguages(userId);
     }
 
     @PostMapping("/{userId}/languages")
@@ -45,11 +53,6 @@ public class LanguageController {
     @DeleteMapping("/{userId}/languages/{languageId}")
     void delete(@PathVariable Long userId, @PathVariable Long languageId) {
         languageService.deleteLanguage(userId, languageId);
-    }
-
-    @GetMapping("/{userId}/languages")
-    List<LanguageView> list(@PathVariable Long userId) {
-        return languageService.getLanguages(userId);
     }
 
 }

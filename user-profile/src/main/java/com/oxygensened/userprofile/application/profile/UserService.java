@@ -4,6 +4,7 @@ import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.exception.UnauthorizedException;
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensened.userprofile.application.cache.event.ClearDetailsCacheEvent;
 import com.oxygensened.userprofile.application.profile.dto.AddressDto;
 import com.oxygensened.userprofile.application.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.application.profile.dto.view.DeveloperView;
@@ -27,6 +28,7 @@ import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,10 +48,11 @@ public class UserService {
     private final DevelopersForYou developersForYou;
     private final UserViewFactory userViewFactory;
     private final UserProfileProperties userProfileProperties;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
                        RequestContext requestContext, DevelopersForYou developersForYou, UserViewFactory userViewFactory,
-                       UserProfileProperties userProfileProperties) {
+                       UserProfileProperties userProfileProperties, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
@@ -57,6 +60,7 @@ public class UserService {
         this.developersForYou = developersForYou;
         this.userViewFactory = userViewFactory;
         this.userProfileProperties = userProfileProperties;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public UserView getUser(Long id) {
@@ -76,6 +80,7 @@ public class UserService {
 
         var updatedUser = updateDetails(user, request);
         userRepository.save(updatedUser);
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.user(id));
         return userViewFactory.create(updatedUser);
     }
 
@@ -106,6 +111,7 @@ public class UserService {
         userRepository.save(user);
 
         thumbnailService.delete(oldSmallThumbnail, oldMainThumbnail);
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.thumbnail(id));
     }
 
     public Resource loadThumbnail(String filename) {

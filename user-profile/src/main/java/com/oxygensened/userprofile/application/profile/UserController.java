@@ -1,6 +1,7 @@
 package com.oxygensened.userprofile.application.profile;
 
 import com.oxygensend.commonspring.PagedListView;
+import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.application.profile.dto.view.DeveloperView;
 import com.oxygensened.userprofile.application.profile.dto.view.UserView;
@@ -12,6 +13,7 @@ import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -39,20 +41,34 @@ class UserController {
         this.userService = userService;
     }
 
+    @Cacheable(value = CacheData.USER_CACHE, key = CacheData.USER_KEY)
     @GetMapping("/{id}")
-    UserView show(@PathVariable Long id) {
-        var x = userService.getUser(id);
-        return x;
+    public UserView show(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 
+    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_KEY)
+    @GetMapping(value = "/thumbnails/{filename:.+}", produces = "image/webp")
+    @ResponseStatus(HttpStatus.OK)
+    public Resource getImage(@PathVariable String filename) {
+        return userService.loadThumbnail(filename);
+    }
 
+    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_BY_USER_ID_KEY)
+    @GetMapping(value = "/{id}/thumbnail", produces = "image/webp")
+    @ResponseStatus(HttpStatus.OK)
+    public Resource getImage(@PathVariable Long id) {
+        return userService.loadThumbnailByUserId(id);
+    }
+
+    @Cacheable(value = CacheData.USER_CACHE, key = CacheData.DEVELOPERS_KEY, unless = "#pageable.pageNumber > 20", cacheManager = "developersCacheManager")
     @GetMapping("/developers-offers")
-    PagedListView<DeveloperView> developersPaginatedList(@RequestParam(required = false) UserSort sort,
-                                                         @RequestParam(name = "technologies", required = false) List<String> technologies,
-                                                         @RequestParam(name = "address.postCode", required = false) String postCode,
-                                                         @RequestParam(name = "address.city", required = false) String city,
-                                                         @RequestParam(name = "experience", required = false) Experience experience,
-                                                         Pageable pageable) {
+    public PagedListView<DeveloperView> developersPaginatedList(@RequestParam(required = false) UserSort sort,
+                                                                @RequestParam(name = "technologies", required = false) List<String> technologies,
+                                                                @RequestParam(name = "address.postCode", required = false) String postCode,
+                                                                @RequestParam(name = "address.city", required = false) String city,
+                                                                @RequestParam(name = "experience", required = false) Experience experience,
+                                                                Pageable pageable) {
         var filters = UserFilter.builder()
                                 .sort(sort)
                                 .technologies(technologies)
@@ -89,18 +105,6 @@ class UserController {
     @PostMapping(value = "/{id}/upload-thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     void uploadPhoto(@PathVariable Long id, @RequestBody MultipartFile file) {
         userService.uploadThumbnail(id, file);
-    }
-
-    @GetMapping(value = "/thumbnails/{filename:.+}", produces = "image/webp")
-    @ResponseStatus(HttpStatus.OK)
-    Resource getImage(@PathVariable String filename) {
-        return userService.loadThumbnail(filename);
-    }
-
-    @GetMapping(value = "/{id}/thumbnail", produces = "image/webp")
-    @ResponseStatus(HttpStatus.OK)
-    Resource getImage(@PathVariable Long id) {
-        return userService.loadThumbnailByUserId(id);
     }
 
     @GetMapping(value = "/search")

@@ -1,7 +1,9 @@
 package com.oxygensened.userprofile.application.education.university;
 
+import com.oxygensened.userprofile.application.cache.CacheData;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,16 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "University")
 @RestController
 @RequestMapping("/api/v1/users")
-final class UniversityController {
+class UniversityController {
     private final UniversityService universityService;
 
     public UniversityController(UniversityService universityService) {
         this.universityService = universityService;
     }
 
+    @Cacheable(value = CacheData.DICTIONARY_CACHE, key = "'universities'")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/universities")
-    List<UniversityView> getAllUniversities() {
+    public List<UniversityView> getAllUniversities() {
         return universityService.getAllUniversities();
     }
 

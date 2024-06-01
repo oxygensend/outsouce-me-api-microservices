@@ -1,5 +1,6 @@
 package com.oxygensened.userprofile.application.profile;
 
+import com.oxygensened.userprofile.application.cache.event.ClearListCacheEvent;
 import com.oxygensened.userprofile.application.technology.TechnologyRepository;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +24,15 @@ public class UserAdminService {
     private final TechnologyRepository technologyRepository;
     private final DeveloperOrderService developersOrderService;
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public UserAdminService(EntityManager entityManager, TechnologyRepository technologyRepository, DeveloperOrderService developersOrderService,
-                            UserRepository userRepository) {
+                            UserRepository userRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.entityManager = entityManager;
         this.technologyRepository = technologyRepository;
         this.developersOrderService = developersOrderService;
         this.userRepository = userRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
 
@@ -54,5 +58,6 @@ public class UserAdminService {
 
         var finishTime = Instant.now();
         LOGGER.info("Finished updating developers popularity rate in %d ms".formatted(Duration.between(startTime, finishTime).toMillis()));
+        applicationEventPublisher.publishEvent(ClearListCacheEvent.DEVELOPERS);
     }
 }

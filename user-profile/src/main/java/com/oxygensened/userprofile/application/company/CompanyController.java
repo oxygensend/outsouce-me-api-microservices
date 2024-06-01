@@ -1,8 +1,10 @@
 package com.oxygensened.userprofile.application.company;
 
+import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.company.dto.CompanyView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,9 @@ class CompanyController {
         this.companyService = companyService;
     }
 
+    @Cacheable(value = CacheData.DICTIONARY_CACHE, key = "'companies'")
     @GetMapping("/companies")
-    List<CompanyView> getAllCompanies() {
+    public List<CompanyView> getAllCompanies() {
         return companyService.getAllCompanies();
     }
 

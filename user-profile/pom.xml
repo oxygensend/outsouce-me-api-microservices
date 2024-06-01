@@ -20,6 +20,8 @@
         <slugify.version>3.0.6</slugify.version>
         <springfixtures.version>1.0.0-SNAPSHOT</springfixtures.version>
         <jackson-nullable.version>0.2.6</jackson-nullable.version>
+        <kryo.version>5.6.0</kryo.version>
+        <snappy.version>1.1.10.5</snappy.version>
     </properties>
 
     <dependencies>
@@ -110,10 +112,14 @@
             <version>${jackson-nullable.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.13.11</version>
-            <scope>compile</scope>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+            <version>${snappy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>${kryo.version}</version>
         </dependency>
     </dependencies>
 

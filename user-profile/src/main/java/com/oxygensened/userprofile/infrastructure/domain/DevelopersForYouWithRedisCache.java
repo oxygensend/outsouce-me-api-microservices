@@ -6,7 +6,8 @@ import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.service.DeveloperOrderService;
 import com.oxygensened.userprofile.domain.service.DevelopersForYou;
-import com.oxygensened.userprofile.infrastructure.redis.CacheNotAvailableException;
+import com.oxygensened.userprofile.infrastructure.cache.CacheNotAvailableException;
+import com.oxygensened.userprofile.infrastructure.cache.qualifiers.ForYouCache;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,7 +26,7 @@ class DevelopersForYouWithRedisCache implements DevelopersForYou {
     private final CacheManager cacheManager;
     private final DeveloperOrderService developerOrderService;
 
-    DevelopersForYouWithRedisCache(UserRepository userRepository, @Qualifier("forYouCache") CacheManager cacheManager, DeveloperOrderService developerOrderService) {
+    DevelopersForYouWithRedisCache(UserRepository userRepository, @ForYouCache CacheManager cacheManager, DeveloperOrderService developerOrderService) {
         this.userRepository = userRepository;
         this.cacheManager = cacheManager;
         this.developerOrderService = developerOrderService;

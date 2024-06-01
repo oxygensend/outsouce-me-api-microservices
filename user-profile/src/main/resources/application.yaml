@@ -77,6 +77,10 @@ user-profile:
   service-id: user-profile-service
   elasticsearch:
     boostrap-type: reindex
+  cache:
+    developers-cache-ttl: 1h
+    for-you-cache-ttl: 1h
+    global-cache-ttl: 1h
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace

@@ -1,6 +1,8 @@
 package com.oxygensened.userprofile.application.language;
 
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensened.userprofile.application.cache.event.ClearCacheEvent;
+import com.oxygensened.userprofile.application.cache.event.ClearListCacheEvent;
 import com.oxygensened.userprofile.application.language.dto.request.CreateLanguageRequest;
 import com.oxygensened.userprofile.application.language.dto.request.UpdateLanguageRequest;
 import com.oxygensened.userprofile.application.language.dto.view.LanguageView;
@@ -13,6 +15,7 @@ import com.oxygensened.userprofile.domain.repository.UserRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import static com.oxygensened.userprofile.application.utils.Patch.updateIfPresent;
@@ -23,11 +26,13 @@ public class LanguageService {
     private final LanguageRepository languageRepository;
     private final UserRepository userRepository;
     private final RequestContext requestContext;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public LanguageService(LanguageRepository languageRepository, UserRepository userRepository, RequestContext requestContext) {
+    public LanguageService(LanguageRepository languageRepository, UserRepository userRepository, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
         this.languageRepository = languageRepository;
         this.userRepository = userRepository;
         this.requestContext = requestContext;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public LanguageView createLanguage(Long userId, CreateLanguageRequest request) {
@@ -40,6 +45,7 @@ public class LanguageService {
         }
 
         var language = new Language(user, request.name(), request.description());
+        applicationEventPublisher.publishEvent(ClearCacheEvent.language(userId));
         return LanguageView.from(languageRepository.save(language));
     }
 
@@ -55,6 +61,7 @@ public class LanguageService {
         updateIfPresent(request.name(), language::setName);
         updateIfPresent(request.description(), language::setDescription);
 
+        applicationEventPublisher.publishEvent(ClearCacheEvent.language(userId));
         return LanguageView.from(languageRepository.save(language));
     }
 
@@ -68,6 +75,7 @@ public class LanguageService {
         }
 
         languageRepository.delete(language);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.language(userId));
     }
 
     public List<LanguageView> getLanguages(Long userId) {

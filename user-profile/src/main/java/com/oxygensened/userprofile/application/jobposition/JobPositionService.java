@@ -1,6 +1,8 @@
 package com.oxygensened.userprofile.application.jobposition;
 
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensened.userprofile.application.cache.event.ClearCacheEvent;
+import com.oxygensened.userprofile.application.cache.event.ClearListCacheEvent;
 import com.oxygensened.userprofile.application.company.CompanyService;
 import com.oxygensened.userprofile.application.jobposition.dto.request.CreateJobPositionRequest;
 import com.oxygensened.userprofile.application.jobposition.dto.request.UpdateJobPositionRequest;
@@ -16,6 +18,7 @@ import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import static com.oxygensened.userprofile.application.utils.Patch.updateIfPresent;
@@ -30,13 +33,15 @@ public class JobPositionService {
     private final CompanyService companyService;
     private final DomainUserService domainUserService;
     private final RequestContext requestContext;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService, DomainUserService domainUserService, RequestContext requestContext) {
+    public JobPositionService(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyService companyService, DomainUserService domainUserService, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.jobPositionRepository = jobPositionRepository;
         this.companyService = companyService;
         this.domainUserService = domainUserService;
         this.requestContext = requestContext;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public JobPositionView createJobPosition(Long userId, CreateJobPositionRequest request) {
@@ -61,6 +66,7 @@ public class JobPositionService {
 
         domainUserService.changeActiveJobPosition(user, jobPosition);
         jobPosition = jobPositionRepository.save(jobPosition);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.jobPosition(userId));
         return JobPositionView.from(jobPosition);
     }
 
@@ -82,6 +88,7 @@ public class JobPositionService {
 
         domainUserService.changeActiveJobPosition(jobPosition.individual(), jobPosition);
         jobPosition = jobPositionRepository.save(jobPosition);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.jobPosition(userId));
         return JobPositionView.from(jobPosition);
     }
 
@@ -96,6 +103,7 @@ public class JobPositionService {
 
         jobPosition.individual().setActiveJobPosition(null);
         jobPositionRepository.delete(jobPosition);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.jobPosition(userId));
     }
 
     public List<JobPositionView> getJobPositions(Long userId) {

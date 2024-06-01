@@ -1,10 +1,12 @@
 package com.oxygensened.userprofile.application.jobposition;
 
+import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.jobposition.dto.request.CreateJobPositionRequest;
 import com.oxygensened.userprofile.application.jobposition.dto.view.JobPositionView;
 import com.oxygensened.userprofile.application.jobposition.dto.request.UpdateJobPositionRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
-final class JobPositionController {
+class JobPositionController {
     private final JobPositionService jobPositionService;
 
     JobPositionController(JobPositionService jobPositionService) {
@@ -45,8 +47,10 @@ final class JobPositionController {
         jobPositionService.deleteJobPosition(userId, jobPositionId);
     }
 
+
+    @Cacheable(value = CacheData.JOB_POSITION_CACHE, key = "#userId")
     @GetMapping("/{userId}/job-positions")
-    List<JobPositionView> list(@PathVariable Long userId) {
+    public List<JobPositionView> list(@PathVariable Long userId) {
         return jobPositionService.getJobPositions(userId);
     }
 }

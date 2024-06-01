@@ -2,6 +2,8 @@ package com.oxygensened.userprofile.application.education;
 
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.request_context.RequestContext;
+import com.oxygensened.userprofile.application.cache.event.ClearCacheEvent;
+import com.oxygensened.userprofile.application.cache.event.ClearListCacheEvent;
 import com.oxygensened.userprofile.application.education.dto.request.CreateEducationRequest;
 import com.oxygensened.userprofile.application.education.dto.request.UpdateEducationRequest;
 import com.oxygensened.userprofile.application.education.dto.view.EducationView;
@@ -20,6 +22,7 @@ import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import static com.oxygensened.userprofile.application.utils.Patch.updateIfPresent;
@@ -31,12 +34,14 @@ public class EducationService {
     private final UniversityRepository universityRepository;
     private final UserRepository userRepository;
     private final RequestContext requestContext;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public EducationService(EducationRepository educationRepository, UniversityRepository universityRepository, UserRepository userRepository, RequestContext requestContext) {
+    public EducationService(EducationRepository educationRepository, UniversityRepository universityRepository, UserRepository userRepository, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
         this.educationRepository = educationRepository;
         this.universityRepository = universityRepository;
         this.userRepository = userRepository;
         this.requestContext = requestContext;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public EducationView createEducation(Long userId, CreateEducationRequest request) {
@@ -63,6 +68,7 @@ public class EducationService {
                                  .build();
 
         education = educationRepository.save(education);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.education(userId));
         return EducationView.from(education);
     }
 
@@ -85,6 +91,7 @@ public class EducationService {
 
         education.setUpdatedAt(LocalDateTime.now());
         education = educationRepository.save(education);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.education(userId));
         return EducationView.from(education);
     }
 
@@ -97,6 +104,7 @@ public class EducationService {
         }
 
         educationRepository.delete(education);
+        applicationEventPublisher.publishEvent(ClearCacheEvent.education(userId));
     }
 
     public List<EducationView> getEducations(Long userId) {

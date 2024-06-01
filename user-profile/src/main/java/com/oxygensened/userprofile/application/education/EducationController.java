@@ -1,10 +1,12 @@
 package com.oxygensened.userprofile.application.education;
 
+import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.education.dto.request.CreateEducationRequest;
 import com.oxygensened.userprofile.application.education.dto.view.EducationView;
 import com.oxygensened.userprofile.application.education.dto.request.UpdateEducationRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RequestMapping("/api/v1/users")
 @RestController
-final class EducationController {
+class EducationController {
     private final EducationService educationService;
 
     EducationController(EducationService educationService) {
@@ -45,8 +47,9 @@ final class EducationController {
         educationService.deleteEducation(userId, educationId);
     }
 
+    @Cacheable(value = CacheData.EDUCATION_CACHE, key = "#userId")
     @GetMapping("/{userId}/educations")
-    List<EducationView> list(@PathVariable Long userId) {
+    public List<EducationView> list(@PathVariable Long userId) {
         return educationService.getEducations(userId);
     }
 }
