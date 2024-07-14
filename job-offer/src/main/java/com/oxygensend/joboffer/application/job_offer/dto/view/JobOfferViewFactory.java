@@ -101,4 +101,12 @@ public class JobOfferViewFactory {
                                     jobOffer.validTo() != null ? jobOffer.validTo().toLocalDate() : null,
                                     jobOffer.archived());
     }
+
+    public JobOfferOrderView createJobOfferOrderView(JobOffer jobOffer){
+        return new JobOfferOrderView(jobOffer.id(),
+                                     jobOffer.experience(),
+                                     jobOffer.technologies().stream().toList(),
+                                     jobOffer.address().lon(),
+                                     jobOffer.address().lat());
+    }
 }

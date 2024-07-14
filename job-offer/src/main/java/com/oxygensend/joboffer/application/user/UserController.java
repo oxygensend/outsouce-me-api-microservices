@@ -3,6 +3,7 @@ package com.oxygensend.joboffer.application.user;
 import com.oxygensend.joboffer.application.cache.CacheData;
 import com.oxygensend.joboffer.application.job_offer.JobOfferService;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferInfoView;
+import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferOrderView;
 import com.oxygensend.joboffer.application.user.dto.CreateUserRequest;
 import com.oxygensend.joboffer.application.user.dto.view.UserDetailsView;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
@@ -39,6 +40,12 @@ class UserController {
                                    .sort(JobOfferSort.POPULAR)
                                    .build();
         return jobOfferService.getJobOfferInfoList(filter);
+    }
+
+    @Cacheable(value = CacheData.JOB_OFFER_CACHE, key = CacheData.USERS_ORDER_JOB_OFFERS)
+    @GetMapping("/{id}/job-offers-order")
+    public List<JobOfferOrderView> getUsersJobOffersOrder(@PathVariable String id) {
+        return jobOfferService.getJobOfferOrderListForUser(id);
     }
 
     @PostMapping

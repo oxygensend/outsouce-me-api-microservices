@@ -25,6 +25,8 @@ public class CacheData {
             + "+ #pageable.pageSize";
     public static final String JOB_OFFER_KEY = "#slug";
     public static final String USERS_JOB_OFFERS = "'users-' + #id + '-' +  #archived";
+    public static final String USERS_ORDER_JOB_OFFERS = "'users-order' + #id";
+
     public static final String JOB_OFFERS_LIST_KEY = "'list-' + #workTypes + '-' + #technologies + '-' + #postCode + '-' + #city "
             + "+ '-' + #formOfEmployments + '-' + #archived + '-' + #userId + '-' + #sort + '-' + #pageable.pageSize + '-' + #pageable.pageNumber";
 

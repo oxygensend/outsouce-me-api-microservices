@@ -1,7 +1,9 @@
 package com.oxygensened.userprofile.infrastructure.domain;
 
 import com.oxygensened.userprofile.domain.entity.Address;
+import com.oxygensened.userprofile.domain.entity.JobOffer;
 import com.oxygensened.userprofile.domain.entity.User;
+import com.oxygensened.userprofile.domain.repository.JobOfferRepository;
 import com.oxygensened.userprofile.domain.service.DeveloperOrderService;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,12 +12,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
 @Service
 class DevelopersOrderServiceImpl implements DeveloperOrderService {
 
     private static final int TECHNOLOGY_WAGE = 2;
+    private final JobOfferRepository jobOfferRepository;
+
+    DevelopersOrderServiceImpl(JobOfferRepository jobOfferRepository) {
+        this.jobOfferRepository = jobOfferRepository;
+    }
 
     public void calculateDevelopersPopularityRate(User user, List<String> featuredTechnologies) {
         double randomRate = new Random().nextInt(100, 10000);
@@ -34,11 +42,12 @@ class DevelopersOrderServiceImpl implements DeveloperOrderService {
 
     @Override
     public Stream<User> sortDeveloperForYou(List<User> developers, User user) {
-        Set<Address> jobOffersLocalizationsSet = new HashSet<>();
+        Set<ImmutablePair<String, String>> jobOffersLocalizationsSet = new HashSet<>();
         Set<String> jobOffersTechnologiesSet = new HashSet<>();
+        List<JobOffer> jobOffers = jobOfferRepository.getUserJobOffers(user);
 
-        for (var jobOffer : user.jobOffers()) {
-            jobOffersLocalizationsSet.add(jobOffer.address());
+        for (var jobOffer: jobOffers) {
+            jobOffersLocalizationsSet.add(new ImmutablePair<>(jobOffer.lon(), jobOffer.lat()));
             jobOffersTechnologiesSet.addAll(jobOffer.technologies());
         }
 
@@ -47,7 +56,7 @@ class DevelopersOrderServiceImpl implements DeveloperOrderService {
                          .sorted(Comparator.comparingInt(User::displayOrder));
     }
 
-    private void calculateDeveloperForYouDisplayOrder(User developer, Set<Address> jobOffersLocalizationsSet,
+    private void calculateDeveloperForYouDisplayOrder(User developer, Set<ImmutablePair<String, String>> jobOffersLocalizationsSet,
                                                       Set<String> jobOffersTechnologiesSet) {
         double randomRate = generateInitialRateBasedOnLocation(developer.address(), jobOffersLocalizationsSet);
         randomRate = applyTechnologiesWeight(randomRate, developer.technologies(), jobOffersTechnologiesSet);
@@ -85,8 +94,8 @@ class DevelopersOrderServiceImpl implements DeveloperOrderService {
         });
     }
 
-    private double generateInitialRateBasedOnLocation(Address developerAddress, Set<Address> jobOffersLocalizationsSet) {
-        if (developerAddress == null || jobOffersLocalizationsSet.contains(developerAddress)) {
+    private double generateInitialRateBasedOnLocation(Address developerAddress, Set<ImmutablePair<String, String>> jobOffersLocalizationsSet) {
+        if (developerAddress == null || jobOffersLocalizationsSet.contains(new ImmutablePair<>(developerAddress.lon(), developerAddress.lat()))) {
             return new Random().nextInt(1000, 10000);
         } else {
             return new Random().nextInt(100, 1000);

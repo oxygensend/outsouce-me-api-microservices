@@ -35,8 +35,6 @@ public class UserBuilder {
     private List<JobPosition> jobPositions = List.of();
     private List<Language> languages = List.of();
 
-    private List<JobOffer> jobOffers = List.of();
-
     private double opinionsRate = 0;
     private int opinionsCount = 0;
 
@@ -181,13 +179,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder jobOffers(List<JobOffer> jobOffers) {
-        this.jobOffers = jobOffers;
-        return this;
-    }
-
     public User build() {
-        return new User(id, externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, educations, jobPositions, languages, opinionsCount, jobOffers);
+        return new User(id, externalId, email, name, surname, phoneNumber, description, githubUrl, linkedinUrl, dateOfBirth, redirectCount, accountType, slug, lookingForJob, activeJobPosition, opinionsRate, experience, popularityOrder, imageName, imageNameSmall, createdAt, updatedAt, technologies, address, educations, jobPositions, languages, opinionsCount);
     }
 
 }

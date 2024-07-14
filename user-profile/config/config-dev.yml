@@ -36,6 +36,7 @@ services:
     url: http://localhost:8888
   job-offers:
     jobOfferDataTopic: outsource-me-api-job-offer-data
+    url: http://localhost:9999
 
 
 feign:

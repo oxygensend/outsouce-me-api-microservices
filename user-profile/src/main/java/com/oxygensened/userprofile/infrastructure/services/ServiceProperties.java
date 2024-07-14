@@ -2,6 +2,7 @@ package com.oxygensened.userprofile.infrastructure.services;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,7 +19,7 @@ public record ServiceProperties(@Valid Auth auth,
 
     }
 
-    public record JobOffers(@NotEmpty String jobOfferDataTopic) {
+    public record JobOffers(@NotEmpty String jobOfferDataTopic, @NotNull String url) {
     }
 
     public record StaticData(@NotEmpty String url) {

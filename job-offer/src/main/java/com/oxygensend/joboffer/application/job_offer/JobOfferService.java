@@ -13,6 +13,7 @@ import com.oxygensend.joboffer.application.job_offer.dto.request.UpdateJobOfferR
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferDetailsView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferInfoView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferManagementView;
+import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferOrderView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferView;
 import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferViewFactory;
 import com.oxygensend.joboffer.application.notifications.NotificationsService;
@@ -184,6 +185,15 @@ public class JobOfferService {
                                  .toList();
     }
 
+    // TODO REFEACTOR THIS IS USED ONLY BY USER SERVICE
+    public List<JobOfferOrderView> getJobOfferOrderListForUser(String userId){
+        var filter = JobOfferFilter.builder()
+                .userId(userId)
+                .build();
+       return jobOfferRepository.findAll(filter).stream()
+               .map(jobOfferViewFactory::createJobOfferOrderView)
+               .toList();
+    }
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
         if (JsonNullableWrapper.isPresent(validTo)) {
             var validToUnWrapped = JsonNullableWrapper.unwrap(validTo);

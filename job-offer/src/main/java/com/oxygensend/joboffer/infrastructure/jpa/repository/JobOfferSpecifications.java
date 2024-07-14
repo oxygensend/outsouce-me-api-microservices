@@ -55,9 +55,11 @@ final class JobOfferSpecifications {
             addFindInSetPredicate(predicates, cb, root.get("workTypes"), workType.displayName());
         }
 
-        switch (filter.sort()) {
-            case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
-            case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
+        if(filter.sort() != null) {
+            switch (filter.sort()) {
+                case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
+                case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
+            }
         }
 
         return cb.and(predicates.toArray(new Predicate[0]));
