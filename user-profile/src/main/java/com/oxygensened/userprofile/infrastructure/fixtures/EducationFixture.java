@@ -50,7 +50,7 @@ class EducationFixture implements Fixture {
                                          .university(universities.get(random.nextInt(UniversityFixture.SIZE - 1)))
                                          .grade((double) random.nextInt(3, 5))
                                          .fieldOfStudy(faker.pokemon().name())
-                                         .description(faker.lorem().characters(0, 1000))
+                                         .description(faker.lorem().paragraph(random.nextInt(0, 5)))
                                          .individual(user)
                                          .startDate(LocalDate.of(2020, 8, 11))
                                          .endDate(LocalDate.of(2023, 9, 1))

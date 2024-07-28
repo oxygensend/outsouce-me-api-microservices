@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.cache.CacheManager
 import org.springframework.context.event.EventListener
+import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
-import java.io.File
+import org.springframework.util.StreamUtils
+import java.nio.charset.Charset
 
 @Component
 internal class TechnologiesLoader(
@@ -19,18 +21,19 @@ internal class TechnologiesLoader(
     staticDataProperties: StaticDataProperties,
 ) {
 
-    private final val csvFile: File
+    private final val csvFile: Resource
     private final val logger: Logger = LoggerFactory.getLogger(TechnologiesLoader::class.java)
 
     init {
-        this.csvFile = staticDataProperties.technologyCsvFile ?: throw IllegalArgumentException("Csv file cannot be null")
+        this.csvFile =
+            staticDataProperties.technologyCsvFile ?: throw IllegalArgumentException("Csv file cannot be null")
     }
 
     @EventListener(value = [ApplicationReadyEvent::class])
     fun load() {
         logger.info("Started loading technologies to the database.")
 
-        val newTechnologies = csvFile.bufferedReader()
+        val newTechnologies = StreamUtils.copyToString(csvFile.inputStream, Charset.defaultCharset())
             .lineSequence()
             .drop(1)
             .filter { it.isNotBlank() }

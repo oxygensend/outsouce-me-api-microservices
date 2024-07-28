@@ -47,14 +47,14 @@ class UserController {
         return userService.getUser(id);
     }
 
-    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_KEY)
+//    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_KEY)
     @GetMapping(value = "/thumbnails/{filename:.+}", produces = "image/webp")
     @ResponseStatus(HttpStatus.OK)
     public Resource getImage(@PathVariable String filename) {
         return userService.loadThumbnail(filename);
     }
 
-    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_BY_USER_ID_KEY)
+//    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_BY_USER_ID_KEY)
     @GetMapping(value = "/{id}/thumbnail", produces = "image/webp")
     @ResponseStatus(HttpStatus.OK)
     public Resource getImage(@PathVariable Long id) {

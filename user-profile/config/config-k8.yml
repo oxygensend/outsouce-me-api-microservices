@@ -1,0 +1,85 @@
+spring:
+  datasource:
+    url: jdbc:mysql://host.minikube.internal:3308/user_profile
+    username: root
+    password: 12345
+  elasticsearch:
+    uris: http://host.minikube.internal:9200
+    password: elastic
+    username: elastic
+  liquibase:
+    url: jdbc:mysql://host.minikube.internal:3308/user_profile
+    user: root
+    password: 12345
+  data:
+    redis:
+      host: ${
+      port: 6379
+eureka:
+  client:
+    enabled: false
+    service-url:
+      defaultZone: http://host.minikube.internal:8761/eureka
+
+services:
+  auth:
+    url: http://host.minikube.internal:9002
+    userRegisteredTopic: outsource-me-api-user-registered
+  opinions:
+    userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
+  notifications:
+    login: 1234
+    externalTopic: outsource-me-api-notifications
+  static-data:
+    url: http://localhost:8888
+  job-offers:
+    jobOfferDataTopic: outsource-me-api-job-offer-data
+    url: http://localhost:9999
+
+feign:
+  connection:
+    type: SERVICE_DISCOVERY
+
+kafka:
+  producer:
+    bootstrap-servers: 192.168.0.235:29092
+    security-protocol: PLAINTEXT
+  consumer:
+    application-id: user-profile-service
+    bootstrap-servers: 192.168.0.235:29092
+    security-protocol: PLAINTEXT
+    #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+
+user-profile:
+  topics:
+    USER_DATA: outsource-me-api-user-data
+  thumbnailServerUrl: http://localhost:8080/users/thumbnails
+  defaultThumbnail: user_placeholder.webp
+  plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
+  developers-popularity-rate-recalculation-cron: 0 0 0 * * *
+  password-reset-frontend-url: http://localhost:3000/odzyskiwanie-hasla
+  email-verification-frontend-url: http://localhost:3000/aktywacja-konta
+  notifications:
+    email-verification-email:
+      subject: "Aktywacja konta w serwisie Outsource me"
+      body: "Witaj, aby aktywować swoje konto w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+    password-reset-email:
+      subject: "Reset hasła w serwisie Outsource me"
+      body: "Witaj, aby zresetować swoje hasło w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+    welcome-message-email:
+      subject: "%s, witaj w serwisie Outsource me!"
+      body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów.</br> Dziękujemy że jestes z nami. </br> Ekipa Outsource me"
+    welcome-message-internal:
+      body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów."
+  cache:
+    developers-cache-ttl: 1h
+    for-you-cache-ttl: 3h
+    global-cache-ttl: 12h
+
+storage:
+  rootLocation: user-profile/storage
+  thumbnailDir: thumbnails
+
+fixtures:
+  enabled: true
+

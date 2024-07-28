@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.oxygensend.springfixtures.Fixture;
 import com.oxygensend.springfixtures.FixturesFakerProvider;
 import com.oxygensened.userprofile.application.technology.TechnologyRepository;
+import com.oxygensened.userprofile.application.technology.dto.TechnologyDto;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
@@ -11,8 +12,10 @@ import com.oxygensened.userprofile.domain.entity.part.Experience;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.service.UserIdGenerator;
-import com.oxygensened.userprofile.infrastructure.services.auth.AuthClient;
 import com.oxygensened.userprofile.infrastructure.services.auth.dto.CreateUserRequest;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClient;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -31,17 +34,23 @@ class UserFixture implements Fixture {
     private final AddressRepository addressRepository;
     private final TechnologyRepository technologyRepository;
     private final UserIdGenerator userIdGenerator;
-    private final AuthClient authClient;
+    private final RestClient restClient;
+    private final String authServerUrl;
+    private final String staticDataUrl;
 
-    UserFixture(UserRepository userRepository, AddressRepository addressRepository, TechnologyRepository technologyRepository,
-                UserIdGenerator userIdGenerator, AuthClient authClient, FixturesFakerProvider fakerProvider) {
+    UserFixture(UserRepository userRepository, AddressRepository addressRepository,
+                TechnologyRepository technologyRepository,
+                UserIdGenerator userIdGenerator, FixturesFakerProvider fakerProvider,
+                RestClient restClient, String authServerUrl, String staticDataUrl) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.technologyRepository = technologyRepository;
         this.userIdGenerator = userIdGenerator;
-        this.authClient = authClient;
+        this.restClient = restClient;
+        this.authServerUrl = authServerUrl;
         this.random = fakerProvider.random();
         this.faker = fakerProvider.faker();
+        this.staticDataUrl = staticDataUrl;
     }
 
     @Override
@@ -52,7 +61,13 @@ class UserFixture implements Fixture {
     @Override
     public void load() {
         List<Address> addresses = addressRepository.findAll();
-        List<String> technologies = technologyRepository.getTechnologies();
+        List<String> technologies = Stream.ofNullable(restClient.get()
+                                                                .uri(staticDataUrl + "/api/v1/static-data/technologies")
+                                                                .retrieve()
+                                                                .body(TechnologyDto[].class))
+                                          .flatMap(Stream::of)
+                                          .map(TechnologyDto::name)
+                                          .toList();
         List<String> emails = Stream.generate(() -> faker.internet().safeEmailAddress())
                                     .distinct()
                                     .limit(SIZE)
@@ -63,11 +78,13 @@ class UserFixture implements Fixture {
                                   .id(userIdGenerator.generate())
                                   .name(faker.name().firstName())
                                   .surname(faker.name().lastName())
-                                  .slug(faker.name().firstName().toLowerCase() + "-" + faker.name().lastName().toLowerCase())
+                                  .slug(faker.name().firstName().toLowerCase() + "-" + faker.name().lastName()
+                                                                                            .toLowerCase())
                                   .address(addresses.get(random.nextInt(0, AddressFixture.SIZE - 1)))
                                   .email(emails.get(i))
-                                  .dateOfBirth(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()))
-                                  .description(faker.weather().description())
+                                  .dateOfBirth(
+                                      LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()))
+                                  .description(faker.lorem().paragraph(random.nextInt(0, 10)))
                                   .externalId(faker.internet().uuid())
                                   .linkedinUrl(faker.internet().url())
                                   .activeJobPosition(faker.job().position())
@@ -86,7 +103,12 @@ class UserFixture implements Fixture {
             var user = userBuilder.build();
 
             userRepository.save(userBuilder.build());
-            authClient.createUser(CreateUserRequest.fromUser(user, "test123"));
+            restClient.post()
+                      .uri(authServerUrl + "/v1/users/create")
+                      .contentType(MediaType.APPLICATION_JSON)
+                      .body(CreateUserRequest.fromUser(user, "test123"))
+                      .retrieve();
+
         }
 
 

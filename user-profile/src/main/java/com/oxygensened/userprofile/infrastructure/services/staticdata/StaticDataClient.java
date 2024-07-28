@@ -2,8 +2,9 @@ package com.oxygensened.userprofile.infrastructure.services.staticdata;
 
 import com.oxygensened.userprofile.application.technology.dto.TechnologyDto;
 import com.oxygensened.userprofile.infrastructure.services.staticdata.dto.AddressDto;
-import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 public interface StaticDataClient {
 

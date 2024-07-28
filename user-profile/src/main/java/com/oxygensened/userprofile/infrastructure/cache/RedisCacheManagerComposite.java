@@ -2,9 +2,10 @@ package com.oxygensened.userprofile.infrastructure.cache;
 
 import com.oxygensened.userprofile.application.cache.CacheAdapter;
 import com.oxygensened.userprofile.application.cache.CacheManagerComposite;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Collection;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.cache.RedisCache;
 
