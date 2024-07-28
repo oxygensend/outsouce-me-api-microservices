@@ -25,11 +25,9 @@ spring:
       pageable:
         one-indexed-parameters: true
 
-
 eureka:
   client:
     enabled: true
-
     fetch-registry: true
     register-with-eureka: true
 

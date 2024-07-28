@@ -6,6 +6,23 @@ spring:
       enabled: true
 
   cloud:
+    kubernetes:
+      enabled: false
+#      loadbalancer:
+#        enabled: ${spring.cloud.kubernetes.enabled}
+#        mode: SERVICE
+      discovery:
+        enabled: ${spring.cloud.kubernetes.enabled}
+        all-namespaces: true
+#    loadbalancer:
+#      enabled: false
+#      cache:
+#        enabled: false
+    discovery:
+      client:
+        health-indicator:
+          enabled: true
+
     gateway:
       globalcors:
         cors-configurations:
@@ -67,7 +84,7 @@ spring:
           filters:
             - RewritePath=/static-data/(?<segment>.*),/api/v1/static-data/$\{segment}
         - id: notifications-internal
-          uri: lb://notification-service
+          uri: lb://notificaons-service
           predicates:
             - Path=/notifications/internal,
           filters:
@@ -75,7 +92,7 @@ spring:
             - AddRequestParameter=channel,INTERNAL
             - AuthPrefilter
         - id: notifications
-          uri: lb://notification-service
+          uri: lb://notifications-service
           predicates:
             - Path=/notifications/*/mark_seen
             - Path=/notifications/*/delete
@@ -92,7 +109,7 @@ spring:
             - RewritePath=/auth/verify_email, /v1/users/verify_email
             - RewritePath=/auth/(?<segment>.*),/v1/auth/$\{segment}
         - id: messenger
-          uri: lb://messaging-service
+          uri: lb://messenger-service
           predicates:
             - Path=/mail-messages
           filters:
@@ -126,7 +143,7 @@ management:
     web:
       base-path: /manage
       exposure:
-        exclude: health,info,gateway
+        include: health,info,gateway
 
 
 

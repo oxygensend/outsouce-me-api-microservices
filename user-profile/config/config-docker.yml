@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${db_url}
-    username: ${db_username}
-    password: ${db_password}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   elasticsearch:
     uris: ${ELASTICSEARCH_URL}
     password: ${ELASTICSEARCH_PASSWORD}
@@ -11,6 +11,10 @@ spring:
     url: ${DB_URL}
     user: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
 eureka:
   client:
@@ -31,6 +35,7 @@ services:
     url: ${STATIC_DATA_SERVICE_URL}
   job-offers:
     jobOfferDataTopic: outsource-me-api-job-offer-data
+    url: http://localhost:9999
 
 
 feign:
@@ -52,6 +57,7 @@ user-profile:
   topics:
     USER_DATA: outsource-me-api-user-data
   thumbnailServerUrl: http://localhost:8080/users/thumbnails
+  defaultThumbnail: user_placeholder.webp
   plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
   developers-popularity-rate-recalculation-cron: 0 0 0 * * *
   password-reset-frontend-url: http://localhost:3000/odzyskiwanie-hasla
@@ -78,3 +84,5 @@ storage:
   rootLocation: storage
   thumbnailDir: thumbnails
 
+fixtures:
+  enabled: false
