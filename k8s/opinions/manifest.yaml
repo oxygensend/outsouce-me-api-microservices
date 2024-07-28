@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opinions-service
+  labels:
+    app: opinions-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opinions-service
+  template:
+    metadata:
+      labels:
+        app: opinions-service
+    spec:
+      containers:
+        - name: opinions-service
+          image: shreddler/outsource_me-opinions:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7777
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: opinions-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              port: 7777
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 7777
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: opinions-config-properties
+#          livenessProbe:
+#            httpGet:
+#              port: 8999
+#              path: /manage/health
+#            initialDelaySeconds: 20
+#            timeoutSeconds: 10
+#          volumeMounts:
+#            - mountPath: storage
+#              name: storage
+#
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opinions-service
+spec:
+  ports:
+    - targetPort: 7777
+      port: 80
+      protocol: TCP
+  selector:
+    app: opinions-service

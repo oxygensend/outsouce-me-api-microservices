@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-profile-service
+  labels:
+    app: user-profile-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-profile-service
+  template:
+    metadata:
+      labels:
+        app: user-profile-service
+    spec:
+      containers:
+        - name: user-profile-service
+          image: shreddler/outsource_me-userprofile:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8999
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: user-profile-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+            - name: storage
+              mountPath: /app/storage
+
+      volumes:
+        - name: config-volume
+          configMap:
+            name: user-profile-config-properties
+        - name: storage
+          persistentVolumeClaim:
+            claimName: user-profile-pvc
+#          livenessProbe:
+#            httpGet:
+#              port: 8999
+#              path: /manage/health
+#            initialDelaySeconds: 20
+#            timeoutSeconds: 10
+#          volumeMounts:
+#            - mountPath: storage
+#              name: storage
+#
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-profile-service
+spec:
+  ports:
+    - targetPort: 8999
+      port: 80
+      protocol: TCP
+  selector:
+    app: user-profile-service
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: user-profile-pv
+#  labels:
+#    type: nfs
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+#  nfs: # Example using NFS, adjust according to your storage type
+#    path: /export/data
+#    server: 20.224.160.148
+  hostPath:
+    path: "/mnt/user-profile"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-profile-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Gi
+#  selector:
+#    matchLabels:
+#      type: nfs

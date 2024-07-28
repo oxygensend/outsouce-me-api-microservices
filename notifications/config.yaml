@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: mail,internal,kafka
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URL}
+
+
+notifications:
+  services:
+    - "000000"
+    - "user-profile-service"
+    - "job-offers-service"
+    - "messaging-service"
+    - "opinions-service"
+  secret: "cfc32b61db0bcdd71cba720b65f9fb6e6b74b0044c2d1f5e7a6a1f9049a1cf9b"
+
+  mail:
+    email-from: test@test.com
+
+kafka:
+  application-id: notification-service
+  bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+  security-protocol: PLAINTEXT
+  #  sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+  topic: outsource-me-api-notifications

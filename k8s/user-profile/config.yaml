@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-profile-config
+data:
+  DB_URL: "jdbc:mysql://192.168.0.235:3308/user_profile"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "12345"
+  KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
+  ELASTICSEARCH_URL: "http://192.168.0.235:9200"
+  ELASTICSEARCH_USERNAME: "elastic"
+  ELASTICSEARCH_PASSWORD: "elastic"
+  AUTH_SERVICE_URL: "http://auth-service"
+  STATIC_DATA_SERVICE_URL: "http://static-data-service"
+  REDIS_HOST: "192.168.0.235"
+  REDIS_PORT: "6379"
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-profile-config-properties
+data:
+  config.yml: |
+    spring:
+      datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+      elasticsearch:
+        uris: ${ELASTICSEARCH_URL}
+        password: ${ELASTICSEARCH_PASSWORD}
+        username: ${ELASTICSEARCH_USERNAME}
+      liquibase:
+        url: ${DB_URL}
+        user: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+      data:
+        redis:
+          host: ${REDIS_HOST}
+          port: ${REDIS_PORT}
+
+    eureka:
+      client:
+        enabled: false
+
+    services:
+      auth:
+        url: ${AUTH_SERVICE_URL}
+        userRegisteredTopic: outsource-me-api-user-registered
+      opinions:
+        userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
+      notifications:
+        login: 1234
+        externalTopic: outsource-me-api-notifications
+      static-data:
+        url: ${STATIC_DATA_SERVICE_URL}
+      job-offers:
+        jobOfferDataTopic: outsource-me-api-job-offer-data
+        url: http://localhost:9999
+
+
+    feign:
+      connection:
+        type: SERVICE_DISCOVERY
+
+
+    kafka:
+      producer:
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+      consumer:
+        application-id: user-profile-service
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+        #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+
+    user-profile:
+      topics:
+        USER_DATA: outsource-me-api-user-data
+      thumbnailServerUrl: http://localhost:8080/users/thumbnails
+      defaultThumbnail: user_placeholder.webp
+      plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
+      developers-popularity-rate-recalculation-cron: 0 0 0 * * *
+      password-reset-frontend-url: http://localhost:3000/odzyskiwanie-hasla
+      email-verification-frontend-url: http://localhost:3000/aktywacja-konta
+      notifications:
+        email-verification-email:
+          subject: "Aktywacja konta w serwisie Outsource me"
+          body: "Witaj, aby aktywować swoje konto w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+        password-reset-email:
+          subject: "Reset hasła w serwisie Outsource me"
+          body: "Witaj, aby zresetować swoje hasło w serwisie Outsource me, kliknij w poniższy link: %s?token=%s"
+        welcome-message-email:
+          subject: "%s, witaj w serwisie Outsource me!"
+          body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów.</br> Dziękujemy że jestes z nami. </br> Ekipa Outsource me"
+        welcome-message-internal:
+          body: "Witamy cię na <b>Outsource me</b>! Tutaj możesz znaleźć dodatkowe zlecenia lub programistów."
+      cache:
+        developers-cache-ttl: 1h
+        for-you-cache-ttl: 3h
+        global-cache-ttl: 12h
+
+
+    storage:
+      rootLocation: storage
+      thumbnailDir: thumbnails
+
+    fixtures:
+      enabled: false
+      locale: pl_PL

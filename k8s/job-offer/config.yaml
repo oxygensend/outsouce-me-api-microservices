@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: job-offer-config
+data:
+  DB_URL: "jdbc:mysql://192.168.0.235:3309/job_offer"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "12345"
+  KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
+  ELASTICSEARCH_URL: "http://192.168.0.235:9200"
+  ELASTICSEARCH_USERNAME: "elastic"
+  ELASTICSEARCH_PASSWORD: "elastic"
+  STATIC_DATA_SERVICE_URL: "http://static-data-service"
+  REDIS_HOST: "192.168.0.235"
+  REDIS_PORT: "6378"
+
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: job-offer-config-properties
+data:
+  config.yml: |
+    spring:
+      datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+      elasticsearch:
+        uris: ${ELASTICSEARCH_URL}
+        password: ${ELASTICSEARCH_PASSWORD}
+        username: ${ELASTICSEARCH_USERNAME}
+      liquibase:
+        url: ${DB_URL}
+        user: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+      data:
+        redis:
+          host: ${REDIS_HOST}
+          port: ${REDIS_PORT}
+
+    eureka:
+      client:
+        enabled: false
+
+
+    services:
+      notifications:
+        login: 1234
+        externalTopic: outsource-me-api-notifications
+      opinions:
+        userOpinionsDetailsTopic: outsource-me-api-user-opinions-details
+      static-data:
+        url: ${STATIC_DATA_SERVICE_URL}
+
+
+
+    feign:
+      connection:
+        type: URI
+
+
+    kafka:
+      producer:
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+      consumer:
+        application-id: job-offer-service
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+        user-details-data-topic: outsource-me-api-user-data
+        #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
+
+    job-offers:
+      service-id: job-offers-service
+      user-thumbnail-server-url: http://localhost:8080/users/thumbnails
+      storage:
+        root-location: storage
+        attachments-location: attachments
+      check-job-offer-expiration-cron: 0 0 1 * * *
+      recalculate-job-offers-popularity-rate-cron: 0 0 1 * * *
+      elasticsearch:
+        boostrap-type: reindex
+      topics:
+        JOB_OFFER_DATA: outsource-me-api-job-offer-data
+      notifications:
+        job-offer-application-email:
+          subject: "Masz nową aplikacje na oferte %s"
+          body: "Użytkownik %s właśnie zaaplikował na twoją oferte <b>%s</b>. Sprawdź to!"
+        job-offer-application-internal:
+          body: "Użytkownik %s właśnie zaaplikował na twoją oferte"
+        job-offer-expired-internal-message-to-principal:
+          body: "Oferta %s właśnie wygasła"
+        job-offer-expired-email-to-principal:
+          subject: "Twoja oferta %s właśnie wygasła"
+          body: "Twoja oferta %s właśnie wygasła. Dziękujemy za korzystanie z naszej platformy"
+        job-offer-expired-internal-message-to-applier:
+          body: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
+        job-offer-expired-email-to-applier:
+          subject: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
+          body: "Oferta %s na którą zaaplikowałeś właśnie wygasła. Oczekuj na mailwy kontakt od zleceniodawcy. Dziękujemy za korzystanie z naszej platformy i życzymy powodzenia w dalszym poszukiwaniu zleceń"
+      cache:
+        for-you-cache-ttl: 3h
+        global-cache-ttl: 12h
+        job-offers-cache-ttl: 1h
+
+
+    storage:
+      root-location: storage
+      attachments-location: attachments
+    fixtures:
+      enabled: true
+      locale: pl_PL
+

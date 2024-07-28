@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-data-service
+  labels:
+    app: static-data-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: static-data-service
+  template:
+    metadata:
+      labels:
+        app: static-data-service
+    spec:
+      containers:
+        - name: static-data-service
+          image: shreddler/outsource_me-staticdata:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              port: 8888
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 8888
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: static-data-config
+
+  #          volumeMounts:
+#            - mountPath: storage
+#              name: storage
+#
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: static-data-service
+spec:
+  ports:
+    - targetPort: 8888
+      port: 80
+      protocol: TCP
+  selector:
+    app: static-data-service
