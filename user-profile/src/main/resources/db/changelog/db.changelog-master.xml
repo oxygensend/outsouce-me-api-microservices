@@ -13,4 +13,5 @@
     <include file="db/changelog/versions/1716385882394-changelog.sql" />
     <include file="/db/changelog/versions/1716718309238-changelog.sql" />
     <include file="/db/changelog/versions/1720945917199-changelog.sql"/>
+    <include file="/db/changelog/versions/1722526277000-changelog.sql"/>
 </databaseChangeLog>

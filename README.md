@@ -12,6 +12,7 @@
 - Create missing endpoints for admin panel platform
 - Adjust indices based on slow queries
 - Add cache to opinions service
+- <s>Configure shedlock dependency for leader election (CRON operations)</s>
 
 ### Configuration
 
