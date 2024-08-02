@@ -15,6 +15,7 @@ spring:
         format_sql: true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
   data:
     web:
       pageable:

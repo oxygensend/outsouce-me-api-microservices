@@ -48,7 +48,7 @@ class JobPositionFixture implements Fixture {
                 JobPosition jobPosition = JobPosition.builder()
                                                      .name(faker.job().position())
                                                      .company(companies.get(random.nextInt(CompanyFixture.SIZE - 1)))
-                                                     .description(faker.job().keySkills())
+                                                     .description(faker.lorem().paragraph(random.nextInt(0, 5)))
                                                      .individual(user)
                                                      .formOfEmployment(FormOfEmployment.values()[random.nextInt(FormOfEmployment.values().length - 1)])
                                                      .startDate(LocalDate.of(2020, 8, 11))

@@ -8,15 +8,15 @@ import com.oxygensened.userprofile.domain.service.DeveloperOrderService;
 import com.oxygensened.userprofile.domain.service.DevelopersForYou;
 import com.oxygensened.userprofile.infrastructure.cache.CacheNotAvailableException;
 import com.oxygensened.userprofile.infrastructure.cache.qualifiers.ForYouCache;
-import java.util.Arrays;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 class DevelopersForYouWithRedisCache implements DevelopersForYou {
@@ -26,7 +26,8 @@ class DevelopersForYouWithRedisCache implements DevelopersForYou {
     private final CacheManager cacheManager;
     private final DeveloperOrderService developerOrderService;
 
-    DevelopersForYouWithRedisCache(UserRepository userRepository, @ForYouCache CacheManager cacheManager, DeveloperOrderService developerOrderService) {
+    DevelopersForYouWithRedisCache(UserRepository userRepository, @ForYouCache CacheManager cacheManager,
+                                   DeveloperOrderService developerOrderService) {
         this.userRepository = userRepository;
         this.cacheManager = cacheManager;
         this.developerOrderService = developerOrderService;
@@ -57,7 +58,6 @@ class DevelopersForYouWithRedisCache implements DevelopersForYou {
         int end = Math.min((start + pageable.getPageSize()), sortedDevelopers.size());
         return new PageImpl<>(sortedDevelopers.subList(start, end), pageable, sortedDevelopers.size());
     }
-
 
     private Cache getCache() {
         var cache = cacheManager.getCache(CACHE_NAME);

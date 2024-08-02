@@ -12,27 +12,27 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanPostProcessorImpl implements BeanPostProcessor {
-    private final JobOfferEventListener jobOfferPreEventListener;
-
-    BeanPostProcessorImpl(JobOfferEventListener jobOfferPreEventListener) {
-        this.jobOfferPreEventListener = jobOfferPreEventListener;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof EntityManagerFactory entityManagerFactory) {
-            SessionFactoryImpl sessionFactory = entityManagerFactory.unwrap(SessionFactoryImpl.class);
-            EventListenerRegistry serviceRegistry = sessionFactory
-                    .getServiceRegistry()
-                    .getService(EventListenerRegistry.class);
-
-            serviceRegistry.getEventListenerGroup(EventType.POST_UPDATE)
-                           .appendListener(jobOfferPreEventListener);
-
-
-            serviceRegistry.getEventListenerGroup(EventType.POST_INSERT)
-                           .appendListener(jobOfferPreEventListener);
-        }
-        return bean;
-    }
+//    private final JobOfferEventListener jobOfferPreEventListener;
+//
+//    BeanPostProcessorImpl(JobOfferEventListener jobOfferPreEventListener) {
+//        this.jobOfferPreEventListener = jobOfferPreEventListener;
+//    }
+//
+//    @Override
+//    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+//        if (bean instanceof EntityManagerFactory entityManagerFactory) {
+//            SessionFactoryImpl sessionFactory = entityManagerFactory.unwrap(SessionFactoryImpl.class);
+//            EventListenerRegistry serviceRegistry = sessionFactory
+//                    .getServiceRegistry()
+//                    .getService(EventListenerRegistry.class);
+//
+//            serviceRegistry.getEventListenerGroup(EventType.POST_UPDATE)
+//                           .appendListener(jobOfferPreEventListener);
+//
+//
+//            serviceRegistry.getEventListenerGroup(EventType.POST_INSERT)
+//                           .appendListener(jobOfferPreEventListener);
+//        }
+//        return bean;
+//    }
 }

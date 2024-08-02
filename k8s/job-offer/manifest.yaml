@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-offer-service
+  labels:
+    app: job-offer-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-offer-service
+  template:
+    metadata:
+      labels:
+        app: job-offer-service
+    spec:
+      containers:
+        - name: job-offer-service
+          image: shreddler/outsource_me-joboffer:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9999
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: job-offer-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+            - name: storage
+              mountPath: /app/storage
+          livenessProbe:
+            httpGet:
+              port: 9999
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 9999
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: job-offer-config-properties
+        - name: storage
+          persistentVolumeClaim:
+            claimName: job-offer-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-offer-service
+spec:
+  ports:
+    - targetPort: 9999
+      port: 80
+      protocol: TCP
+  selector:
+    app: job-offer-service
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: job-offer-pv
+#  labels:
+#    type: nfs
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  #  nfs: # Example using NFS, adjust according to your storage type
+  #    path: /export/data
+  #    server: 20.224.160.148
+  hostPath:
+    path: "/mnt/job-offer"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: job-offer-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Gi
+#  selector:
+#    matchLabels:
+#      type: nfs

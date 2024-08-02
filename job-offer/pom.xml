@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.oxygensend</groupId>
         <artifactId>microservices-parent-pom</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>job-offer</artifactId>
@@ -23,14 +23,11 @@
         <kryo.version>5.6.0</kryo.version>
         <snappy.version>1.1.10.5</snappy.version>
         <jackson-nullable.version>0.2.6</jackson-nullable.version>
+        <schedlock-spring.version>5.14.0</schedlock-spring.version>
     </properties>
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -113,6 +110,16 @@
             <groupId>com.oxygensend</groupId>
             <artifactId>spring-fixtures</artifactId>
             <version>${springfixtures.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${schedlock-spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${schedlock-spring.version}</version>
         </dependency>
     </dependencies>
     <build>

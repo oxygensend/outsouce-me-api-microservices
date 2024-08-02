@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messenger-service
+  labels:
+    app: messenger-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messenger-service
+  template:
+    metadata:
+      labels:
+        app: messenger-service
+    spec:
+      containers:
+        - name: messenger-service
+          image: shreddler/outsource_me-messenger:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: messenger-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              port: 8001
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 8001
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: messenger-config-properties
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: messenger-service
+spec:
+  ports:
+    - targetPort: 8001
+      port: 80
+      protocol: TCP
+  selector:
+    app: messenger-service

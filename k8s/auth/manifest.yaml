@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  labels:
+    app: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: shreddler/outsource_me-auth:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9002
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: auth-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              port: 9002
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 9002
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: auth-config-properties
+#          livenessProbe:
+#            httpGet:
+#              port: 8999
+#              path: /manage/health
+#            initialDelaySeconds: 20
+#            timeoutSeconds: 10
+#          volumeMounts:
+#            - mountPath: storage
+#              name: storage
+#
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  ports:
+    - targetPort: 9002
+      port: 80
+      protocol: TCP
+  selector:
+    app: auth-service

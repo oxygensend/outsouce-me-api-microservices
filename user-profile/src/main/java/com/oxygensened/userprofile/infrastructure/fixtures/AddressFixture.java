@@ -4,27 +4,36 @@ import com.oxygensend.springfixtures.Fixture;
 import com.oxygensend.springfixtures.FixtureType;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.repository.AddressRepository;
-import com.oxygensened.userprofile.infrastructure.services.staticdata.StaticDataClient;
 import com.oxygensened.userprofile.infrastructure.services.staticdata.dto.AddressDto;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestClient;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 class AddressFixture implements Fixture {
     public final static int SIZE = 500;
     private final AddressRepository addressRepository;
-    private final StaticDataClient staticDataClient;
+    private final RestClient restClient;
+    private final String staticDataUrl;
 
-    AddressFixture(AddressRepository addressRepository, StaticDataClient staticDataClient) {
+    AddressFixture(AddressRepository addressRepository, RestClient restClient, String staticDataUrl) {
         this.addressRepository = addressRepository;
-        this.staticDataClient = staticDataClient;
+        this.restClient = restClient;
+        this.staticDataUrl = staticDataUrl;
     }
 
     @Override
     public void load() {
         List<Address> addresses = new ArrayList<>();
-        List<AddressDto> importedAddresses = staticDataClient.getAddresses();
+        List<AddressDto> importedAddresses = restClient.get()
+                                                       .uri(staticDataUrl + "/api/v1/static-data/addresses/with-postal-codes")
+                                                       .retrieve()
+                                                       .body(new ParameterizedTypeReference<>() {
+                                                       });
+
+        assert importedAddresses != null;
         Collections.shuffle(importedAddresses);
 
         for (int i = 0; i < SIZE; i++) {

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.oxygensend</groupId>
         <artifactId>microservices-parent-pom</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>user-profile</artifactId>
@@ -22,13 +22,10 @@
         <jackson-nullable.version>0.2.6</jackson-nullable.version>
         <kryo.version>5.6.0</kryo.version>
         <snappy.version>1.1.10.5</snappy.version>
+        <schedlock-spring.version>5.14.0</schedlock-spring.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -120,6 +117,16 @@
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
             <version>${kryo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${schedlock-spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${schedlock-spring.version}</version>
         </dependency>
     </dependencies>
 

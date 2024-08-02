@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: static-data-config
+data:
+  config.yml: |
+    eureka:
+      client:
+        enabled: false
+
+    spring:
+      data:
+        mongodb:
+          uri: mongodb://192.168.0.235:27020/notifications
+
+    static-data:
+      postal-code-data-url: https://www.kody-pocztowe.dokladnie.com/kody.csv.zip
+      open-street-map-url: https://nominatim.openstreetmap.org/search?format=json
+      cache:
+        stat-cache-ttl: 6h
+      about-us-image-server-url: http://localhost:8888/api/v1/static-data/about-us/image
+
+    fixtures:
+      enabled: true
+      locale: pl_PL
+
+    storage:
+      root-location: storage
+      about-us-image-dir: about-us

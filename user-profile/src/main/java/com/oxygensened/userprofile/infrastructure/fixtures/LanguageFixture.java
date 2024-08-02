@@ -7,10 +7,10 @@ import com.oxygensened.userprofile.domain.entity.Language;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.repository.LanguageRepository;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.springframework.stereotype.Component;
 
 class LanguageFixture implements Fixture {
     private final Random random;
@@ -18,7 +18,8 @@ class LanguageFixture implements Fixture {
     private final UserRepository userRepository;
     private final LanguageRepository languageRepository;
 
-    LanguageFixture(UserRepository userRepository, LanguageRepository languageRepository, FixturesFakerProvider fakerProvider) {
+    LanguageFixture(UserRepository userRepository, LanguageRepository languageRepository,
+                    FixturesFakerProvider fakerProvider) {
         this.userRepository = userRepository;
         this.languageRepository = languageRepository;
         this.random = fakerProvider.random();
@@ -33,7 +34,7 @@ class LanguageFixture implements Fixture {
             for (int i = 0; i < random.nextInt(0, 3); i++) {
                 languages.add(new Language(user,
                                            faker.nation().language(),
-                                           faker.lorem().characters(0, 1000)));
+                                           faker.job().keySkills()));
             }
         }
 

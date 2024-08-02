@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: messenger-config
+data:
+  DB_URL: "jdbc:mysql://192.168.0.235:3310/messages"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "12345"
+  KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
+  MAIL_HOST: "192.168.0.235"
+  MAIL_PORT: "1025"
+  MAIL_PROTOCOL: "smtp"
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: messenger-config-properties
+data:
+  config.yml: |
+    spring:
+      datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+      liquibase:
+        url: ${DB_URL}
+        user: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+
+    kafka:
+      producer:
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+      consumer:
+        application-id: messaging-service
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+        security-protocol: PLAINTEXT
+
+    eureka:
+      client:
+        enabled: false
+    
+    
+    services:
+      notifications:
+        login: 1234
+        externalTopic: outsource-me-api-notifications
+      userProfile:
+        userDetailsDataTopic: outsource-me-api-user-data
+
+    messages:
+      serviceId: "messaging-service"
+      notifications:
+        mail-message-delivery-internal: "Masz nową wiadomość email od użytkownika: %s. Sprawdź swoją skrzynkę pocztową."
+      mail:
+        host: ${MAIL_HOST}
+        port: ${MAIL_PORT}
+        protocol: ${MAIL_PROTOCOL}

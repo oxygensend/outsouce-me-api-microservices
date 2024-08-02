@@ -11,44 +11,54 @@ import com.oxygensened.userprofile.domain.repository.LanguageRepository;
 import com.oxygensened.userprofile.domain.repository.UniversityRepository;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.service.UserIdGenerator;
-import com.oxygensened.userprofile.infrastructure.services.auth.AuthClient;
-import com.oxygensened.userprofile.infrastructure.services.staticdata.StaticDataClient;
+import com.oxygensened.userprofile.infrastructure.services.ServiceProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.client.RestClient;
 
 @ConditionalOnProperty(name = "fixtures.enabled", havingValue = "true")
+@Configuration
 public class FixturesConfiguration {
 
     @Lazy
     @Bean
-    Fixture addressFixture(StaticDataClient staticDataClient, AddressRepository addressRepository) {
-        return new AddressFixture(addressRepository, staticDataClient);
+    Fixture addressFixture(RestClient staticDataClient, AddressRepository addressRepository,
+                           ServiceProperties serviceProperties) {
+        return new AddressFixture(addressRepository, staticDataClient, serviceProperties.staticData().url());
     }
 
     @Lazy
     @Bean
-    Fixture userFixture(UserRepository userRepository, AddressRepository addressRepository, TechnologyRepository technologyRepository,
-                        UserIdGenerator userIdGenerator, AuthClient authClient, FixturesFakerProvider fakerProvider) {
-        return new UserFixture(userRepository, addressRepository, technologyRepository, userIdGenerator, authClient, fakerProvider);
+    Fixture userFixture(UserRepository userRepository, AddressRepository addressRepository,
+                        TechnologyRepository technologyRepository,
+                        UserIdGenerator userIdGenerator, FixturesFakerProvider fakerProvider,
+                        RestClient restClient, ServiceProperties serviceProperties) {
+        return new UserFixture(userRepository, addressRepository, technologyRepository, userIdGenerator,
+                               fakerProvider, restClient, serviceProperties.auth().url(),
+                               serviceProperties.staticData().url());
     }
 
     @Lazy
     @Bean
-    Fixture technologyFixture(UserRepository userRepository, EducationRepository educationRepository, UniversityRepository universityRepository,
+    Fixture technologyFixture(UserRepository userRepository, EducationRepository educationRepository,
+                              UniversityRepository universityRepository,
                               FixturesFakerProvider fakerProvider) {
         return new EducationFixture(userRepository, educationRepository, universityRepository, fakerProvider);
     }
 
     @Lazy
     @Bean
-    Fixture jobPositionFixture(UserRepository userRepository, JobPositionRepository jobPositionRepository, CompanyRepository companyRepository, FixturesFakerProvider fakerProvider) {
+    Fixture jobPositionFixture(UserRepository userRepository, JobPositionRepository jobPositionRepository,
+                               CompanyRepository companyRepository, FixturesFakerProvider fakerProvider) {
         return new JobPositionFixture(userRepository, jobPositionRepository, companyRepository, fakerProvider);
     }
 
     @Lazy
     @Bean
-    Fixture languageFixture(UserRepository userRepository, LanguageRepository languageRepository, FixturesFakerProvider fakerProvider) {
+    Fixture languageFixture(UserRepository userRepository, LanguageRepository languageRepository,
+                            FixturesFakerProvider fakerProvider) {
         return new LanguageFixture(userRepository, languageRepository, fakerProvider);
     }
 

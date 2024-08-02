@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+data:
+  MONGO_URI: "mongodb://192.168.0.235:27021/auth"
+  KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config-properties
+data:
+  config.yml: |
+    spring:
+      data:
+        mongodb:
+          uri: ${MONGO_URI}
+
+    eureka:
+      client:
+        enabled:  false
+          
+    jwt:
+      secretKey: '614E645267556B58703273357638792F413F4428472B4B6250655368566D597133743677397A244326452948404D635166546A576E5A7234753778214125442A'
+
+    auth:
+      settings:
+        sign-in:
+          account-activation: VERIFY_EMAIL
+          register-event-topic: outsource-me-api-user-registered
+        roles:
+          - ROLE_DEVELOPER
+          - ROLE_PRINCIPLE
+          - ROLE_ADMIN
+
+        event-broker: kafka
+
+    kafka:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      security-protocol: PLAINTEXT

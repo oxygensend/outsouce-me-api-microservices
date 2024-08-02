@@ -18,7 +18,7 @@ internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) 
     }
 
     @KafkaListener(
-        id = "user-details-data-event-consumer",
+        id = "user-details-data-event-consumer-opinions",
         topics = ["\${kafka.consumer.user-details-data-topic}"],
         containerFactory = "userDetailsDataEventConcurrentKafkaListenerContainerFactory"
     )

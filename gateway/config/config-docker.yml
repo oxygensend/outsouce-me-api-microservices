@@ -1,3 +1,4 @@
 eureka:
-  service-url:
-    defaultZone: ${EUREKA_URL}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
