@@ -12,7 +12,7 @@ data:
   ELASTICSEARCH_PASSWORD: "elastic"
   AUTH_SERVICE_URL: "http://auth-service"
   STATIC_DATA_SERVICE_URL: "http://static-data-service"
-  REDIS_HOST: "192.168.0.235"
+  REDIS_HOST: "192.168.0.73"
   REDIS_PORT: "6379"
 
 
@@ -79,7 +79,7 @@ data:
     user-profile:
       topics:
         USER_DATA: outsource-me-api-user-data
-      thumbnailServerUrl: http://localhost:8080/users/thumbnails
+      thumbnailServerUrl: http://192.168.0.73:8080/users/thumbnails
       defaultThumbnail: user_placeholder.webp
       plUniversitiesSourceUrl: https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions
       developers-popularity-rate-recalculation-cron: 0 0 0 * * *

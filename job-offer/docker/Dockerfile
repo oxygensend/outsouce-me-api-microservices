@@ -13,7 +13,7 @@ COPY target/job-offer.jar  /app/job-offer.jar
 
 WORKDIR /app
 
-ENTRYPOINT exec java $JAVA_OPTS -jar /app/*.jar --spring.config.additional-location=config/config.yml
+ENTRYPOINT exec java $JAVA_OPTS --add-opens java.base/java.lang=ALL-UNNAMED -jar /app/*.jar --spring.config.additional-location=config/config.yml
 
 EXPOSE $PORT
 

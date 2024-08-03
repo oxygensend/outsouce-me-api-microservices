@@ -11,7 +11,7 @@ data:
   ELASTICSEARCH_USERNAME: "elastic"
   ELASTICSEARCH_PASSWORD: "elastic"
   STATIC_DATA_SERVICE_URL: "http://static-data-service"
-  REDIS_HOST: "192.168.0.235"
+  REDIS_HOST: "192.168.0.73"
   REDIS_PORT: "6378"
 
 
@@ -75,7 +75,7 @@ data:
 
     job-offers:
       service-id: job-offers-service
-      user-thumbnail-server-url: http://localhost:8080/users/thumbnails
+      user-thumbnail-server-url: http://192.168.0.73:8080/users/thumbnails
       storage:
         root-location: storage
         attachments-location: attachments
