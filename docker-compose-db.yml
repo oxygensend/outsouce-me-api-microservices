@@ -1,0 +1,160 @@
+version: '3.9'
+services:
+  mysql_user-profile:
+    container_name: 'outsource-me-user-profile-mysql'
+    image: 'mysql:latest'
+    ports:
+      - '3308:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '12345'
+      MYSQL_DATABASE: 'user_profile'
+    networks:
+      - outsource_me
+
+  mysql_job-offer:
+    container_name: 'outsource-me-job-offer-mysql'
+    image: 'mysql:latest'
+    ports:
+      - '3309:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '123452cd4de4d5d05'
+      MYSQL_DATABASE: 'job_offer'
+    networks:
+      - outsource_me
+  mysql_messenger:
+    container_name: 'outsource-me-messenger-mysql'
+    image: 'mysql:latest'
+    ports:
+      - '3310:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '12345'
+      MYSQL_DATABASE: 'messages'
+    networks:
+      - outsource_me
+  mongo-opinions:
+    container_name: 'outsource-me-mongo-opinions'
+    image: 'mongo:latest'
+    ports:
+      - '27018:27017'
+    networks:
+      - outsource_me
+  mongo-static-data:
+    container_name: 'outsource-me-mongo-static-data'
+    image: 'mongo:latest'
+    ports:
+      - '27019:27017'
+    networks:
+      - outsource_me
+  mongo-notifications:
+    container_name: 'outsource-me-mongo-notifications'
+    image: 'mongo:latest'
+    ports:
+      - '27020:27017'
+    networks:
+      - outsource_me
+  mongo-auth:
+    container_name: 'outsource-me-mongo-auth'
+    image: 'mongo:latest'
+    ports:
+      - '27021:27017'
+    networks:
+      - outsource_me
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "9000:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: dev-local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+      DYNAMIC_CONFIG_ENABLED: true
+    depends_on:
+      - "kafka"
+    networks:
+      - outsource_me
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    #    volumes:
+    #      - ./kafka/zookeeper/data:/var/lib/zookeeper/data
+    #      - ./kafka/zookeeper/log:/var/lib/zookeeper/log
+    ports:
+      - 22181:2181
+    networks:
+      - outsource_me
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://192.168.0.235:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      #    volumes:
+      #      - ./kafka/broker/data:/var/lib/kafka/data
+    networks:
+      - outsource_me
+  mailhog:
+    image: mailhog/mailhog
+    container_name: outsource-me-mailhog
+    logging:
+      driver: "none"
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - outsource_me
+
+  elasticsearch:
+    container_name: outsource_me_api-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    environment:
+      discovery.type: "single-node"
+      ES_JAVA_OPTS: "-Xms750m -Xmx750m"
+      ELASTIC_PASSWORD: elastic
+      xpack.security.transport.ssl.enabled: false
+      xpack.security.http.ssl.enabled: false
+
+    ports:
+      - "9200:9200"
+    networks:
+      - outsource_me
+
+  redis_user-profile:
+    image: redis:7.2.4-alpine
+    container_name: outsource-me-redis-user-profile
+    ports:
+      - '6379:6379'
+    networks:
+      - outsource_me
+
+  redis_job-offer:
+    image: redis:7.2.4-alpine
+    container_name: outsource-me-redis-job-offer
+    ports:
+      - '6378:6379'
+    networks:
+      - outsource_me
+networks:
+  outsource_me:
+
+
+
+
+
+
+
+
+
+
+
