@@ -12,6 +12,7 @@ data:
   ELASTICSEARCH_PASSWORD: "elastic"
   AUTH_SERVICE_URL: "http://auth-service"
   STATIC_DATA_SERVICE_URL: "http://static-data-service"
+  JOB_OFFERS_SERVICE_URL: "http://job-offer-service"
   REDIS_HOST: "192.168.0.73"
   REDIS_PORT: "6379"
 
@@ -58,7 +59,7 @@ data:
         url: ${STATIC_DATA_SERVICE_URL}
       job-offers:
         jobOfferDataTopic: outsource-me-api-job-offer-data
-        url: http://localhost:9999
+        url: ${JOB_OFFERS_SERVICE_URL}
 
 
     feign:

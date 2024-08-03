@@ -84,7 +84,7 @@ spring:
           filters:
             - RewritePath=/static-data/(?<segment>.*),/api/v1/static-data/$\{segment}
         - id: notifications-internal
-          uri: lb://notificaons-service
+          uri: lb://notifications-service
           predicates:
             - Path=/notifications/internal,
           filters:

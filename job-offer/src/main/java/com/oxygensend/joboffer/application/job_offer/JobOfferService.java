@@ -21,6 +21,7 @@ import com.oxygensend.joboffer.application.utils.JsonNullableWrapper;
 import com.oxygensend.joboffer.domain.JobOfferSearchResult;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.entity.SalaryRange;
+import com.oxygensend.joboffer.domain.entity.part.AccountType;
 import com.oxygensend.joboffer.domain.exception.JobOfferNotFoundException;
 import com.oxygensend.joboffer.domain.exception.NoSuchUserException;
 import com.oxygensend.joboffer.domain.exception.OnlyPrincipleCanPublishJobOfferException;
@@ -156,6 +157,10 @@ public class JobOfferService {
             if (!requestContext.isAuthorized()) {
                 throw new UnauthorizedException();
             }
+            if (!requestContext.hasAuthority(AccountType.DEVELOPER.role())) {
+                throw new AccessDeniedException();
+            }
+
 
             var userId = requestContext.userId().get();
             page = jobOffersForYou.getForUser(userId, filter, pageable)

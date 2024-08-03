@@ -102,11 +102,12 @@ public class JobOfferViewFactory {
                                     jobOffer.archived());
     }
 
-    public JobOfferOrderView createJobOfferOrderView(JobOffer jobOffer){
+    public JobOfferOrderView createJobOfferOrderView(JobOffer jobOffer) {
         return new JobOfferOrderView(jobOffer.id(),
                                      jobOffer.experience(),
                                      jobOffer.technologies().stream().toList(),
-                                     jobOffer.address().lon(),
-                                     jobOffer.address().lat());
+                                     jobOffer.address() != null ? jobOffer.address().lon() : null,
+                                     jobOffer.address() != null ? jobOffer.address().lat() : null);
+
     }
 }
