@@ -8,7 +8,6 @@ import com.oxygensend.joboffer.application.user.dto.CreateUserRequest;
 import com.oxygensend.joboffer.application.user.dto.view.UserDetailsView;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
-import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/job-offers/users")

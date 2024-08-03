@@ -1,5 +1,7 @@
 package com.oxygensened.userprofile.application.profile;
 
+import static com.oxygensened.userprofile.application.utils.Patch.updateIfPresent;
+
 import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.exception.UnauthorizedException;
@@ -8,12 +10,12 @@ import com.oxygensened.userprofile.application.cache.event.ClearDetailsCacheEven
 import com.oxygensened.userprofile.application.profile.dto.AddressDto;
 import com.oxygensened.userprofile.application.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.application.profile.dto.view.DeveloperView;
+import com.oxygensened.userprofile.application.profile.dto.view.UserSearchView;
 import com.oxygensened.userprofile.application.profile.dto.view.UserView;
 import com.oxygensened.userprofile.application.properties.UserProfileProperties;
 import com.oxygensened.userprofile.application.storage.ThumbnailOptions;
 import com.oxygensened.userprofile.application.storage.ThumbnailService;
 import com.oxygensened.userprofile.application.utils.JsonNullableWrapper;
-import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.Address;
 import com.oxygensened.userprofile.domain.entity.User;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
@@ -23,8 +25,6 @@ import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import com.oxygensened.userprofile.domain.service.DevelopersForYou;
-import java.time.LocalDateTime;
-import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.oxygensened.userprofile.application.utils.Patch.updateIfPresent;
+import java.time.LocalDateTime;
+import java.util.function.Consumer;
 
 @Service
 public class UserService {
@@ -50,9 +51,12 @@ public class UserService {
     private final UserProfileProperties userProfileProperties;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, AddressRepository addressRepository, ThumbnailService thumbnailService,
-                       RequestContext requestContext, DevelopersForYou developersForYou, UserViewFactory userViewFactory,
-                       UserProfileProperties userProfileProperties, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(UserRepository userRepository, AddressRepository addressRepository,
+                       ThumbnailService thumbnailService,
+                       RequestContext requestContext, DevelopersForYou developersForYou,
+                       UserViewFactory userViewFactory,
+                       UserProfileProperties userProfileProperties,
+                       ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.thumbnailService = thumbnailService;
@@ -74,7 +78,8 @@ public class UserService {
                                  .orElseThrow(() -> UserNotFoundException.withId(id));
 
         if (!requestContext.isUserAuthenticated(id)) {
-            LOGGER.info("User {} is not allow to update user details for different entities", requestContext.userIdAsString());
+            LOGGER.info("User {} is not allow to update user details for different entities",
+                        requestContext.userIdAsString());
             throw new AccessDeniedException();
         }
 
@@ -94,7 +99,8 @@ public class UserService {
                                  .orElseThrow(() -> UserNotFoundException.withId(id));
 
         if (!requestContext.isUserAuthenticated(id)) {
-            LOGGER.info("User {} is not allow to upload thumbnail for different entities", requestContext.userIdAsString());
+            LOGGER.info("User {} is not allow to upload thumbnail for different entities",
+                        requestContext.userIdAsString());
             throw new AccessDeniedException();
         }
 
@@ -124,9 +130,11 @@ public class UserService {
                              .orElseGet(() -> thumbnailService.load(userProfileProperties.defaultThumbnail()));
     }
 
-    public PagedListView<UserSearchResult> search(String query, Pageable pageable) {
+    public PagedListView<UserSearchView> search(String query, Pageable pageable) {
         var paginator = userRepository.search(query, pageable);
-        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
+        var data = paginator.getContent().stream().map(userViewFactory::createSearchView).toList();
+        return new PagedListView<>(data, (int) paginator.getTotalElements(), paginator.getNumber() + 1,
+                                   paginator.getTotalPages());
     }
 
     public PagedListView<DeveloperView> getPaginatedDevelopers(UserFilter filter, Pageable pageable) {
@@ -146,7 +154,8 @@ public class UserService {
             page = userRepository.findAll(pageable, filter)
                                  .map(userViewFactory::createDeveloper);
         }
-        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1,
+                                   page.getTotalPages());
     }
 
     @Transactional
@@ -174,7 +183,8 @@ public class UserService {
         if (JsonNullableWrapper.isPresent(addressDto)) {
             var unwrapped = JsonNullableWrapper.unwrap(addressDto);
             var address = addressRepository.findByPostCodeAndCity(unwrapped.postCode(), unwrapped.city());
-            address.ifPresentOrElse(addressSetter, () -> addressSetter.accept(JsonNullableWrapper.unwrap(addressDto).toAddress()));
+            address.ifPresentOrElse(addressSetter,
+                                    () -> addressSetter.accept(JsonNullableWrapper.unwrap(addressDto).toAddress()));
         }
     }
 

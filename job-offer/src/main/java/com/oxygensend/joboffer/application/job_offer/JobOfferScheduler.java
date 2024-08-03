@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
 @Component
-final class JobOfferScheduler {
+public class JobOfferScheduler {
 
     private final JobOfferAdminService jobOfferAdminService;
 

@@ -4,15 +4,14 @@ import com.oxygensend.commonspring.PagedListView;
 import com.oxygensened.userprofile.application.cache.CacheData;
 import com.oxygensened.userprofile.application.profile.dto.request.UserDetailsRequest;
 import com.oxygensened.userprofile.application.profile.dto.view.DeveloperView;
+import com.oxygensened.userprofile.application.profile.dto.view.UserSearchView;
 import com.oxygensened.userprofile.application.profile.dto.view.UserView;
-import com.oxygensened.userprofile.domain.UserSearchResult;
 import com.oxygensened.userprofile.domain.entity.part.AccountType;
 import com.oxygensened.userprofile.domain.entity.part.Experience;
 import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.domain.repository.filters.UserSort;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = "User profile")
 @CrossOrigin
@@ -47,14 +48,14 @@ class UserController {
         return userService.getUser(id);
     }
 
-//    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_KEY)
+    //    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_KEY)
     @GetMapping(value = "/thumbnails/{filename:.+}", produces = "image/webp")
     @ResponseStatus(HttpStatus.OK)
     public Resource getImage(@PathVariable String filename) {
         return userService.loadThumbnail(filename);
     }
 
-//    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_BY_USER_ID_KEY)
+    //    @Cacheable(value = CacheData.THUMBNAIL_CACHE, key = CacheData.THUMBNAIL_BY_USER_ID_KEY)
     @GetMapping(value = "/{id}/thumbnail", produces = "image/webp")
     @ResponseStatus(HttpStatus.OK)
     public Resource getImage(@PathVariable Long id) {
@@ -64,10 +65,14 @@ class UserController {
     @Cacheable(value = CacheData.USER_CACHE, key = CacheData.DEVELOPERS_KEY, unless = "#pageable.pageNumber > 20", cacheManager = "developersCacheManager")
     @GetMapping("/developers-offers")
     public PagedListView<DeveloperView> developersPaginatedList(@RequestParam(required = false) UserSort sort,
-                                                                @RequestParam(name = "technologies", required = false) List<String> technologies,
-                                                                @RequestParam(name = "address.postCode", required = false) String postCode,
-                                                                @RequestParam(name = "address.city", required = false) String city,
-                                                                @RequestParam(name = "experience", required = false) Experience experience,
+                                                                @RequestParam(name = "technologies", required = false)
+                                                                List<String> technologies,
+                                                                @RequestParam(name = "address.postCode", required = false)
+                                                                String postCode,
+                                                                @RequestParam(name = "address.city", required = false)
+                                                                String city,
+                                                                @RequestParam(name = "experience", required = false)
+                                                                Experience experience,
                                                                 Pageable pageable) {
         var filters = UserFilter.builder()
                                 .sort(sort)
@@ -99,7 +104,8 @@ class UserController {
                                 .build();
 
         var page = userService.getPaginatedUsers(filters, pageable);
-        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1,
+                                   page.getTotalPages());
     }
 
     @PostMapping(value = "/{id}/upload-thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -109,7 +115,7 @@ class UserController {
 
     @GetMapping(value = "/search")
     @ResponseStatus(HttpStatus.OK)
-    PagedListView<UserSearchResult> search(@RequestParam String query, Pageable pageable) {
+    PagedListView<UserSearchView> search(@RequestParam String query, Pageable pageable) {
         return userService.search(query, pageable);
     }
 

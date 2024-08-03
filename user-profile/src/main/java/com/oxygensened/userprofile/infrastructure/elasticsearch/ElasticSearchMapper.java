@@ -17,7 +17,6 @@ public class ElasticSearchMapper {
     }
 
     public UserSearchResult mapUserESToUserSearchResult(UserES userES) {
-        var imagePath = userES.imagePath() != null ? userThumbnailServerUrl + "/" + userES.imagePath() : null;
-        return new UserSearchResult(userES.id(), userES.fullName(), imagePath, userES.activeJobPosition());
+        return new UserSearchResult(userES.id(), userES.fullName(), userES.imagePath(), userES.activeJobPosition());
     }
 }
