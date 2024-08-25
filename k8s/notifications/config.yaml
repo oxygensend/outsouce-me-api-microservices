@@ -36,6 +36,7 @@ data:
 
       mail:
         email-from: test@test.com
+        host: 192.168.0.235
 
     kafka:
       application-id: notification-service

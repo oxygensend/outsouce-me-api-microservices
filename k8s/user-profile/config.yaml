@@ -7,7 +7,7 @@ data:
   DB_USERNAME: "root"
   DB_PASSWORD: "12345"
   KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
-  ELASTICSEARCH_URL: "http://192.168.0.235:9200"
+  ELASTICSEARCH_URL: "http://192.168.0.73:9200"
   ELASTICSEARCH_USERNAME: "elastic"
   ELASTICSEARCH_PASSWORD: "elastic"
   AUTH_SERVICE_URL: "http://auth-service"
@@ -29,6 +29,9 @@ data:
         url: ${DB_URL}
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
+        hikari:
+          maximum-pool-size: 500
+          minimum-idle: 100
       elasticsearch:
         uris: ${ELASTICSEARCH_URL}
         password: ${ELASTICSEARCH_PASSWORD}
@@ -72,6 +75,7 @@ data:
         bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
         security-protocol: PLAINTEXT
       consumer:
+        consumer-number: 2
         application-id: user-profile-service
         bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
         security-protocol: PLAINTEXT
@@ -102,7 +106,17 @@ data:
         developers-cache-ttl: 1h
         for-you-cache-ttl: 3h
         global-cache-ttl: 12h
-
+      elasticsearch:
+        boostrap-type: reindex
+        
+    server:
+      tomcat:
+        threads:
+          max: 5000
+          min-spare: 100
+        accept-count: 500
+        accesslog:
+          enabled: false
 
     storage:
       rootLocation: storage

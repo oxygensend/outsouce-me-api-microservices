@@ -27,3 +27,9 @@ data:
     storage:
       root-location: storage
       about-us-image-dir: about-us
+    server:
+      tomcat:
+        threads:
+          max: 5000
+
+

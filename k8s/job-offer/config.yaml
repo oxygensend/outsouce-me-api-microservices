@@ -24,10 +24,15 @@ metadata:
 data:
   config.yml: |
     spring:
+      jpa:
+        show-sql: false 
       datasource:
         url: ${DB_URL}
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
+        hikari:
+          maximum-pool-size: 500
+          minimum-idle: 100
       elasticsearch:
         uris: ${ELASTICSEARCH_URL}
         password: ${ELASTICSEARCH_PASSWORD}
@@ -55,12 +60,18 @@ data:
       static-data:
         url: ${STATIC_DATA_SERVICE_URL}
 
-
-
     feign:
       connection:
         type: URI
-
+    
+    server:
+      tomcat:
+        threads:
+          max: 5000
+          min-spare: 100
+        accept-count: 500
+        accesslog:
+          enabled: false
 
     kafka:
       producer:
@@ -89,16 +100,16 @@ data:
         job-offer-application-email:
           subject: "Masz nową aplikacje na oferte %s"
           body: "Użytkownik %s właśnie zaaplikował na twoją oferte <b>%s</b>. Sprawdź to!"
-        job-offer-application-internal:
+        job-offer-application-internal-message:
           body: "Użytkownik %s właśnie zaaplikował na twoją oferte"
         job-offer-expired-internal-message-to-principal:
           body: "Oferta %s właśnie wygasła"
         job-offer-expired-email-to-principal:
           subject: "Twoja oferta %s właśnie wygasła"
           body: "Twoja oferta %s właśnie wygasła. Dziękujemy za korzystanie z naszej platformy"
-        job-offer-expired-internal-message-to-applier:
+        job-offer-expired-internal-message-to-appliers:
           body: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
-        job-offer-expired-email-to-applier:
+        job-offer-expired-email-to-appliers:
           subject: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
           body: "Oferta %s na którą zaaplikowałeś właśnie wygasła. Oczekuj na mailwy kontakt od zleceniodawcy. Dziękujemy za korzystanie z naszej platformy i życzymy powodzenia w dalszym poszukiwaniu zleceń"
       cache:
@@ -113,4 +124,8 @@ data:
     fixtures:
       enabled: true
       locale: pl_PL
+      
+    logging:
+      level:
+        org.hibernate.orm.jdbc.bind: info
 

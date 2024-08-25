@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: auth-config
 data:
-  MONGO_URI: "mongodb://192.168.0.235:27021/auth"
+  MONGO_URI: "mongodb://192.168.0.73:27018/auth"
   KAFKA_BOOTSTRAP_SERVERS: "192.168.0.235:29092"
 
 
@@ -41,3 +41,12 @@ data:
     kafka:
       bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
       security-protocol: PLAINTEXT
+
+    server:
+      tomcat:
+        threads:
+          max: 5000
+          min-spare: 100
+        accept-count: 500
+        accesslog:
+          enabled: false
