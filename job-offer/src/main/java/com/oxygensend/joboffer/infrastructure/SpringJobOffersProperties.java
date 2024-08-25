@@ -25,7 +25,7 @@ record SpringJobOffersProperties(@NotNull
                                  String recalculateJobOffersPopularityRateCron,
                                  @NotNull
                                  Map<Topics, String> topics,
-                                 @Valid NotificationsProperties notifications) implements JobOffersProperties {
+                                 @Valid SpringNotificationProperties notifications) implements JobOffersProperties {
 
     public record SpringNotificationProperties(@NotNull
                                                @Valid

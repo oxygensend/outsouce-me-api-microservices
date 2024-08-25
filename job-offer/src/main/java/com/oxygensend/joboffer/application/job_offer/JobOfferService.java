@@ -1,11 +1,12 @@
 package com.oxygensend.joboffer.application.job_offer;
 
+import static com.oxygensend.joboffer.application.utils.Patch.updateIfPresent;
+
 import com.oxygensend.commonspring.PagedListView;
 import com.oxygensend.commonspring.exception.AccessDeniedException;
 import com.oxygensend.commonspring.exception.UnauthorizedException;
 import com.oxygensend.commonspring.request_context.RequestContext;
 import com.oxygensend.joboffer.application.cache.event.ClearCacheEvent;
-import com.oxygensend.joboffer.application.cache.event.ClearDetailsCacheEvent;
 import com.oxygensend.joboffer.application.job_offer.dto.AddressDto;
 import com.oxygensend.joboffer.application.job_offer.dto.SalaryRangeDto;
 import com.oxygensend.joboffer.application.job_offer.dto.command.CreateJobOfferCommand;
@@ -31,12 +32,6 @@ import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
 import com.oxygensend.joboffer.domain.service.JobOffersForYou;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -44,7 +39,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.oxygensend.joboffer.application.utils.Patch.updateIfPresent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 public class JobOfferService {
@@ -58,7 +58,11 @@ public class JobOfferService {
     private final NotificationsService notificationsService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository, JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository, RequestContext requestContext, JobOffersForYou jobOffersForYou, NotificationsService notificationsService, ApplicationEventPublisher applicationEventPublisher) {
+    public JobOfferService(UserRepository userRepository, JobOfferRepository jobOfferRepository,
+                           JobOfferViewFactory jobOfferViewFactory, AddressRepository addressRepository,
+                           RequestContext requestContext, JobOffersForYou jobOffersForYou,
+                           NotificationsService notificationsService,
+                           ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.jobOfferViewFactory = jobOfferViewFactory;
@@ -83,8 +87,9 @@ public class JobOfferService {
         }
 
         var salaryRange = Optional.ofNullable(command.salaryRange()).map(SalaryRangeDto::toSalaryRange).orElse(null);
-        var address = addressRepository.findByPostCodeAndCity(command.address().postCode(), command.address().city())
-                                       .orElse(command.address().toAddress());
+        var address = command.address() != null ?
+                      addressRepository.findByPostCodeAndCity(command.address().postCode(), command.address().city())
+                                       .orElse(command.address().toAddress()) : null;
         var validTo = command.validTo() != null ? LocalDateTime.of(command.validTo(), LocalTime.NOON) : null;
 
         var jobOffer = JobOffer.builder()
@@ -99,6 +104,11 @@ public class JobOfferService {
                                .workTypes(command.workTypes())
                                .validTo(validTo)
                                .build();
+
+        // FIX ME
+        if (address != null) {
+            addressRepository.saveAll(List.of(address));
+        }
 
         jobOffer = jobOfferRepository.save(jobOffer);
         return jobOfferViewFactory.create(jobOffer);
@@ -169,7 +179,8 @@ public class JobOfferService {
             page = jobOfferRepository.findAll(filter, pageable)
                                      .map(jobOfferViewFactory::createInfo);
         }
-        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1, page.getTotalPages());
+        return new PagedListView<>(page.getContent(), (int) page.getTotalElements(), page.getNumber() + 1,
+                                   page.getTotalPages());
     }
 
     public JobOfferManagementView getJobOfferManagement(String slug) {
@@ -181,7 +192,8 @@ public class JobOfferService {
 
     public PagedListView<JobOfferSearchResult> search(String query, Pageable pageable) {
         var paginator = jobOfferRepository.search(query, pageable);
-        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(), paginator.getNumber() + 1, paginator.getTotalPages());
+        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(),
+                                   paginator.getNumber() + 1, paginator.getTotalPages());
     }
 
     public List<JobOfferInfoView> getJobOfferInfoList(JobOfferFilter filter) {
@@ -191,14 +203,15 @@ public class JobOfferService {
     }
 
     // TODO REFEACTOR THIS IS USED ONLY BY USER SERVICE
-    public List<JobOfferOrderView> getJobOfferOrderListForUser(String userId){
+    public List<JobOfferOrderView> getJobOfferOrderListForUser(String userId) {
         var filter = JobOfferFilter.builder()
-                .userId(userId)
-                .build();
-       return jobOfferRepository.findAll(filter).stream()
-               .map(jobOfferViewFactory::createJobOfferOrderView)
-               .toList();
+                                   .userId(userId)
+                                   .build();
+        return jobOfferRepository.findAll(filter).stream()
+                                 .map(jobOfferViewFactory::createJobOfferOrderView)
+                                 .toList();
     }
+
     private void updateValidToDate(JsonNullable<LocalDate> validTo, Consumer<LocalDateTime> validToSetter) {
         if (JsonNullableWrapper.isPresent(validTo)) {
             var validToUnWrapped = JsonNullableWrapper.unwrap(validTo);
@@ -213,13 +226,16 @@ public class JobOfferService {
             if (addressDtoUnwrapped == null) {
                 jobOffer.setAddress(null);
             } else {
-                var address = addressRepository.findByPostCodeAndCity(addressDtoUnwrapped.postCode(), addressDtoUnwrapped.city());
-                address.ifPresentOrElse(jobOffer::setAddress, () -> jobOffer.setAddress(JsonNullableWrapper.unwrap(addressDto).toAddress()));
+                var address =
+                    addressRepository.findByPostCodeAndCity(addressDtoUnwrapped.postCode(), addressDtoUnwrapped.city());
+                address.ifPresentOrElse(jobOffer::setAddress,
+                                        () -> jobOffer.setAddress(JsonNullableWrapper.unwrap(addressDto).toAddress()));
             }
         }
     }
 
-    private void updateSalaryRange(JsonNullable<UpdateJobOfferRequest.SalaryRangeDto> salaryRangeDto, JobOffer jobOffer) {
+    private void updateSalaryRange(JsonNullable<UpdateJobOfferRequest.SalaryRangeDto> salaryRangeDto,
+                                   JobOffer jobOffer) {
         if (JsonNullableWrapper.isPresent(salaryRangeDto)) {
             var salaryRangeDtoUnwrapped = JsonNullableWrapper.unwrap(salaryRangeDto);
             if (salaryRangeDtoUnwrapped == null) {

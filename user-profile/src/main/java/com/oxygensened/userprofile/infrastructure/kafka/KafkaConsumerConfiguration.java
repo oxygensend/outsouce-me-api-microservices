@@ -90,7 +90,7 @@ public class KafkaConsumerConfiguration {
     private Map<String, Object> consumerProperties() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.bootstrapServers());
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.applicationId() + UUID.randomUUID());
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.applicationId());
         configProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         configProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaProperties.autoOffsetReset());
         configProps.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, kafkaProperties.maxPollIntervalMs());
@@ -153,8 +153,8 @@ public class KafkaConsumerConfiguration {
             LOGGER.info("Skipping record with topic: {}, partition: {}, offset: {}, broken message: {}", consumerRecord.topic(),
                         consumerRecord.partition(), consumerRecord.offset(), brokenMessage);
         } else {
-            LOGGER.info("Consumer record exception - topic: {}, partition: {}, offset: {}, cause: {}", consumerRecord.topic(),
-                        consumerRecord.partition(), consumerRecord.offset(), exception.getMessage());
+            LOGGER.error("Consumer record exception - topic: {}, partition: {}, offset: {}, cause: {}", consumerRecord.topic(),
+                        consumerRecord.partition(), consumerRecord.offset(), exception.getMessage(), exception);
         }
     }
 

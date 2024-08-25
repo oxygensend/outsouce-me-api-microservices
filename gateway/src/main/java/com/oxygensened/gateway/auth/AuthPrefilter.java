@@ -55,7 +55,7 @@ public class AuthPrefilter extends AbstractGatewayFilterFactory<AuthPrefilter.Co
                                        .map(response -> addAuthHeaders(response, exchange))
                                        .flatMap(chain::filter)
                                        .onErrorResume(e -> {
-                                           LOGGER.error("Error occurred: {}", e.getMessage());
+                                           LOGGER.error("Error occurred", e);
                                            return Mono.error(new UnauthorizedException("Unauthorized", e));
                                        });
             }

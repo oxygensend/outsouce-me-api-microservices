@@ -10,6 +10,7 @@ import com.oxygensened.userprofile.domain.exception.UserAlreadyExistsException;
 import com.oxygensened.userprofile.domain.exception.UserNotFoundException;
 import com.oxygensened.userprofile.domain.repository.UserRepository;
 import com.oxygensened.userprofile.domain.service.UserIdGenerator;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +28,7 @@ public class AuthService {
         this.userIdGenerator = userIdGenerator;
     }
 
+    @Transactional
     public RegisterView register(RegisterRequest request) {
         checkIfUserExists(request.email());
 

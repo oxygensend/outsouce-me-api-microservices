@@ -24,15 +24,22 @@ import com.oxygensend.joboffer.domain.repository.ApplicationRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.repository.UserRepository;
 import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
-import java.util.List;
-import java.util.stream.Stream;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Stream;
+
 @Service
 public class ApplicationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
     private final UserRepository userRepository;
     private final JobOfferRepository jobOfferRepository;
     private final ApplicationRepository applicationRepository;
@@ -42,8 +49,11 @@ public class ApplicationService {
     private final RequestContext requestContext;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    ApplicationService(UserRepository userRepository, JobOfferRepository jobOfferRepository, ApplicationRepository applicationRepository,
-                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory, NotificationsService notificationsService, RequestContext requestContext, ApplicationEventPublisher applicationEventPublisher) {
+    ApplicationService(UserRepository userRepository, JobOfferRepository jobOfferRepository,
+                       ApplicationRepository applicationRepository,
+                       AttachmentService attachmentService, ApplicationViewFactory applicationViewFactory,
+                       NotificationsService notificationsService, RequestContext requestContext,
+                       ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.applicationRepository = applicationRepository;
@@ -54,8 +64,11 @@ public class ApplicationService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
+    @Transactional
     public void createApplication(CreateApplicationCommand command) {
-        var user = userRepository.findById(command.userId()).orElseThrow(() -> NoSuchUserException.withId(command.userId()));
+        var start = Instant.now().toEpochMilli();
+        var user = userRepository.findById(command.userId())
+                                 .orElseThrow(() -> NoSuchUserException.withId(command.userId()));
 
         if (!requestContext.isUserAuthenticated(user.id())) {
             throw new AccessDeniedException();
@@ -64,27 +77,48 @@ public class ApplicationService {
         if (!user.canApplyForJobOffers()) {
             throw new OnlyDeveloperCanApplyForJobOfferException();
         }
+        var downloadUser = Instant.now().toEpochMilli();
+        LOGGER.info("Downloaded user {}", downloadUser - start);
 
-        var jobOffer = jobOfferRepository.findById(command.jobOfferId()).orElseThrow(() -> NoSuchJobOfferException.withId(command.jobOfferId()));
+        var jobOffer = jobOfferRepository.findById(command.jobOfferId())
+                                         .orElseThrow(() -> NoSuchJobOfferException.withId(command.jobOfferId()));
+
+        var downloadJobOffer = Instant.now().toEpochMilli();
+        LOGGER.info("Downloaded jobOffer {}", downloadJobOffer - downloadUser);
 
         if (applicationRepository.existsByJobOfferAndUser(jobOffer, user)) {
             throw new ApplicationAlreadyExistsException();
         }
 
+        var downloadApplication = Instant.now().toEpochMilli();
+        LOGGER.info("Downloaded jobOffer {}", downloadApplication - downloadJobOffer);
+
         var application = new Application(user, jobOffer, command.description());
         storeAttachments(command.attachments(), application);
         jobOffer.increaseNumberOfApplications();
 
+        var storeAttachment = Instant.now().toEpochMilli();
+        LOGGER.info("Store attachment {}", storeAttachment - downloadApplication);
+
         applicationRepository.save(application);
+        var saveAttachment = Instant.now().toEpochMilli();
+        LOGGER.info("Save attachment {}", saveAttachment - storeAttachment);
+
         notificationsService.sendJobOfferApplicationNotifications(application);
+
+        var kafka = Instant.now().toEpochMilli();
+        LOGGER.info("Send notification KAFKA {}", kafka - saveAttachment);
+        LOGGER.info("End date {}", start - Instant.now().toEpochMilli());
     }
 
+    @Transactional
     public void deleteApplication(Long id) {
         var application = applicationRepository.findById(id).orElseThrow(ApplicationNotFoundException::new);
         application.setDeleted(true);
 
         applicationRepository.save(application);
-        applicationEventPublisher.publishEvent(new ClearCacheEvent(CacheData.APPLICATION_CACHE, id.toString(), application.user().id()));
+        applicationEventPublisher.publishEvent(
+            new ClearCacheEvent(CacheData.APPLICATION_CACHE, id.toString(), application.user().id()));
     }
 
     public void changeStatus(Long id, ApplicationStatus status) {
@@ -104,7 +138,8 @@ public class ApplicationService {
     public PagedListView<ApplicationListView> getApplicationsByUser(ApplicationFilter filter, Pageable pageable) {
         var paginator = applicationRepository.findAll(filter, pageable)
                                              .map(applicationViewFactory::createListView);
-        return new PagedListView<>(paginator.getContent(), paginator.getNumberOfElements(), paginator.getNumber(), paginator.getTotalPages());
+        return new PagedListView<>(paginator.getContent(), paginator.getNumberOfElements(), paginator.getNumber(),
+                                   paginator.getTotalPages());
     }
 
     public ApplicationInfoView getApplicationInfo(Long id) {

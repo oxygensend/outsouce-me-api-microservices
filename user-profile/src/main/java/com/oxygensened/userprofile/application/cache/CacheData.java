@@ -16,7 +16,7 @@ public class CacheData {
                     CacheLayer.LIST, List.of("developers-%s")
             ),
             THUMBNAIL_CACHE, Map.of(
-                    CacheLayer.DETAILS, List.of("userId-%s")
+                    CacheLayer.DETAILS, List.of("userId-%s", "users-%s")
             ),
             EDUCATION_CACHE, Map.of(
                     CacheLayer.LIST, List.of("%s")
