@@ -1,0 +1,160 @@
+spring:
+  application:
+    name: gateway
+  threads:
+    virtual:
+      enabled: true
+
+  cloud:
+    kubernetes:
+      enabled: false
+      #      loadbalancer:
+      #        enabled: ${spring.cloud.kubernetes.enabled}
+      #        mode: SERVICE
+      discovery:
+        enabled: ${spring.cloud.kubernetes.enabled}
+        all-namespaces: true
+    #    loadbalancer:
+    #      enabled: false
+    #      cache:
+    #        enabled: false
+    discovery:
+      client:
+        health-indicator:
+          enabled: true
+
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            maxAge: 180
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PATCH
+              - PUT
+              - DELETE
+              - HEAD
+              - OPTIONS
+      httpclient:
+        response-timeout: 5000
+        connect-timeout: 1000
+      routes:
+        - id: user-profile
+          uri: lb://user-profile-service
+          predicates:
+            - Path=/users/**, /auth/register, /auth/resend_password_reset_link
+            - NoPath=/api/v1/users/register,/api/v1/users/resend_password_reset_link,/api/v1/users/*/opinions-details,/users/*/opinions-details,/api/v1/users/*/job-offers, /users/*/job-offers
+          filters:
+            - RewritePath=/users(?<segment>.*),/api/v1/users$\{segment}
+            - RewritePath=/auth/register, /api/v1/users/register
+            - RewritePath=/auth/resend_password_reset_link, /api/v1/users/resend_password_reset_link
+            - RewritePath=/auth/resend_email_verification_link, /api/v1/users/resend_email_verification_link
+            - name: AuthPrefilter
+              args:
+                excludedPaths: [ "/api/v1/users/register", "/api/v1/users/resend_password_reset_link" , "/api/v1/users/resend_email_verification_link", "GET,/api/v1/users/.*" ]
+        - id: job-offer
+          uri: lb://job-offer-service
+          predicates:
+            - Path=/job-offers/**, /applications/**, /attachments/**, /users/*/job-offers
+          filters:
+            - RewritePath=/job-offers(?<segment>.*),/api/v1/job-offers$\{segment}
+            - RewritePath=/attachments/(?<segment>.*),/api/v1/attachments/$\{segment}
+            - RewritePath=/applications(?<segment>.*),/api/v1/applications$\{segment}
+            - RewritePath=/users/(?<userId>.*)/job-offers, /api/v1/job-offers/users/$\{userId}/job-offers
+            - name: AuthPrefilter
+              args:
+                excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details", "GET,/api/v1/job-offers/.*", "GET,/api/v1/job-offers/users/.*/job-offers" ]
+        - id: opinions
+          uri: lb://opinions-service
+          predicates:
+            - Path=/opinions/**, /users-opinion-details/**
+          filters:
+            - RewritePath=/opinions(?<segment>.*),/api/v1/opinions$\{segment}
+            - RewritePath=/users-opinion-details/(?<segment>.*),/api/v1/users/$\{segment}/opinions-details
+            - name: AuthPrefilter
+              args:
+                excludedPaths: [ "GET,/api/v1/opinions", "GET,/api/v1/opinions/.*/comments", "GET,/api/v1/users/.*/opinions-details" ]
+        - id: static-data
+          uri: lb://static-data-service
+          predicates:
+            - Path=/static-data/**
+          filters:
+            - RewritePath=/static-data/(?<segment>.*),/api/v1/static-data/$\{segment}
+        - id: notifications-internal
+          uri: lb://notifications-service
+          predicates:
+            - Path=/notifications/internal,
+          filters:
+            - RewritePath=/notifications/internal, /v1/notifications
+            - AddRequestParameter=channel,INTERNAL
+            - AuthPrefilter
+        - id: notifications
+          uri: lb://notifications-service
+          predicates:
+            - Path=/notifications/*/mark_seen
+            - Path=/notifications/*/delete
+          filters:
+            - RewritePath=/notifications/(?<id>.*)/mark_seen, /v1/notifications/$\{id}/mark_seen
+            - RewritePath=/notifications/(?<id>.*)/delete, /v1/notifications/$\{id}
+            - AuthPrefilter
+        - id: auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/access_token,/auth/refresh_token,/auth/reset_password,/auth/verify_email
+          filters:
+            - RewritePath=/auth/reset_password, /v1/users/reset_password
+            - RewritePath=/auth/verify_email, /v1/users/verify_email
+            - RewritePath=/auth/(?<segment>.*),/v1/auth/$\{segment}
+        - id: messenger
+          uri: lb://messenger-service
+          predicates:
+            - Path=/mail-messages
+          filters:
+            - RewritePath=/mail-messages, /api/v1/mail-messages
+            - AuthPrefilter
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+
+
+
+
+eureka:
+  client:
+    enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 5
+
+
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoint:
+    metrics:
+      enabled: false
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /manage
+      exposure:
+        include: health,info,gateway
+
+
+
+route-logging:
+  enabled: true
+correlation-id-filter:
+  enabled: true
+
+
+logging:
+  logback:
+    rollingpolicy:
+      max-history: 5
+    compression-type: zip

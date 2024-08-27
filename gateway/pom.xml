@@ -13,6 +13,21 @@
     <version>1.0.0-SNAPSHOT</version>
     <description>gateway</description>
 
+    <profiles>
+        <profile>
+            <id>ui</id>
+            <properties>
+                <config.files.dir>${basedir}/profiles/ui</config.files.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>admin</id>
+            <properties>
+                <config.files.dir>${basedir}/profiles/admin</config.files.dir>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,6 +68,48 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources</directory>
+                                </resource>
+                                <resource>
+                                    <directory>${config.files.dir}</directory>
+                                </resource>
+                            </resources>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-profile-active</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireActiveProfile>
+                                    <profiles>ui,admin</profiles>
+                                    <all>false</all>
+                                    <message>Maven profile not defined. Please provide any of the following profile with maven -P parameter</message>
+                                </requireActiveProfile>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
