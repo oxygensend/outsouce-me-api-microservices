@@ -7,8 +7,6 @@ import com.oxygensened.userprofile.domain.repository.filters.UserFilter;
 import com.oxygensened.userprofile.infrastructure.elasticsearch.ElasticSearchMapper;
 import com.oxygensened.userprofile.infrastructure.elasticsearch.UserES;
 import jakarta.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +18,9 @@ import org.springframework.data.elasticsearch.core.SearchHitSupport;
 import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 class UserJpaFacadeRepository implements UserRepository {
     private final UserJpaRepository userJpaRepository;
@@ -27,12 +28,18 @@ class UserJpaFacadeRepository implements UserRepository {
     private final ElasticSearchMapper elasticsearchMapper;
     private final ElasticsearchOperations elasticsearchOperations;
 
-    UserJpaFacadeRepository(UserJpaRepository userJpaRepository, EntityManager entityManager, ElasticSearchMapper elasticsearchMapper,
+    UserJpaFacadeRepository(UserJpaRepository userJpaRepository, EntityManager entityManager,
+                            ElasticSearchMapper elasticsearchMapper,
                             ElasticsearchOperations elasticsearchOperations) {
         this.userJpaRepository = userJpaRepository;
         this.entityManager = entityManager;
         this.elasticsearchMapper = elasticsearchMapper;
         this.elasticsearchOperations = elasticsearchOperations;
+    }
+
+    @Override
+    public void deleteById(Long userId) {
+        userJpaRepository.deleteById(userId);
     }
 
     @Override
@@ -76,12 +83,15 @@ class UserJpaFacadeRepository implements UserRepository {
 
     @Override
     public Page<UserSearchResult> search(String query, Pageable pageable) {
-        var esQuery = new NativeQueryBuilder().withSourceFilter(FetchSourceFilter.of(new String[] {"id", "fullName", "imagePath", "activeJobPosition"}, null))
-                                              .withQuery(Queries.wrapperQueryAsQuery("{\"multi_match\": {\"query\": \"" + query + "\"}}"))
+        var esQuery = new NativeQueryBuilder().withSourceFilter(
+                                                  FetchSourceFilter.of(new String[] {"id", "fullName", "imagePath", "activeJobPosition"}, null))
+                                              .withQuery(Queries.wrapperQueryAsQuery(
+                                                  "{\"multi_match\": {\"query\": \"" + query + "\"}}"))
                                               .withPageable(pageable)
                                               .withSort(Sort.by(Sort.Direction.DESC, "popularityOrder"))
                                               .build();
-        var searchHits = SearchHitSupport.searchPageFor(elasticsearchOperations.search(esQuery, UserES.class), pageable);
+        var searchHits =
+            SearchHitSupport.searchPageFor(elasticsearchOperations.search(esQuery, UserES.class), pageable);
         var content = searchHits.stream()
                                 .map(SearchHitSupport::unwrapSearchHits)
                                 .map(object -> elasticsearchMapper.mapUserESToUserSearchResult((UserES) object))

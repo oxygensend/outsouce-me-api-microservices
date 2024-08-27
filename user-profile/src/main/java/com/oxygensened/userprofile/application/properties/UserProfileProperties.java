@@ -21,4 +21,5 @@ public interface UserProfileProperties {
     NotificationsProperties notifications();
 
     String defaultThumbnail();
+
 }

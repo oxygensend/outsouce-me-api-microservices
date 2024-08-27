@@ -22,4 +22,5 @@ public interface AuthClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/v1/users/create")
     void createUser(@RequestBody CreateUserRequest request);
+
 }

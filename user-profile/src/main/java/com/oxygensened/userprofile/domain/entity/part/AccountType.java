@@ -6,7 +6,9 @@ import java.util.Optional;
 
 public enum AccountType {
     DEVELOPER("ROLE_DEVELOPER", 0),
-    PRINCIPLE("ROLE_PRINCIPLE", 1);
+    PRINCIPLE("ROLE_PRINCIPLE", 1),
+    EDITOR("ROLE_EDITOR", 2),
+    ADMIN("ROLE_ADMIN", 3);
     private final String role;
     private final int numericMapping;
 

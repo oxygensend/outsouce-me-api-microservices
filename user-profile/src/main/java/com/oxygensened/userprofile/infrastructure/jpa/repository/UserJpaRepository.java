@@ -30,4 +30,5 @@ interface UserJpaRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.redirectCount = u.redirectCount + 1 WHERE u.id = :id")
     void addRedirect(@Param("id") Long id);
+
 }
