@@ -47,6 +47,11 @@ public class JobOfferController {
     public JobOfferDetailsView show(@PathVariable String slug) {
         return jobOfferService.getJobOffer(slug);
     }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("-id/{id}")
+    public JobOfferDetailsView showById(@PathVariable Long id) {
+        return jobOfferService.getJobOffer(id);
+    }
 
     @Cacheable(value = CacheData.JOB_OFFER_CACHE, key = CacheData.JOB_OFFERS_LIST_KEY, cacheManager = "jobOffersCacheManager", unless = "#pageable.pageNumber > 20")
     @ResponseStatus(HttpStatus.OK)

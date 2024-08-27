@@ -120,7 +120,12 @@ public class JobOfferService {
 
         return jobOfferViewFactory.create(jobOffer);
     }
+    public JobOfferDetailsView getJobOffer(Long id) {
+        var jobOffer = jobOfferRepository.findById(id)
+                                         .orElseThrow(JobOfferNotFoundException::new);
 
+        return jobOfferViewFactory.create(jobOffer);
+    }
 
     @Transactional
     public void addRedirect(String slug) {
