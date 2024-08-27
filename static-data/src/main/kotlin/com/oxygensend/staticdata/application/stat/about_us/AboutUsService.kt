@@ -33,14 +33,18 @@ class AboutUsService internal constructor(
 
     fun findAllEnabled(): List<AboutUsView> = aboutUsRepository.findEnabled().map { aboutUsViewFactory.createView(it) }
 
+    fun findAll(): List<AboutUsView> = aboutUsRepository.findAll().map { aboutUsViewFactory.createView(it) }
+
     fun deleteAboutUs(id: ObjectId) {
-        val aboutUs = aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
+        val aboutUs =
+            aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
         aboutUsRepository.delete(aboutUs)
         imageService.delete(aboutUs.imageName)
     }
 
     fun updateAboutUs(id: ObjectId, request: AboutUsRequest, image: MultipartFile?): AboutUsView {
-        val aboutUs = aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
+        val aboutUs =
+            aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
         val imageName = image?.let { imageService.create(it) } ?: aboutUs.imageName
         val updatedAboutUs = aboutUs.copy(
             title = request.title ?: aboutUs.title,
@@ -54,4 +58,16 @@ class AboutUsService internal constructor(
     }
 
     fun getImage(imageName: String) = imageService.load(imageName)
+
+    fun enable(id: ObjectId) {
+        val aboutUs =
+            aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
+        aboutUsRepository.save(aboutUs.enabled());
+    }
+
+    fun disable(id: ObjectId) {
+        val aboutUs =
+            aboutUsRepository.findById(id) ?: throw ResourceNotFoundException("About Us with id $id not found")
+        aboutUsRepository.save(aboutUs.disabled());
+    }
 }

@@ -8,6 +8,7 @@ import org.bson.types.ObjectId
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -19,7 +20,7 @@ internal class AboutUsController(
     private val privilegeChecker: PrivilegeChecker
 ) {
 
-    @PostMapping
+    @PostMapping( consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun createAboutUs(@RequestPart request: AboutUsRequest, @RequestPart image: MultipartFile): AboutUsView {
         privilegeChecker.checkEditorPrivileges()
@@ -31,6 +32,13 @@ internal class AboutUsController(
     fun findAllEnabled(): List<AboutUsView> {
         return aboutUsService.findAllEnabled()
     }
+
+    @GetMapping("/all")
+    fun findAll(): List<AboutUsView> {
+        privilegeChecker.checkEditorPrivileges()
+        return aboutUsService.findAll()
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -53,7 +61,20 @@ internal class AboutUsController(
     @GetMapping("/image/{imageName}")
     @ResponseStatus(HttpStatus.OK)
     fun getImage(@PathVariable imageName: String): Resource? {
-        return aboutUsService.getImage(imageName);
+        return aboutUsService.getImage(imageName)
     }
 
+    @PostMapping("/{id}/enabled")
+    @ResponseStatus
+    fun enableAboutUs(@PathVariable id: ObjectId) {
+        privilegeChecker.checkEditorPrivileges()
+        aboutUsService.enable(id)
+    }
+
+    @PostMapping("/{id}/disabled")
+    @ResponseStatus
+    fun disableAboutUs(@PathVariable id: ObjectId) {
+        privilegeChecker.checkEditorPrivileges()
+        aboutUsService.disable(id)
+    }
 }

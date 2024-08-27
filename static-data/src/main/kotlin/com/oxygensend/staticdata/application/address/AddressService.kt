@@ -36,8 +36,16 @@ class AddressService(
         return addresses.map { AddressView.from(it) }
     }
 
-    fun findAllAddressesWithPostCodes(): List<AddressWithPostalCodesView> = addressRepository.findAll()
-        .map { AddressWithPostalCodesView.from(it) }
+    fun findAllAddressesWithPostCodes(search: String?): List<AddressWithPostalCodesView> {
+        val addresses = addressRepository.findAll(search)
+
+        search?.let {
+            return addresses.filter { ad -> ad.postalCodes.any { it.startsWith(search) } }
+                .map { AddressWithPostalCodesView.from(it) }
+        }
+
+        return addresses.map { AddressWithPostalCodesView.from(it) }
+    }
 
     fun forceStop() {
         job?.cancel("DD");

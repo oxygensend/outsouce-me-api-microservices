@@ -15,7 +15,7 @@ internal class AddressController(private val addressService: AddressService) {
 
 
     @GetMapping("/with-postal-codes")
-    fun getAddresses(): List<AddressWithPostalCodesView> = addressService.findAllAddressesWithPostCodes()
+    fun getAddressesWithPostalCodes(@RequestParam(required = false) search: String?): List<AddressWithPostalCodesView> = addressService.findAllAddressesWithPostCodes(search)
 
 
     @PostMapping("/load")

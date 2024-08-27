@@ -14,4 +14,8 @@ data class AboutUs(
     val enabled: Boolean,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime? = null
-)
+) {
+
+    fun enabled() = copy(enabled = true)
+    fun disabled() = copy(enabled = false)
+}

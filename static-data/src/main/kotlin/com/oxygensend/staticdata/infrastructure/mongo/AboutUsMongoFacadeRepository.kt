@@ -12,5 +12,6 @@ internal class AboutUsMongoFacadeRepository(private val aboutUsMongoRepository: 
     override fun findEnabled(): List<AboutUs> = aboutUsMongoRepository.findByEnabledTrue()
     override fun delete(aboutUs: AboutUs) = aboutUsMongoRepository.delete(aboutUs)
     override fun findById(id: ObjectId): AboutUs? = aboutUsMongoRepository.findById(id).orElse(null)
+    override fun findAll(): List<AboutUs> = aboutUsMongoRepository.findAll()
 
 }

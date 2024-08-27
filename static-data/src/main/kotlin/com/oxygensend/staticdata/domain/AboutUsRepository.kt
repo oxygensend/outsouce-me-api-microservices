@@ -8,5 +8,6 @@ interface AboutUsRepository {
     fun findEnabled(): List<AboutUs>
     fun delete(aboutUs: AboutUs)
     fun findById(id: ObjectId): AboutUs?
+    fun findAll(): List<AboutUs>
 
 }
