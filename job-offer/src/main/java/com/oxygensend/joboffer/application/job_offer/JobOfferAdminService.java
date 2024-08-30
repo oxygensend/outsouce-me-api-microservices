@@ -5,18 +5,21 @@ import com.oxygensend.joboffer.application.cache.event.ClearListCacheEvent;
 import com.oxygensend.joboffer.application.notifications.NotificationsService;
 import com.oxygensend.joboffer.application.technology.TechnologyRepository;
 import com.oxygensend.joboffer.domain.entity.JobOffer;
+import com.oxygensend.joboffer.domain.repository.ApplicationRepository;
 import com.oxygensend.joboffer.domain.repository.JobOfferRepository;
 import com.oxygensend.joboffer.domain.service.JobOfferOrderService;
 import jakarta.persistence.EntityManager;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -28,14 +31,19 @@ public class JobOfferAdminService {
     private final JobOfferOrderService jobOfferOrderService;
     private final NotificationsService notificationsService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ApplicationRepository applicationRepository;
 
-    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager, TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService, NotificationsService notificationsService, ApplicationEventPublisher applicationEventPublisher) {
+    JobOfferAdminService(JobOfferRepository jobOfferRepository, EntityManager entityManager,
+                         TechnologyRepository technologyRepository, JobOfferOrderService jobOfferOrderService,
+                         NotificationsService notificationsService, ApplicationEventPublisher applicationEventPublisher,
+                         ApplicationRepository applicationRepository) {
         this.jobOfferRepository = jobOfferRepository;
         this.entityManager = entityManager;
         this.technologyRepository = technologyRepository;
         this.jobOfferOrderService = jobOfferOrderService;
         this.notificationsService = notificationsService;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.applicationRepository = applicationRepository;
     }
 
     public void archiveExpiredJobOffers() {
@@ -71,6 +79,17 @@ public class JobOfferAdminService {
 
         var finishTime = Instant.now();
         applicationEventPublisher.publishEvent(ClearListCacheEvent.JOB_OFFER);
-        LOGGER.info("Finished updating job offer popularity rate in %d ms".formatted(Duration.between(startTime, finishTime).toMillis()));
+        LOGGER.info("Finished updating job offer popularity rate in %d ms".formatted(
+            Duration.between(startTime, finishTime).toMillis()));
+    }
+
+    @Transactional
+    public void deleteJobOffer(Long id) {
+        jobOfferRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void archiveJobOffer(Long id) {
+        jobOfferRepository.archiveById(id);
     }
 }

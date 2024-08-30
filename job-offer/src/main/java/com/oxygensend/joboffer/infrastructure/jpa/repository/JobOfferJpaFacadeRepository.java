@@ -9,6 +9,8 @@ import com.oxygensend.joboffer.infrastructure.elasticsearch.JobOfferES;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +59,18 @@ final class JobOfferJpaFacadeRepository implements JobOfferRepository {
     public void delete(JobOffer jobOffer) {
         jobOfferJpaRepository.delete(jobOffer);
         elasticsearchOperations.delete(jobOffer.id().toString(), JobOfferES.class);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jobOfferJpaRepository.deleteById(id);
+        elasticsearchOperations.delete(id.toString(), JobOfferES.class);
+    }
+
+    @Override
+    public void archiveById(Long id) {
+        jobOfferJpaRepository.archiveById(id);
+        elasticsearchOperations.delete(id.toString(), JobOfferES.class);
     }
 
     @Override

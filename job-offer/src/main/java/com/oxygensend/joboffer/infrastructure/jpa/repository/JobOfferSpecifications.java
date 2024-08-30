@@ -1,5 +1,9 @@
 package com.oxygensend.joboffer.infrastructure.jpa.repository;
 
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addFindInSetPredicate;
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addInPredicate;
+import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.predicateOfNullable;
+
 import com.oxygensend.joboffer.domain.entity.JobOffer;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -7,12 +11,9 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import java.util.ArrayList;
 import org.springframework.data.jpa.domain.Specification;
 
-import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addFindInSetPredicate;
-import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.addInPredicate;
-import static com.oxygensend.joboffer.infrastructure.jpa.repository.SpecificationUtils.predicateOfNullable;
+import java.util.ArrayList;
 
 final class JobOfferSpecifications {
 
@@ -27,7 +28,8 @@ final class JobOfferSpecifications {
         return (root, query, cb) -> cb.lessThanOrEqualTo(root.get("validTo"), cb.currentTimestamp());
     }
 
-    private static Predicate getPredicateForJobOfferQuery(Root<JobOffer> root, CriteriaQuery<?> query, CriteriaBuilder cb, JobOfferFilter filter) {
+    private static Predicate getPredicateForJobOfferQuery(Root<JobOffer> root, CriteriaQuery<?> query,
+                                                          CriteriaBuilder cb, JobOfferFilter filter) {
         final var predicates = new ArrayList<Predicate>();
 
         root.fetch("user", JoinType.INNER);
@@ -55,7 +57,11 @@ final class JobOfferSpecifications {
             addFindInSetPredicate(predicates, cb, root.get("workTypes"), workType.displayName());
         }
 
-        if(filter.sort() != null) {
+        if (filter.search() != null) {
+            predicateOfNullable(predicates, filter.search(), value -> searchExpression(value, cb, root));
+        }
+
+        if (filter.sort() != null) {
             switch (filter.sort()) {
                 case POPULAR -> query.orderBy(cb.desc(root.get("popularityOrder")));
                 case NEWEST -> query.orderBy(cb.desc(root.get("createdAt")));
@@ -63,6 +69,17 @@ final class JobOfferSpecifications {
         }
 
         return cb.and(predicates.toArray(new Predicate[0]));
+    }
+
+    private static Predicate searchExpression(Object value, CriteriaBuilder cb, Root<JobOffer> root) {
+        return cb.or(cb.like(root.get("name"), likeExpression(value)),
+                     cb.like(root.get("description"), likeExpression(value)),
+                     cb.like(root.get("user").get("name"), likeExpression(value)),
+                     cb.like(root.get("user").get("surname"), likeExpression(value)));
+    }
+
+    private static String likeExpression(Object value) {
+        return "%" + value + "%";
     }
 
 

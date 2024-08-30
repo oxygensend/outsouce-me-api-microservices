@@ -11,7 +11,8 @@ public record UserFilter(AccountType accountType,
                          String postCode,
                          String city,
                          Experience experience,
-                         List<String> technologies) implements Filter {
+                         List<String> technologies,
+                         String search) implements Filter {
 
     private static final List<Filter> FILTERS = new ArrayList<>();
 
@@ -36,6 +37,7 @@ public record UserFilter(AccountType accountType,
         private String city;
         private Experience experience;
         private List<String> technologies;
+        private String search;
 
         public Builder accountType(AccountType accountType) {
             if (accountType != null) {
@@ -90,8 +92,14 @@ public record UserFilter(AccountType accountType,
             return this;
         }
 
+        public Builder search(String search) {
+            // TODO add search to FILTER with new filter type
+            this.search = search;
+            return this;
+        }
+
         public UserFilter build() {
-            return new UserFilter(accountType, lookingForJob, sort, postCode, city, experience, technologies);
+            return new UserFilter(accountType, lookingForJob, sort, postCode, city, experience, technologies, search);
         }
     }
 }

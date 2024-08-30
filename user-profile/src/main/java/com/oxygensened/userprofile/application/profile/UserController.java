@@ -96,11 +96,13 @@ class UserController {
     PagedListView<UserView> paginatedList(@RequestParam(required = false) AccountType accountType,
                                           @RequestParam(required = false) Boolean lookingForJob,
                                           @RequestParam(required = false) UserSort order,
+                                          @RequestParam(required = false) String search,
                                           Pageable pageable) {
         var filters = UserFilter.builder()
                                 .accountType(accountType)
                                 .lookingForJob(lookingForJob)
                                 .sort(order)
+                                .search(search)
                                 .build();
 
         var page = userService.getPaginatedUsers(filters, pageable);

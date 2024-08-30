@@ -1,11 +1,12 @@
 package com.oxygensend.joboffer.domain.repository.filter;
 
+import static java.util.Collections.emptyList;
+
 import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 public record JobOfferFilter(List<WorkType> workTypes,
                              List<String> technologies,
@@ -14,7 +15,8 @@ public record JobOfferFilter(List<WorkType> workTypes,
                              String postCode,
                              String city,
                              Boolean archived,
-                             JobOfferSort sort) implements Filter {
+                             JobOfferSort sort,
+                             String search) implements Filter {
 
     private static final List<Filter> FILTERS = new ArrayList<>();
 
@@ -42,6 +44,7 @@ public record JobOfferFilter(List<WorkType> workTypes,
         private String city;
         private Boolean archived = false;
         private JobOfferSort sort;
+        private String search;
 
         public Builder workTypes(List<WorkType> workTypes) {
             if (workTypes != null) {
@@ -104,8 +107,15 @@ public record JobOfferFilter(List<WorkType> workTypes,
             return this;
         }
 
+        // TODO include both fields in FILTERS
+        public Builder search(String search) {
+            this.search = search;
+            return this;
+        }
+
         public JobOfferFilter build() {
-            return new JobOfferFilter(workTypes, technologies, formOfEmployments, userId, postCode, city, archived, sort);
+            return new JobOfferFilter(workTypes, technologies, formOfEmployments, userId, postCode, city, archived,
+                                      sort, search);
         }
     }
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: messaging-service
+    name: messenger-service
   threads:
     virtual:
       enabled: true

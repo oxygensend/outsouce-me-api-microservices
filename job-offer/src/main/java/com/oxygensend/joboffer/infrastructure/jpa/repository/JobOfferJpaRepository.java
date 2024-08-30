@@ -25,4 +25,8 @@ interface JobOfferJpaRepository extends JpaRepository<JobOffer, Long> {
     @Query("UPDATE JobOffer j SET j.redirectCount = j.redirectCount + 1 WHERE j.slug = :slug")
     void addRedirect(String slug);
 
+    @Modifying
+    @Query("UPDATE JobOffer j SET j.archived = true where j.id = :id")
+    void archiveById(Long id);
+
 }

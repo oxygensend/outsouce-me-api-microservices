@@ -28,7 +28,7 @@ public class CacheData {
     public static final String USERS_ORDER_JOB_OFFERS = "'users-order' + #id";
 
     public static final String JOB_OFFERS_LIST_KEY = "'list-' + #workTypes + '-' + #technologies + '-' + #postCode + '-' + #city "
-            + "+ '-' + #formOfEmployments + '-' + #archived + '-' + #userId + '-' + #sort + '-' + #pageable.pageSize + '-' + #pageable.pageNumber";
+            + "+ '-' + #formOfEmployments + '-' + #archived + '-' + #userId + '-' + #sort + '-' + #pageable.pageSize + '-' + #pageable.pageNumber + '-' + #search";
 
     private CacheData() {
     }

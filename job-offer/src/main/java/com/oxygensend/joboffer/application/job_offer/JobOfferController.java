@@ -12,7 +12,6 @@ import com.oxygensend.joboffer.domain.entity.part.FormOfEmployment;
 import com.oxygensend.joboffer.domain.entity.part.WorkType;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferFilter;
 import com.oxygensend.joboffer.domain.repository.filter.JobOfferSort;
-import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -47,6 +48,7 @@ public class JobOfferController {
     public JobOfferDetailsView show(@PathVariable String slug) {
         return jobOfferService.getJobOffer(slug);
     }
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("-id/{id}")
     public JobOfferDetailsView showById(@PathVariable Long id) {
@@ -56,15 +58,17 @@ public class JobOfferController {
     @Cacheable(value = CacheData.JOB_OFFER_CACHE, key = CacheData.JOB_OFFERS_LIST_KEY, cacheManager = "jobOffersCacheManager", unless = "#pageable.pageNumber > 20")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedListView<JobOfferView> list(@RequestParam(name = "workTypes", required = false) List<WorkType> workTypes,
-                                            @RequestParam(name = "technologies", required = false) List<String> technologies,
-                                            @RequestParam(name = "address.postCode", required = false) String postCode,
-                                            @RequestParam(name = "address.city", required = false) String city,
-                                            @RequestParam(name = "formOfEmployments", required = false) List<FormOfEmployment> formOfEmployments,
-                                            @RequestParam(name = "archived", required = false) Boolean archived,
-                                            @RequestParam(name = "userId", required = false) String userId,
-                                            @RequestParam(name = "sort", required = false, defaultValue = "NEWEST") JobOfferSort sort,
-                                            Pageable pageable) {
+    public PagedListView<JobOfferView> list(
+        @RequestParam(name = "workTypes", required = false) List<WorkType> workTypes,
+        @RequestParam(name = "technologies", required = false) List<String> technologies,
+        @RequestParam(name = "address.postCode", required = false) String postCode,
+        @RequestParam(name = "address.city", required = false) String city,
+        @RequestParam(name = "formOfEmployments", required = false) List<FormOfEmployment> formOfEmployments,
+        @RequestParam(name = "archived", required = false) Boolean archived,
+        @RequestParam(name = "userId", required = false) String userId,
+        @RequestParam(name = "search", required = false) String search,
+        @RequestParam(name = "sort", required = false, defaultValue = "NEWEST") JobOfferSort sort,
+        Pageable pageable) {
 
         var filter = JobOfferFilter.builder()
                                    .workTypes(workTypes)
@@ -75,6 +79,7 @@ public class JobOfferController {
                                    .archived(archived)
                                    .userId(userId)
                                    .sort(sort)
+                                   .search(search)
                                    .build();
 
         return jobOfferService.getPaginatedJobOffers(filter, pageable);

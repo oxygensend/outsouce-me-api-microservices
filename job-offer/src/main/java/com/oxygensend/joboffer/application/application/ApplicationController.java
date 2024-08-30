@@ -14,7 +14,6 @@ import com.oxygensend.joboffer.domain.repository.filter.ApplicationFilter;
 import com.oxygensend.joboffer.domain.repository.filter.ApplicationSort;
 import com.oxygensend.joboffer.domain.repository.filter.SortDirection;
 import io.swagger.v3.oas.annotations.Parameter;
-import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/applications")
@@ -43,6 +44,26 @@ public class ApplicationController {
     ApplicationController(ApplicationService applicationService) {
         this.applicationService = applicationService;
     }
+
+
+    @GetMapping("/all-admin")
+    @ResponseStatus(HttpStatus.OK)
+    public PagedListView<ApplicationView> getAllWithDetailsPaginatedList(
+        @RequestParam(required = false) String userId,
+        @RequestParam(required = false, defaultValue = "CREATED_AT")
+        ApplicationSort sort,
+        @RequestParam(required = false, defaultValue = "ASC")
+        SortDirection dir,
+        Pageable pageable) {
+        var filter = ApplicationFilter.builder()
+                                      .userId(userId)
+                                      .sort(sort)
+                                      .dir(dir)
+                                      .build();
+
+        return applicationService.getApplications(filter, pageable);
+    }
+
 
     @Cacheable(value = CacheData.APPLICATION_CACHE, key = CacheData.APPLICATION_KEY)
     @GetMapping("/{id}")
@@ -61,8 +82,10 @@ public class ApplicationController {
     @Cacheable(value = CacheData.APPLICATION_CACHE, key = CacheData.USERS_APPLICATIONS)
     @GetMapping
     public PagedListView<ApplicationListView> paginatedList(@RequestParam(required = true) String userId,
-                                                            @RequestParam(required = false, defaultValue = "CREATED_AT") ApplicationSort sort,
-                                                            @RequestParam(required = false, defaultValue = "ASC") SortDirection dir,
+                                                            @RequestParam(required = false, defaultValue = "CREATED_AT")
+                                                            ApplicationSort sort,
+                                                            @RequestParam(required = false, defaultValue = "ASC")
+                                                            SortDirection dir,
                                                             Pageable pageable) {
         var filter = ApplicationFilter.builder()
                                       .userId(userId)

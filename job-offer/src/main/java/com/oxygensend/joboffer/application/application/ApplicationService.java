@@ -32,7 +32,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Stream;
@@ -133,6 +132,14 @@ public class ApplicationService {
                                     .map(applicationViewFactory::create)
                                     .orElseThrow(ApplicationNotFoundException::new);
 
+    }
+
+    public PagedListView<ApplicationView> getApplications(ApplicationFilter filter, Pageable pageable) {
+        var paginator = applicationRepository.findAll(filter, pageable)
+                                             .map(applicationViewFactory::create);
+
+        return new PagedListView<>(paginator.getContent(), (int) paginator.getTotalElements(),
+                                   paginator.getNumber() + 1, paginator.getTotalPages());
     }
 
     public PagedListView<ApplicationListView> getApplicationsByUser(ApplicationFilter filter, Pageable pageable) {

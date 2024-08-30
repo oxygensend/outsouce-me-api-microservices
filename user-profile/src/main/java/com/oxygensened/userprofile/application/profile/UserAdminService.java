@@ -55,7 +55,7 @@ public class UserAdminService {
         updateDevelopersPopularityRate();
     }
 
-    private void updateDevelopersPopularityRate() {
+    public void updateDevelopersPopularityRate() {
         LOGGER.info("Started updating developers popularity rate");
         var startTime = Instant.now();
 

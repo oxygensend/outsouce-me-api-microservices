@@ -39,6 +39,7 @@ class DevelopersForYouWithRedisCache implements DevelopersForYou {
         var cachedDevelopers = cache.get(userId, User[].class);
         if (cachedDevelopers != null) {
             var filteredOffers = Arrays.stream(cachedDevelopers)
+                                       .filter(filter::match)
                                        .toList();
             return paginatedResults(filteredOffers, pageable);
         }

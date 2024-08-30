@@ -4,8 +4,9 @@ import com.oxygensend.joboffer.application.job_offer.dto.view.JobOfferViewFactor
 import com.oxygensend.joboffer.application.user.dto.view.UserViewFactory;
 import com.oxygensend.joboffer.domain.entity.Application;
 import com.oxygensend.joboffer.domain.entity.Attachment;
-import java.util.List;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ApplicationViewFactory {
@@ -23,7 +24,8 @@ public class ApplicationViewFactory {
         var jobOfferView = jobOfferViewFactory.createJobOfferWithUserView(application.jobOffer());
         var userView = userViewFactory.createUserView(application.user());
         var attachments = createAttachments(application);
-        return new ApplicationView(application.status(),
+        return new ApplicationView(application.id(),
+                                   application.status(),
                                    application.description(),
                                    jobOfferView,
                                    userView,
@@ -47,6 +49,7 @@ public class ApplicationViewFactory {
                                        application.createdAt(),
                                        attachments);
     }
+
 
     private List<AttachmentView> createAttachments(Application application) {
         return application.attachments().stream()
