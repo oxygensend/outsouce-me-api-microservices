@@ -117,7 +117,7 @@ public class UserService {
         userRepository.save(user);
 
         thumbnailService.delete(oldSmallThumbnail, oldMainThumbnail);
-        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.thumbnail(id));
+        applicationEventPublisher.publishEvent(ClearDetailsCacheEvent.user(id));
     }
 
     public Resource loadThumbnail(String filename) {

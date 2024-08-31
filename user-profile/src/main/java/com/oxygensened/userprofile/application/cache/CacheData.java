@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class CacheData {
     public static final String USER_CACHE = "users";
-    public static final String THUMBNAIL_CACHE = "thumbnails";
     public static final String DICTIONARY_CACHE = "dictionaries";
     public static final String EDUCATION_CACHE = "educations";
     public static final String JOB_POSITION_CACHE = "job-positions";
@@ -14,9 +13,6 @@ public class CacheData {
             USER_CACHE, Map.of(
                     CacheLayer.DETAILS, List.of("%s"),
                     CacheLayer.LIST, List.of("developers-%s")
-            ),
-            THUMBNAIL_CACHE, Map.of(
-                    CacheLayer.DETAILS, List.of("userId-%s", "users-%s")
             ),
             EDUCATION_CACHE, Map.of(
                     CacheLayer.LIST, List.of("%s")
