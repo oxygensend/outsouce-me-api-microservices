@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-gateway-service
+  labels:
+    app: admin-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin-gateway-service
+  template:
+    metadata:
+      labels:
+        app: admin-gateway-service
+    spec:
+      serviceAccountName: monitoring-service-account
+      containers:
+        - name: admin-gateway-service
+          image: shreddler/outsource_me-gateway-admin:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /manage/health
+            initialDelaySeconds: 20
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /manage/health
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: gateway-admin-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-admin-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 80
+      protocol: TCP
+      nodePort: 30001
+  selector:
+    app: gateway-admin-service
