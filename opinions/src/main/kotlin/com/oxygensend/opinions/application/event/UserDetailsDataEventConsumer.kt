@@ -23,9 +23,10 @@ internal class UserDetailsDataEventConsumer(val userRepository: UserRepository) 
         containerFactory = "userDetailsDataEventConcurrentKafkaListenerContainerFactory"
     )
     fun consume(record: ConsumerRecord<String, UserDetailsDataEvent>) {
-        LOGGER.info("AAA")
+        LOGGER.info("Consuming user details for user {}", record.key())
         val event = record.value()
         if (event.fields.keys.none { it in SUPPORTED_FIELDS }) {
+            LOGGER.info("No user user details for user {}, exiting.", record.key());
             return
         }
 

@@ -32,9 +32,19 @@ class OpinionFixture(
             (0..random.nextInt(15)).forEach { _ ->
                 val author = getAuthor(receiver, users);
                 author?.let {
-                    opinions.add(Opinion(ObjectId(), author.id, receiver.id, random.nextInt(0, 5), faker.lorem().paragraph(random.nextInt(0,3))))
+                    opinions.add(
+                        Opinion(
+                            ObjectId(),
+                            author.id,
+                            receiver.id,
+                            random.nextInt(0, 5),
+                            faker.lorem().paragraph(random.nextInt(0, 3))
+                        )
+                    )
                 }
             }
+            opinionRepository.saveAll(opinions);
+            opinions.clear();
 
             applicationEventPublisher.publishEvent(OpinionDetailsRecalculateEvent(receiver.id))
         }

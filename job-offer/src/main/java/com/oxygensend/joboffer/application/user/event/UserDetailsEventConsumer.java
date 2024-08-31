@@ -39,9 +39,10 @@ class UserDetailsEventConsumer {
             containerFactory = "userDetailsEventConcurrentKafkaListenerContainerFactory"
     )
     public void consume(ConsumerRecord<String, UserDetailsEvent> record) {
-        LOGGER.info("XX");
+        LOGGER.info("Consuming user details for user {}", record.key());
         var event = record.value();
         if (event.fields().keySet().stream().noneMatch(SUPPORTED_FIELDS::contains)) {
+            LOGGER.info("No user user details for user {}, exiting.", record.key());
             return;
         }
 
