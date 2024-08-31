@@ -45,12 +45,12 @@ spring:
         - id: user-profile
           uri: lb://user-profile-service
           predicates:
-            - Path=/users/**, /auth/register, /auth/resend_password_reset_link, /admin/users/** /cache/users/clear
+            - Path=/users/**, /auth/register, /auth/resend_password_reset_link, /admin-users/**, /cache/users/clear
             - NoPath=/api/v1/users/register,/api/v1/users/resend_password_reset_link,/api/v1/users/*/opinions-details,/users/*/opinions-details,/api/v1/users/*/job-offers, /users/*/job-offers
           filters:
-            - RewritePath=/admin/users(?<segment>.*),/api/v1/admin/users$\{segment}
-            - RewritePath=/cache/users/clear,/api/v1/cache/clear
             - RewritePath=/users(?<segment>.*),/api/v1/users$\{segment}
+            - RewritePath=/admin-users/(?<segment>.*),/api/v1/admin/users/$\{segment}
+            - RewritePath=/cache/users/clear,/api/v1/cache/clear
             - RewritePath=/auth/register, /api/v1/users/register
             - RewritePath=/auth/resend_password_reset_link, /api/v1/users/resend_password_reset_link
             - RewritePath=/auth/resend_email_verification_link, /api/v1/users/resend_email_verification_link
@@ -64,14 +64,14 @@ spring:
         - id: job-offer
           uri: lb://job-offer-service
           predicates:
-            - Path=/job-offers/**, /applications/**, /attachments/**, /users/*/job-offers, /cache/job-offers/clear, /admin/job-offers/**
+            - Path=/job-offers/**, /applications/**, /attachments/**, /users/*/job-offers, /cache/job-offers/clear, /admin-job-offers/**, /job-offers-id/**
           filters:
-            - RewritePath=/admin/job-offers(?<segment>.*),/api/v1/admin/job-offers$\{segment}
             - RewritePath=/cache/job-offers/clear,/api/v1/cache/clear
             - RewritePath=/job-offers(?<segment>.*),/api/v1/job-offers$\{segment}
+            - RewritePath=/admin-job-offers/(?<segment>.*),/api/v1/admin/job-offers/$\{segment}
             - RewritePath=/attachments/(?<segment>.*),/api/v1/attachments/$\{segment}
             - RewritePath=/applications(?<segment>.*),/api/v1/applications$\{segment}
-            - RewritePath=/users/(?<userId>.*)/job-offers, /api/v1/job-offers/users/$\{userId}/job-offers
+            - RewritePath=/users/(?<userId>.*)/job-offers, /api/v1/job-offers/users/$\{userid}/job-offers
             - name: AuthPrefilter
               args:
                 excludedPaths: [ "GET,/api/v1/job-offers", "POST,/api/v1/job-offers/.*/add-redirect", "GET,/api/v1/users/.*/opinions-details", "GET,/api/v1/job-offers/.*", "GET,/api/v1/job-offers/users/.*/job-offers" ]
@@ -98,7 +98,7 @@ spring:
         - id: notifications
           uri: lb://notifications-service
           predicates:
-            - Path=/notifications**
+            - Path=/notifications**, /notifications/internalSync
           filters:
             - RewritePath=/notifications(?<segment>.*),/v1/notifications$\{segment}
             - AuthPrefilter
