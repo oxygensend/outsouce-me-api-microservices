@@ -39,11 +39,11 @@ feign:
 
 kafka:
   producer:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: 192.168.0.235:29092
     security-protocol: PLAINTEXT
   consumer:
     application-id: job-offer-service
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: 192.168.0.235:29092
     security-protocol: PLAINTEXT
     user-details-data-topic: outsource-me-api-user-data
     #    sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username="dev" password="dev123"
@@ -61,16 +61,16 @@ job-offers:
     job-offer-application-email:
       subject: "Masz nową aplikacje na oferte %s"
       body: "Użytkownik %s właśnie zaaplikował na twoją oferte <b>%s</b>. Sprawdź to!"
-    job-offer-application-internal:
+    job-offer-application-internal-message:
       body: "Użytkownik %s właśnie zaaplikował na twoją oferte"
     job-offer-expired-internal-message-to-principal:
       body: "Oferta %s właśnie wygasła"
     job-offer-expired-email-to-principal:
       subject: "Twoja oferta %s właśnie wygasła"
       body: "Twoja oferta %s właśnie wygasła. Dziękujemy za korzystanie z naszej platformy"
-    job-offer-expired-internal-message-to-applier:
+    job-offer-expired-internal-message-to-appliers:
       body: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
-    job-offer-expired-email-to-applier:
+    job-offer-expired-email-to-appliers:
       subject: "Oferta %s na którą zaaplikowałeś właśnie wygasła"
       body: "Oferta %s na którą zaaplikowałeś właśnie wygasła. Oczekuj na mailwy kontakt od zleceniodawcy. Dziękujemy za korzystanie z naszej platformy i życzymy powodzenia w dalszym poszukiwaniu zleceń"
   cache:

@@ -1,21 +1,30 @@
-# outsouce-me-api-microservices
+# outsource-me-api-microservices
 
-## What have to be done?
+Project created for needs of a master thesis named "Comparative analysis of microservice and monolithic architectures". In master thesis, the project was used to show differences in design and development process, present decomposition process and to perform performance testes between monolithic and microservice versions.
 
-### Development
 
-- <s> Decouple user-profile and job-offer service from static-data by duplicating Technology entity across microservices. Static-data service will provide other
-  services with technology updates extending publish-subscribe pattern</s>
-- <s> Provide Request-Id (unique request identifier) downstream across services - should be generated automatically on api gateway level and passsed downstream in
-  the header </s>
-- <s>Configure shedlock dependency for leader election (CRON operations)</s>
-- Create missing endpoints for admin panel platform
-- Adjust indices based on slow queries
-- Add cache to opinions service
-- user profile cache is not clearing after updating thumbnails
-- opinions details are not sent to user-service at fixtures start up
+Full version of Outsource-me api utilizes two other, flexible microservices:
+- Notification Service: https://github.com/oxygensend/notifications
+- Auth Service: https://github.com/oxygensend/auth
 
-### Configuration
 
-- <s>Set up k8s clusters</s>
-- Prepare fixtures for presentation
+Related projects:
+- Monolith version: https://github.com/oxygensend/outsource-me-api
+- Frontend version: https://github.com/oxygensend/outsource_me-front/tree/v2
+- Admin panel: https://github.com/oxygensend/outsource-me-admin 
+
+
+## Main stack
+- Java 21
+- Kotlin 2
+- Spring 
+- K8s
+- Docker
+- MongoDB
+- MySQL
+- Redis
+- Caffeine
+- Kafka
+- Snappy
+- Kryo
+
